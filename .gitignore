@@ -1,0 +1,11 @@
+*.suo
+*.vcxproj.user
+*.vcxproj.filters
+*.sdf
+*.opensdf
+ipch/
+.vs/
+[Dd]ebug/
+[Rr]elease/
+GameFramework/[Dd]ebug/
+GameFramework/[Rr]elease/
