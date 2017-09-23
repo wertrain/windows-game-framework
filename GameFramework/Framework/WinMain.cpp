@@ -1,9 +1,17 @@
+// メモリリーク検出の有効化
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h> 
+
 #include <windows.h>
 #include <time.h>
 #include <tchar.h>
 #include <mmsystem.h>
 #pragma comment (lib, "winmm.lib")
 
+#include <d3d11.h>
+#include <atlbase.h>
+#include "System/DirectX.h"
 #include "GameMain.h"
 #include "Constants.h"
 
@@ -14,19 +22,20 @@ static bool s_ExitThread = false;
 // ゲームウィンドウ構造体
 typedef struct GameWindow
 {
-    HWND hWnd;      // ウインドウ
-    HDC hScreenDC;  // バックバッファ
-    SIZE size;      // サイズ
-    DWORD dwFps;    // FPS
+    System::DirectX directX;
+    HWND hWnd;     // ウインドウ
+    SIZE size;     // サイズ
+    DWORD dwFps;   // FPS
 } GameWindow;
 
 DWORD WINAPI GameMainFunc(LPVOID vdParam)
 {
     GameWindow *gameWindow = static_cast<GameWindow*>(vdParam);
+    gameWindow->directX.Initialize(gameWindow->hWnd);
 
-    //フレーム数と以前の時間
+    // フレーム数と以前の時間
     DWORD frames = 0, beforeTime;
-    //FPSの表示用
+    // FPSの表示用
     TCHAR str[16] = {0};
     // キーボードの状態を格納
     //BYTE keyTable[256];
@@ -64,7 +73,10 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         // --- 描画処理 ---
 
-        Draw(gameWindow->hScreenDC);
+        //Draw(gameWindow->hScreenDC);
+
+        gameWindow->directX.ClearRenderView();
+        gameWindow->directX.Present();
 
         // 理想時間の算出
         DWORD idealTime = (DWORD)(frames * (1000.0 / gameWindow->dwFps));
@@ -73,38 +85,11 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
             Sleep(idealTime - progress);
         }
 
-        // FPSの表示位置
-        TextOut(gameWindow->hScreenDC, 10, 10, str, lstrlen(str));
-
-        // スレッド内で作成された画像を描画
-        hdc = BeginPaint(gameWindow->hWnd, &ps);
-        BitBlt(hdc, 0, 0,
-            gameWindow->size.cx,
-            gameWindow->size.cy,
-            gameWindow->hScreenDC,
-            0, 0,
-            SRCCOPY);
-        PatBlt(gameWindow->hScreenDC, 0, 0, gameWindow->size.cx,gameWindow->size.cy, BLACKNESS); // 裏画面を黒で初期化
-        EndPaint(gameWindow->hWnd, &ps);
-
-        // ウインドウの再描画
-        InvalidateRect(gameWindow->hWnd, NULL, FALSE); // TRUE:画面初期化
-
-        if (progress >= 1000)
-        {
-            wsprintf(str, TEXT("FPS %d"), frames);
-            beforeTime = nowTime;
-            frames = 0;
-        }
-        else
-        {
-            ++frames;
-        }
 
         if (Framework::s_ExitThread) break;
     }
 
-    DeleteDC(gameWindow->hScreenDC);
+    gameWindow->directX.Finalize();
 
     return TRUE;
 }
@@ -137,6 +122,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             WaitForSingleObject(hThread, INFINITE);
             Destroy();
             PostQuitMessage(0);
+            _CrtDumpMemoryLeaks();
             return 0;
 
         case WM_CREATE:
@@ -147,15 +133,6 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             gameWindow.size.cy = Framework::Constants::HEIGHT;
             gameWindow.dwFps = Framework::Constants::FPS;
 
-            // HDCの作成
-            hdc = GetDC(hWnd);
-            hBitmap = CreateCompatibleBitmap(hdc, gameWindow.size.cx, gameWindow.size.cy);
-            gameWindow.hScreenDC = CreateCompatibleDC(hdc);
-            SelectObject(gameWindow.hScreenDC, hBitmap);
-
-            // HDCの解放
-            ReleaseDC(hWnd, hdc);
-
             // ゲームオブジェクトの作成
             if (!Create(gameWindow.hWnd))
             {
@@ -163,7 +140,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
                 return 0;
             }
 
-            //スレッドの作成と実行
+            // スレッドの作成と実行
             hThread = CreateThread(NULL,          // ハンドルを他のプロセスと共有する場合
                 0,                      // スタックサイズ(デフォルト:0)
                 Framework::GameMainFunc,// スレッド関数名
