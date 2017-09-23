@@ -1,6 +1,5 @@
 *.suo
 *.vcxproj.user
-*.vcxproj.filters
 *.sdf
 *.opensdf
 ipch/
