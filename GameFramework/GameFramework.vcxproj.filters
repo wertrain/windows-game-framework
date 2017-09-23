@@ -17,6 +17,9 @@
     <ClCompile Include="Framework\WinMain.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\System\DirectX.cpp">
+      <Filter>Framework\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\System\ObjectBase.h">
@@ -39,6 +42,9 @@
     </ClInclude>
     <ClInclude Include="Framework\Constants.h">
       <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\DirectX.h">
+      <Filter>Framework\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

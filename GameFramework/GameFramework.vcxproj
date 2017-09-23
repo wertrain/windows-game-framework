@@ -22,6 +22,7 @@
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive.cpp" />
+    <ClCompile Include="Framework\System\DirectX.cpp" />
     <ClCompile Include="Framework\System\ObjectBase.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Primitive.h" />
     <ClInclude Include="Framework\Includes.h" />
+    <ClInclude Include="Framework\System\DirectX.h" />
     <ClInclude Include="Framework\System\ObjectBase.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
