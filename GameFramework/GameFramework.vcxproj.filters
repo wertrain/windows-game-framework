@@ -20,6 +20,12 @@
     <ClCompile Include="Framework\System\DirectX.cpp">
       <Filter>Framework\System</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Graphics\Texture.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Types.cpp">
+      <Filter>Framework\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\System\ObjectBase.h">
@@ -44,6 +50,12 @@
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Framework\System\DirectX.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Graphics\Texture.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\Types.h">
       <Filter>Framework\System</Filter>
     </ClInclude>
   </ItemGroup>

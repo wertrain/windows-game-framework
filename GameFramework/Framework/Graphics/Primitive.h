@@ -12,16 +12,10 @@ public:
     Primitive() ;
     virtual ~Primitive();
 
-    const int GetX(){ return mX; }
-    const int GetY(){ return mY; }
-    const int GetWidth(){ return mWidth; }
-    const int GetHeight(){ return mHeight; }
+    Vector3 GetPos() const;
 
 protected:
-    int mX;
-    int mY;
-    int mWidth;
-    int mHeight;
+    Vector3 mPos;
 };
 
 } // namespace Graphics

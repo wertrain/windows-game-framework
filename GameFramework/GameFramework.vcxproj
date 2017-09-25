@@ -22,8 +22,10 @@
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive.cpp" />
+    <ClCompile Include="Framework\Graphics\Texture.cpp" />
     <ClCompile Include="Framework\System\DirectX.cpp" />
     <ClCompile Include="Framework\System\ObjectBase.cpp" />
+    <ClCompile Include="Framework\System\Types.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
     <ClCompile Include="GameMain.cpp" />
   </ItemGroup>
@@ -33,9 +35,11 @@
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Primitive.h" />
+    <ClInclude Include="Framework\Graphics\Texture.h" />
     <ClInclude Include="Framework\Includes.h" />
     <ClInclude Include="Framework\System\DirectX.h" />
     <ClInclude Include="Framework\System\ObjectBase.h" />
+    <ClInclude Include="Framework\System\Types.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4E9F3FEF-14AD-4ED5-8910-EB8FFB6D4F6F}</ProjectGuid>
@@ -119,6 +123,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EntryPointSymbol>
       </EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Windows Kits\10\Include\10.0.14393.0\shared;C:\Program Files (x86)\Windows Kits\10\Include\10.0.14393.0\um;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Windows Kits\10\Lib\10.0.14393.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.14393.0\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
