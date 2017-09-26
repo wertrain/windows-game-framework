@@ -1,4 +1,4 @@
-#include "..\System\Types.h"
+#include "../Common/Framework.h"
 #include "Primitive.h"
 
 namespace Framework {
