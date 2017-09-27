@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameFramework", "GameFramework\GameFramework.vcxproj", "{4E9F3FEF-14AD-4ED5-8910-EB8FFB6D4F6F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "GameFramework\Shader\Shader.vcxproj", "{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{4E9F3FEF-14AD-4ED5-8910-EB8FFB6D4F6F}.Debug|x64.Build.0 = Debug|x64
 		{4E9F3FEF-14AD-4ED5-8910-EB8FFB6D4F6F}.Release|x64.ActiveCfg = Release|x64
 		{4E9F3FEF-14AD-4ED5-8910-EB8FFB6D4F6F}.Release|x64.Build.0 = Release|x64
+		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}.Debug|x64.ActiveCfg = Debug|x64
+		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}.Debug|x64.Build.0 = Debug|x64
+		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}.Release|x64.ActiveCfg = Release|x64
+		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
