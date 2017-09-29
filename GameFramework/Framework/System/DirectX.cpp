@@ -1,5 +1,6 @@
 #include <d3d11.h>
 #include <atlbase.h>
+#include <cstdint>
 #include "DirectX.h"
 
 #pragma comment(lib, "d3d11.lib")
@@ -17,7 +18,7 @@ DirectX::~DirectX()
 
 }
 
-bool DirectX::Initialize(const HWND hWnd)
+bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t height)
 {
     // デバイスの生成
     CComPtr<ID3D11Device> hpDevice; 

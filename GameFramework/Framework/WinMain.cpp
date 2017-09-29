@@ -11,6 +11,7 @@
 
 #include <d3d11.h>
 #include <atlbase.h>
+#include <cstdint>
 #include "System/DirectX.h"
 #include "GameMain.h"
 #include "Constants.h"
@@ -31,7 +32,7 @@ typedef struct GameWindow
 DWORD WINAPI GameMainFunc(LPVOID vdParam)
 {
     GameWindow *gameWindow = static_cast<GameWindow*>(vdParam);
-    gameWindow->directX.Initialize(gameWindow->hWnd);
+    gameWindow->directX.Initialize(gameWindow->hWnd, Constants::WIDTH, Constants::HEIGHT);
 
     // ƒtƒŒ[ƒ€”‚ÆˆÈ‘O‚ÌŠÔ
     DWORD frames = 0, beforeTime;

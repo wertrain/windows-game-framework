@@ -10,7 +10,7 @@ public:
     DirectX() ;
     virtual ~DirectX();
 
-    bool Initialize(const HWND hWnd);
+    bool Initialize(const HWND hWnd, const uint32_t width, const uint32_t height);
     void Finalize();
 
     void ClearRenderView();
