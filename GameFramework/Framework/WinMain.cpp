@@ -18,21 +18,15 @@
 
 namespace Framework {
 
+// スレッド終了フラグ
 static bool s_ExitThread = false;
-
-// ゲームウィンドウ構造体
-typedef struct GameWindow
-{
-    System::DirectX directX;
-    HWND hWnd;     // ウインドウ
-    SIZE size;     // サイズ
-    DWORD dwFps;   // FPS
-} GameWindow;
 
 DWORD WINAPI GameMainFunc(LPVOID vdParam)
 {
-    GameWindow *gameWindow = static_cast<GameWindow*>(vdParam);
-    gameWindow->directX.Initialize(gameWindow->hWnd, Constants::WIDTH, Constants::HEIGHT);
+    HWND hWnd = static_cast<HWND>(vdParam);
+
+    System::DirectX directX;
+    directX.Initialize(hWnd, Constants::WIDTH, Constants::HEIGHT);
 
     // フレーム数と以前の時間
     DWORD frames = 0, beforeTime;
@@ -53,7 +47,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     beforeTime = timeGetTime();
 
     // ゲームループ
-    while (IsWindow(gameWindow->hWnd))
+    while (IsWindow(hWnd))
     {
         DWORD nowTime, progress;
         // 現在の時間を取得
@@ -76,11 +70,11 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         //Draw(gameWindow->hScreenDC);
 
-        gameWindow->directX.ClearRenderView();
-        gameWindow->directX.Present();
+        directX.ClearRenderView();
+        directX.Present();
 
         // 理想時間の算出
-        DWORD idealTime = (DWORD)(frames * (1000.0 / gameWindow->dwFps));
+        DWORD idealTime = (DWORD)(frames * (1000.0 / Constants::FPS));
         if (idealTime > progress)
         {
             Sleep(idealTime - progress);
@@ -90,24 +84,15 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         if (Framework::s_ExitThread) break;
     }
 
-    gameWindow->directX.Finalize();
+    directX.Finalize();
 
     return TRUE;
 }
 
 } // namespace Framework 
 
-LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    // デバイスコンテキスト
-    HDC hdc;
-    // 描画構造体
-    //PAINTSTRUCT ps;
-
-    // ゲームウィンドウ
-    static Framework::GameWindow gameWindow;
-    // BITMAPハンドル
-    static HBITMAP hBitmap;
     // スレッドID
     DWORD dwID;
     // スレッドハンドル
@@ -127,25 +112,11 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
             return 0;
 
         case WM_CREATE:
-
-            // GameWindow構造体の設定
-            gameWindow.hWnd = hWnd;
-            gameWindow.size.cx = Framework::Constants::WIDTH;
-            gameWindow.size.cy = Framework::Constants::HEIGHT;
-            gameWindow.dwFps = Framework::Constants::FPS;
-
-            // ゲームオブジェクトの作成
-            if (!Create(gameWindow.hWnd))
-            {
-                //assert( !"ゲームオブジェクトの作成に失敗しました。" );
-                return 0;
-            }
-
             // スレッドの作成と実行
             hThread = CreateThread(NULL,          // ハンドルを他のプロセスと共有する場合
                 0,                      // スタックサイズ(デフォルト:0)
                 Framework::GameMainFunc,// スレッド関数名
-                (LPVOID)&gameWindow,    // スレッドに渡す構造体
+                (LPVOID)hWnd,           // スレッドに渡す構造体
                 0,                      // 0:作成と同時に実行
                 &dwID);                 // スレッドID
         
@@ -190,6 +161,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     );
 
     if (hwnd == NULL) return 0;
+
+    // ゲームオブジェクトの作成
+    if (!Create(hwnd))
+    {
+        //assert( !"ゲームオブジェクトの作成に失敗しました。" );
+        return 0;
+    }
 
     // ウィンドウのサイズ調整
     RECT window_rect;
