@@ -18,15 +18,20 @@
 
 namespace Framework {
 
-// スレッド終了フラグ
-static bool s_ExitThread = false;
+struct ThreadParam 
+{
+    DWORD id;       // スレッドID
+    HANDLE handle;  // スレッドハンドル
+    bool exit;      // 終了フラグ
+
+    System::DirectX directX;
+    HWND hWnd;
+}
+s_ThreadParam;
 
 DWORD WINAPI GameMainFunc(LPVOID vdParam)
 {
-    HWND hWnd = static_cast<HWND>(vdParam);
-
-    System::DirectX directX;
-    directX.Initialize(hWnd, Constants::WIDTH, Constants::HEIGHT);
+    ThreadParam* param = static_cast<ThreadParam*>(vdParam);
 
     // フレーム数と以前の時間
     DWORD frames = 0, beforeTime;
@@ -47,7 +52,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     beforeTime = timeGetTime();
 
     // ゲームループ
-    while (IsWindow(hWnd))
+    while (IsWindow(param->hWnd))
     {
         DWORD nowTime, progress;
         // 現在の時間を取得
@@ -70,8 +75,8 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         //Draw(gameWindow->hScreenDC);
 
-        directX.ClearRenderView();
-        directX.Present();
+        param->directX.ClearRenderView();
+        param->directX.Present();
 
         // 理想時間の算出
         DWORD idealTime = (DWORD)(frames * (1000.0 / Constants::FPS));
@@ -81,11 +86,8 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         }
 
 
-        if (Framework::s_ExitThread) break;
+        if (param->exit) break;
     }
-
-    directX.Finalize();
-
     return TRUE;
 }
 
@@ -93,33 +95,19 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    // スレッドID
-    DWORD dwID;
-    // スレッドハンドル
-    static HANDLE hThread;
     DWORD dwParam;
 
     switch(msg)
     {
         case WM_DESTROY:
             // スレッドを終了させる
-            Framework::s_ExitThread = true;
-            GetExitCodeThread(hThread, &dwParam);
-            WaitForSingleObject(hThread, INFINITE);
-            Destroy();
+            Framework::s_ThreadParam.exit = true;
+            GetExitCodeThread(Framework::s_ThreadParam.handle, &dwParam);
+            WaitForSingleObject(Framework::s_ThreadParam.handle, INFINITE);
             PostQuitMessage(0);
-            _CrtDumpMemoryLeaks();
             return 0;
 
         case WM_CREATE:
-            // スレッドの作成と実行
-            hThread = CreateThread(NULL,          // ハンドルを他のプロセスと共有する場合
-                0,                      // スタックサイズ(デフォルト:0)
-                Framework::GameMainFunc,// スレッド関数名
-                (LPVOID)hWnd,           // スレッドに渡す構造体
-                0,                      // 0:作成と同時に実行
-                &dwID);                 // スレッドID
-        
             return 0;
 
         case WM_PAINT:
@@ -162,8 +150,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
 
     if (hwnd == NULL) return 0;
 
+    // DirectXの初期化    
+    Framework::System::DirectX* directX = &Framework::s_ThreadParam.directX;
+    directX->Initialize(hwnd, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
+
     // ゲームオブジェクトの作成
-    if (!Create(hwnd))
+    if (!Create(directX->GetDevice(), directX->GetDeviceContext()))
     {
         //assert( !"ゲームオブジェクトの作成に失敗しました。" );
         return 0;
@@ -177,12 +169,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     const int nHeight = window_rect.bottom - window_rect.top;
     SetWindowPos(hwnd, NULL, 0, 0, nWidth, nHeight, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 
+    // スレッドの作成と実行
+    Framework::s_ThreadParam.hWnd = hwnd;
+    Framework::s_ThreadParam.exit = false;
+    Framework::s_ThreadParam.handle = CreateThread(
+        NULL,                              // ハンドルを他のプロセスと共有する場合
+        0,                                 // スタックサイズ(デフォルト:0)
+        Framework::GameMainFunc,           // スレッド関数名
+        (LPVOID)&Framework::s_ThreadParam, // スレッドに渡す構造体
+        0,                                 // 0:作成と同時に実行
+        &Framework::s_ThreadParam.id);     // スレッドID
+
     ShowWindow(hwnd, nCmdShow); // ウィンドウ表示
 
     while (GetMessage(&msg, NULL, 0, 0) > 0)
     {
         DispatchMessage(&msg);
     }
+
+    Destroy();
+
+    directX->Finalize();
+
+    _CrtDumpMemoryLeaks();
 
     return 0;
 }

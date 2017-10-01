@@ -3,7 +3,7 @@
 /**
  * create game object
  */
-bool Create(const HWND /*hWnd*/)
+bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
     return true;
 }
