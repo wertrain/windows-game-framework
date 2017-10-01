@@ -3,15 +3,23 @@
 
 namespace Framework {
 namespace System {
+namespace File {
 
-class File
+class Binary
 {
 public:
-    static void* Read(const char* filename, size_t& readsize);
-    static size_t GetSize(const char* filename);
+    Binary();
+    Binary(const wchar_t* filepath);
+    bool Read(const wchar_t* filepath);
+    const void* Get() const;
+    size_t Size() const;
+private:
+    size_t mSize;
+    std::unique_ptr<char> mData;
 };
 
-}
-}
+} // namespace File
+} // namespace System
+} // namespace Framework
 
 #endif // FILE_H_

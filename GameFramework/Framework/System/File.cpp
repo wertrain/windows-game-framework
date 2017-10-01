@@ -1,49 +1,53 @@
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <cstdint>
+#include <memory>
 
 #include "File.h"
 
 namespace Framework {
 namespace System {
+namespace File {
 
-void* File::Read(const char* filename, size_t& readsize)
+Binary::Binary()
+    : mSize(0)
+    , mData(nullptr)
 {
-    std::ifstream ifs(filename);
-    
-    if (!ifs)
+
+}
+
+Binary::Binary(const wchar_t* filepath)
+{
+    Read(filepath);
+}
+
+bool Binary::Read(const wchar_t* filepath)
+{
+    std::ifstream binfile(filepath, std::ios::in | std::ios::binary);
+
+    if (binfile.is_open())
     {
-        readsize = 0;
-        return nullptr;
+        int fsize = static_cast<int>(binfile.seekg(0, std::ios::end).tellg());
+        binfile.seekg(0, std::ios::beg);
+        std::unique_ptr<char> code(new char[fsize]);
+        binfile.read(code.get(), fsize);
+        mSize = fsize;
+        mData = std::move(code);
+        return true;
     }
-
-    ifs.seekg(0, std::ios::end);
-    auto eofpos = ifs.tellg();
-    ifs.clear();
-    ifs.seekg(0, std::ios::beg);
-    auto begpos = ifs.tellg();
-    auto filesize = eofpos - begpos;
-   
-    void* buffer = new uint8_t[filesize];
-    ifs.read((char*)buffer, filesize);
-    readsize = filesize; 
-    ifs.close();
-
-    return buffer;
+    return false;
 }
 
-size_t File::GetSize(const char* filename)
+const void* Binary::Get() const
 {
-    std::ifstream ifs(filename);
-
-    ifs.seekg(0, std::ios::end);
-    auto eofpos = ifs.tellg();
-    ifs.clear();
-    ifs.seekg(0, std::ios::beg);
-    auto begpos = ifs.tellg();
-    return eofpos - begpos;
+    return mData.get();
 }
 
+size_t Binary::Size() const
+{
+    return mSize;
+}
+
+} // namespace File
 } // namespace System
 } // namespace Framework

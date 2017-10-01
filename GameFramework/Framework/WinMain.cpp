@@ -67,10 +67,10 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         Update(nowTime);
 
         // --- •`‰æˆ— ---
-
-        //Draw(gameWindow->hScreenDC);
-
         param->directX.ClearRenderView();
+
+        Draw(param->directX.GetDeviceContext());
+
         param->directX.Present();
 
         // —‘zŽžŠÔ‚ÌŽZo
@@ -79,7 +79,6 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         {
             Sleep(idealTime - progress);
         }
-
 
         if (param->exit) break;
     }

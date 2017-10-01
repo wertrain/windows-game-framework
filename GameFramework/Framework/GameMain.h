@@ -3,7 +3,7 @@
 
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context);
 void Update(const DWORD nowTime);
-void Draw(const HDC hDC);
+void Draw(ID3D11DeviceContext* context);
 void Destroy();
 
 #endif // GAMEMAIN_H_
