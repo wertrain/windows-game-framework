@@ -6,9 +6,9 @@
 namespace DirectX
 {
 
-class XMFLOAT3;
-class XMFLOAT4;
-class XMMATRIX;
+struct XMFLOAT3;
+struct XMFLOAT4;
+struct XMMATRIX;
 
 };
 

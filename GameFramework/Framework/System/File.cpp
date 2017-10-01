@@ -12,7 +12,7 @@ void* File::Read(const char* filename, size_t& readsize)
 {
     std::ifstream ifs(filename);
     
-    if (!ifs.is_open())
+    if (!ifs)
     {
         readsize = 0;
         return nullptr;

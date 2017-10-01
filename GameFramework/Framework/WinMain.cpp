@@ -40,11 +40,6 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     // キーボードの状態を格納
     //BYTE keyTable[256];
 
-    // デバイスコンテキスト
-    HDC hdc;
-    // 描画構造体
-    PAINTSTRUCT ps;
-
     // 乱数ジェネレータ初期化
     srand(static_cast<unsigned>(time(NULL)));
     

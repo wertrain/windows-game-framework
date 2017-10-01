@@ -69,8 +69,8 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
 
     // スワップチェイン作成
     DXGI_SWAP_CHAIN_DESC hDXGISwapChainDesc;
-    hDXGISwapChainDesc.BufferDesc.Width = 1980;
-    hDXGISwapChainDesc.BufferDesc.Height = 1080;
+    hDXGISwapChainDesc.BufferDesc.Width = width;
+    hDXGISwapChainDesc.BufferDesc.Height = height;
     hDXGISwapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
     hDXGISwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
     hDXGISwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
