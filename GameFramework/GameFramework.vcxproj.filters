@@ -23,6 +23,12 @@
     <ClCompile Include="Framework\Common\Types.cpp">
       <Filter>Framework\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Graphics\Triangle.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\File.cpp">
+      <Filter>Framework\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\System\ObjectBase.h">
@@ -49,11 +55,20 @@
     <ClInclude Include="Framework\Common\Defines.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Common\Framework.h">
-      <Filter>Framework\Common</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Common\Types.h">
       <Filter>Framework\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Graphics\Triangle.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\File.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Common\Includes.h">
+      <Filter>Framework\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\Includes.h">
+      <Filter>Framework\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

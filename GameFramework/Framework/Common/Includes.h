@@ -1,5 +1,5 @@
-#ifndef FRAMEWORK_H_
-#define FRAMEWORK_H_
+#ifndef COMMON_INCLUDES_H_
+#define COMMON_INCLUDES_H_
 
 // TODO:
 // 外部ライブラリにした時にはプリコンパイルヘッダーにしたほうがよさそう
@@ -8,4 +8,4 @@
 #include <DirectXMath.h>
 #include "Types.h"
 
-#endif // FRAMEWORK_H_
+#endif // COMMON_INCLUDES_H_

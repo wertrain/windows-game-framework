@@ -21,7 +21,6 @@ DirectX::~DirectX()
 bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t height)
 {
     // デバイスの生成
-    CComPtr<ID3D11Device> hpDevice; 
     HRESULT hr = D3D11CreateDevice(
         NULL,
         D3D_DRIVER_TYPE_HARDWARE,
@@ -30,7 +29,7 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
         NULL,
         0,
         D3D11_SDK_VERSION,
-        &hpDevice,
+        &mDevice,
         NULL,
         &mDeviceContext);
 
@@ -42,7 +41,7 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
 
     // インターフェース取得
     CComPtr<IDXGIDevice1> hpDXGI;
-    if (FAILED(hpDevice->QueryInterface(__uuidof(IDXGIDevice1), (void**)&hpDXGI)))
+    if (FAILED(mDevice->QueryInterface(__uuidof(IDXGIDevice1), (void**)&hpDXGI)))
     {
         return false;
     }
@@ -85,7 +84,7 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
     hDXGISwapChainDesc.Windowed = TRUE;
     hDXGISwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     hDXGISwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-    if (FAILED(hpDXGIFactory->CreateSwapChain(hpDevice, &hDXGISwapChainDesc, &mDXGISwpChain)))
+    if (FAILED(hpDXGIFactory->CreateSwapChain(mDevice, &hDXGISwapChainDesc, &mDXGISwpChain)))
     {
         return false;
     }
@@ -98,7 +97,7 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
     }
 
     // そのバックバッファから描画ターゲット生成    
-    if (FAILED(hpDevice->CreateRenderTargetView(hpBackBuffer, NULL, &mRenderTargetView)))
+    if (FAILED(mDevice->CreateRenderTargetView(hpBackBuffer, NULL, &mRenderTargetView)))
     {
         return false;
     }
@@ -124,6 +123,7 @@ void DirectX::Finalize()
     mRenderTargetView.Release();
     mDXGISwpChain.Release();
     mDeviceContext.Release();
+    mDevice.Release();
 }
 
 void DirectX::ClearRenderView()

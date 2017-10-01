@@ -16,7 +16,11 @@ public:
     void ClearRenderView();
     void Present();
 
+    ID3D11Device* GetDevice() { return mDevice.p; }
+    ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext.p; }
+
 private:
+    CComPtr<ID3D11Device> mDevice;
     CComPtr<ID3D11DeviceContext> mDeviceContext;
     CComPtr<IDXGISwapChain> mDXGISwpChain;
     CComPtr<ID3D11RenderTargetView> mRenderTargetView;
