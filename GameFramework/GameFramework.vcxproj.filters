@@ -1,38 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GameMain.cpp" />
-    <ClCompile Include="Framework\System\ObjectBase.cpp">
-      <Filter>Framework\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Graphics\GraphicsBase.cpp">
-      <Filter>Framework\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Graphics\Primitive.cpp">
-      <Filter>Framework\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\WinMain.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\System\DirectX.cpp">
-      <Filter>Framework\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Common\Defines.cpp">
-      <Filter>Framework\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Common\Types.cpp">
-      <Filter>Framework\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Graphics\Triangle.cpp">
-      <Filter>Framework\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\System\File.cpp">
-      <Filter>Framework\System</Filter>
-    </ClCompile>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{14cfab91-0df5-43f2-b091-25b3776f2dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\System">
+      <UniqueIdentifier>{edf65613-bc43-4049-8a4e-7a50ecd22712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Common">
+      <UniqueIdentifier>{ef8d7d87-8f6a-4286-b39e-f5214830d32b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Graphics">
+      <UniqueIdentifier>{0ae075a8-fd7f-4716-a4ce-9b8661cc23f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Constants.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameMain.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Includes.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\DirectX.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\File.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\Includes.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
     <ClInclude Include="Framework\System\ObjectBase.h">
       <Filter>Framework\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Graphics\Bitmap.h">
+      <Filter>Framework\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\GraphicsBase.h">
       <Filter>Framework\Graphics</Filter>
@@ -40,49 +45,50 @@
     <ClInclude Include="Framework\Graphics\Primitive.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Includes.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\GameMain.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Constants.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\System\DirectX.h">
-      <Filter>Framework\System</Filter>
+    <ClInclude Include="Framework\Graphics\Triangle.h">
+      <Filter>Framework\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Common\Defines.h">
+      <Filter>Framework\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Common\Includes.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Common\Types.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Graphics\Triangle.h">
-      <Filter>Framework\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\System\File.h">
-      <Filter>Framework\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Common\Includes.h">
-      <Filter>Framework\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\System\Includes.h">
-      <Filter>Framework\System</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Framework">
-      <UniqueIdentifier>{c856ff09-fa21-4a97-b3ca-36939a4aacea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Graphics">
-      <UniqueIdentifier>{10cabcd0-00b2-44fa-a4c9-6dfd8fabed89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\System">
-      <UniqueIdentifier>{402f4a66-5bc6-4b66-9383-f75d86d131a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Common">
-      <UniqueIdentifier>{2fb72784-3437-4c32-91f0-21fa06c8dcb6}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Framework\WinMain.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\DirectX.cpp">
+      <Filter>Framework\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\File.cpp">
+      <Filter>Framework\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\ObjectBase.cpp">
+      <Filter>Framework\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Bitmap.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\GraphicsBase.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Primitive.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Triangle.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Common\Defines.cpp">
+      <Filter>Framework\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Common\Types.cpp">
+      <Filter>Framework\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMain.cpp" />
   </ItemGroup>
 </Project>

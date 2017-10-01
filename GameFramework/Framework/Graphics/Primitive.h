@@ -11,11 +11,6 @@ class Primitive : public GraphicsBase
 public:
     Primitive() ;
     virtual ~Primitive();
-
-    Vector3 GetPos() const;
-
-protected:
-    Vector3 mPos;
 };
 
 } // namespace Graphics

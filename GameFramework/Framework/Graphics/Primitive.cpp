@@ -5,7 +5,6 @@ namespace Framework {
 namespace Graphics {
 
 Primitive::Primitive()
-    : mPos()
 {
 
 }
@@ -13,11 +12,6 @@ Primitive::Primitive()
 Primitive::~Primitive()
 {
 
-}
-
-Vector3 Primitive::GetPos() const
-{
-    return mPos;
 }
 
 } // namespace Graphics

@@ -120,10 +120,10 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
 
 void DirectX::Finalize()
 {
-    mRenderTargetView.Release();
-    mDXGISwpChain.Release();
-    mDeviceContext.Release();
-    mDevice.Release();
+    mRenderTargetView->Release();
+    mDXGISwpChain->Release();
+    mDeviceContext->Release();
+    mDevice->Release();
 }
 
 void DirectX::ClearRenderView()
