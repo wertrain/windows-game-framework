@@ -115,7 +115,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     // メモリリークチェック
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    HWND hwnd;
+    HWND hWnd;
     WNDCLASSEX winc;
     MSG msg;
 
@@ -136,7 +136,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
 
     DWORD dwStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX; // ウィンドウの大きさ変更できないように
 
-    hwnd = CreateWindowEx(
+    hWnd = CreateWindowEx(
         0, TEXT("GameFramework") , TEXT("Windows GameFramework") ,
         dwStyle,
         CW_USEDEFAULT, CW_USEDEFAULT ,
@@ -145,11 +145,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         hInstance, NULL
     );
 
-    if (hwnd == NULL) return 0;
+    if (hWnd == NULL) return 0;
 
-    // DirectXの初期化    
+    // DirectXの初期化
     Framework::System::DirectX* directX = &Framework::s_ThreadParam.directX;
-    directX->Initialize(hwnd, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
+    directX->Initialize(hWnd, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
 
     // ゲームオブジェクトの作成
     if (!Create(directX->GetDevice(), directX->GetDeviceContext()))
@@ -161,13 +161,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     // ウィンドウのサイズ調整
     RECT window_rect;
     SetRect(&window_rect, 0, 0, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
-    AdjustWindowRectEx(&window_rect, GetWindowLong(hwnd,GWL_STYLE), GetMenu(hwnd) != NULL, GetWindowLong(hwnd,GWL_EXSTYLE));
+    AdjustWindowRectEx(&window_rect, GetWindowLong(hWnd, GWL_STYLE), GetMenu(hWnd) != NULL, GetWindowLong(hWnd, GWL_EXSTYLE));
     const int nWidth  = window_rect.right  - window_rect.left;
     const int nHeight = window_rect.bottom - window_rect.top;
-    SetWindowPos(hwnd, NULL, 0, 0, nWidth, nHeight, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+    SetWindowPos(hWnd, NULL, 0, 0, nWidth, nHeight, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 
     // スレッドの作成と実行
-    Framework::s_ThreadParam.hWnd = hwnd;
+    Framework::s_ThreadParam.hWnd = hWnd;
     Framework::s_ThreadParam.exit = false;
     Framework::s_ThreadParam.handle = CreateThread(
         NULL,                              // ハンドルを他のプロセスと共有する場合
@@ -177,7 +177,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         0,                                 // 0:作成と同時に実行
         &Framework::s_ThreadParam.id);     // スレッドID
 
-    ShowWindow(hwnd, nCmdShow); // ウィンドウ表示
+    ShowWindow(hWnd, nCmdShow); // ウィンドウ表示
 
     while (GetMessage(&msg, NULL, 0, 0) > 0)
     {
