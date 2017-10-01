@@ -9,6 +9,10 @@ namespace Framework {
 namespace System {
 
 DirectX::DirectX()
+    : mDevice(nullptr)
+    , mDeviceContext(nullptr)
+    , mDXGISwpChain(nullptr)
+    , mRenderTargetView(nullptr)
 {
 
 }
@@ -120,10 +124,10 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
 
 void DirectX::Finalize()
 {
-    mRenderTargetView->Release();
-    mDXGISwpChain->Release();
-    mDeviceContext->Release();
-    mDevice->Release();
+    if (mRenderTargetView) mRenderTargetView->Release();
+    if (mDXGISwpChain) mDXGISwpChain->Release();
+    if (mDeviceContext) mDeviceContext->Release();
+    if (mDevice) mDevice->Release();
 }
 
 void DirectX::ClearRenderView()
