@@ -68,6 +68,7 @@ bool Triangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     // プリミティブ(ポリゴンの形状)をコンテキストに設定
     context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+    // シェーダーのロード
     size_t vs_buffer_size;
     void* vs_buffer = Framework::System::File::Read("vs_triangle.cso", vs_buffer_size);
 

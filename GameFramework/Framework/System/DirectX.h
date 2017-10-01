@@ -16,8 +16,10 @@ public:
     void ClearRenderView();
     void Present();
 
-    ID3D11Device* GetDevice() { return mDevice; }
+    ID3D11Device* GetDevice() { return mDevice; };
     ID3D11DeviceContext* GetDeviceContext() { return mDeviceContext; }
+    const ID3D11Device* GetConstDevice() { return mDevice; }
+    const ID3D11DeviceContext* GetConstDeviceContext() { return mDeviceContext; }
 
 private:
     ID3D11Device* mDevice;

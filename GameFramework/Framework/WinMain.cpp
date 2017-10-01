@@ -31,7 +31,7 @@ s_ThreadParam;
 
 DWORD WINAPI GameMainFunc(LPVOID vdParam)
 {
-    ThreadParam* param = static_cast<ThreadParam*>(vdParam);
+    ThreadParam* param = reinterpret_cast<ThreadParam*>(vdParam);
 
     // フレーム数と以前の時間
     DWORD frames = 0, beforeTime;
@@ -113,6 +113,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCmdLine*/, int nCmdShow) 
 {
+    // メモリリークチェック
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     HWND hwnd;
@@ -173,7 +174,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         NULL,                              // ハンドルを他のプロセスと共有する場合
         0,                                 // スタックサイズ(デフォルト:0)
         Framework::GameMainFunc,           // スレッド関数名
-        (LPVOID)&Framework::s_ThreadParam, // スレッドに渡す構造体
+        reinterpret_cast<LPVOID>(&Framework::s_ThreadParam), // スレッドに渡す構造体
         0,                                 // 0:作成と同時に実行
         &Framework::s_ThreadParam.id);     // スレッドID
 
