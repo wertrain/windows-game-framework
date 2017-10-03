@@ -1,16 +1,10 @@
 #include "Framework/Includes.h"
 
-#include "Framework/Graphics/Triangle.h"
-
-static Framework::Graphics::Triangle s_Triangle;
-
 /**
  * create game object
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    s_Triangle.Create(device, context);
-
     return true;
 }
 
@@ -27,7 +21,7 @@ void Update(const DWORD /*nowTime*/)
  */
 void Draw(ID3D11DeviceContext* context)
 {
-    s_Triangle.Render(context);
+
 }
 
 /**
@@ -35,5 +29,5 @@ void Draw(ID3D11DeviceContext* context)
  */
 void Destroy()
 {
-    s_Triangle.Destroy();
+
 }
