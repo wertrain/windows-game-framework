@@ -124,10 +124,27 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
 
 void DirectX::Finalize()
 {
-    if (mRenderTargetView) mRenderTargetView->Release();
-    if (mDXGISwpChain) mDXGISwpChain->Release();
-    if (mDeviceContext) mDeviceContext->Release();
-    if (mDevice) mDevice->Release();
+    if (mRenderTargetView)
+    {
+        mRenderTargetView->Release();
+        mRenderTargetView = nullptr;
+    }
+    if (mDXGISwpChain)
+    {
+        mDXGISwpChain->Release();
+        mDXGISwpChain = nullptr;
+    }
+    if (mDeviceContext)
+    {
+        mDeviceContext->Release();
+        mDeviceContext = nullptr;
+    }
+    if (mDevice)
+    {
+        mDevice->Release();
+        mDevice = nullptr;
+
+    }
 }
 
 void DirectX::ClearRenderView()
