@@ -113,8 +113,8 @@ bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t h
     D3D11_VIEWPORT vp;
     vp.TopLeftX = 0;
     vp.TopLeftY = 0;
-    vp.Width = width;
-    vp.Height = height;
+    vp.Width = static_cast<float>(width);
+    vp.Height = static_cast<float>(height);
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
     mDeviceContext->RSSetViewports(1, &vp);
