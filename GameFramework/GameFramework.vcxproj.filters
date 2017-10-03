@@ -13,6 +13,9 @@
     <Filter Include="Framework\Graphics">
       <UniqueIdentifier>{0ae075a8-fd7f-4716-a4ce-9b8661cc23f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Core">
+      <UniqueIdentifier>{7c3a7714-77ef-445d-8d8f-55b150684eb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
@@ -24,16 +27,10 @@
     <ClInclude Include="Framework\Includes.h">
       <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\System\DirectX.h">
-      <Filter>Framework\System</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\System\File.h">
       <Filter>Framework\System</Filter>
     </ClInclude>
     <ClInclude Include="Framework\System\Includes.h">
-      <Filter>Framework\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\System\ObjectBase.h">
       <Filter>Framework\System</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Bitmap.h">
@@ -57,18 +54,18 @@
     <ClInclude Include="Framework\Common\Types.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Core\DirectX.h">
+      <Filter>Framework\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\ObjectBase.h">
+      <Filter>Framework\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\System\DirectX.cpp">
-      <Filter>Framework\System</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\System\File.cpp">
-      <Filter>Framework\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\System\ObjectBase.cpp">
       <Filter>Framework\System</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Bitmap.cpp">
@@ -90,5 +87,11 @@
       <Filter>Framework\Common</Filter>
     </ClCompile>
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="Framework\Core\DirectX.cpp">
+      <Filter>Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\ObjectBase.cpp">
+      <Filter>Framework\Core</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

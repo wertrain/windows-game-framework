@@ -1,7 +1,7 @@
 #ifndef GRAPHICSBASE_H_
 #define GRAPHICSBASE_H_
 
-#include "../System/ObjectBase.h"
+#include "../Core/ObjectBase.h"
 
 namespace Framework {
 namespace Graphics {

@@ -115,27 +115,27 @@
     <ClInclude Include="Framework\Common\Includes.h" />
     <ClInclude Include="Framework\Common\Types.h" />
     <ClInclude Include="Framework\Constants.h" />
+    <ClInclude Include="Framework\Core\DirectX.h" />
+    <ClInclude Include="Framework\Core\ObjectBase.h" />
     <ClInclude Include="Framework\GameMain.h" />
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Primitive.h" />
     <ClInclude Include="Framework\Graphics\Triangle.h" />
     <ClInclude Include="Framework\Includes.h" />
-    <ClInclude Include="Framework\System\DirectX.h" />
     <ClInclude Include="Framework\System\File.h" />
     <ClInclude Include="Framework\System\Includes.h" />
-    <ClInclude Include="Framework\System\ObjectBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Common\Defines.cpp" />
     <ClCompile Include="Framework\Common\Types.cpp" />
+    <ClCompile Include="Framework\Core\DirectX.cpp" />
+    <ClCompile Include="Framework\Core\ObjectBase.cpp" />
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive.cpp" />
     <ClCompile Include="Framework\Graphics\Triangle.cpp" />
-    <ClCompile Include="Framework\System\DirectX.cpp" />
     <ClCompile Include="Framework\System\File.cpp" />
-    <ClCompile Include="Framework\System\ObjectBase.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
     <ClCompile Include="GameMain.cpp" />
   </ItemGroup>
