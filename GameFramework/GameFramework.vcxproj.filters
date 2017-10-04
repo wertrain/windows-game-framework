@@ -60,6 +60,9 @@
     <ClInclude Include="Framework\Core\ObjectBase.h">
       <Filter>Framework\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\Texture.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Core\ObjectBase.cpp">
       <Filter>Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Texture.cpp">
+      <Filter>Framework\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

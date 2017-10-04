@@ -121,6 +121,7 @@
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Primitive.h" />
+    <ClInclude Include="Framework\Graphics\Texture.h" />
     <ClInclude Include="Framework\Graphics\Triangle.h" />
     <ClInclude Include="Framework\Includes.h" />
     <ClInclude Include="Framework\System\File.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive.cpp" />
+    <ClCompile Include="Framework\Graphics\Texture.cpp" />
     <ClCompile Include="Framework\Graphics\Triangle.cpp" />
     <ClCompile Include="Framework\System\File.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
