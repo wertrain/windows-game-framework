@@ -2,7 +2,7 @@
 #define INCLUDES_H_
 
 #include <d3d11.h>
-#include <memory>
+#include <memory> // for std::unique_ptr
 #include <Windows.h>
 #include "Common/Includes.h"
 #include "System/Includes.h"
