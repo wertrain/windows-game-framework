@@ -48,13 +48,13 @@ bool Triangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
     // コンパイル済みバーテックスシェーダーファイルの読み込み
     Framework::System::File::Binary vsFile;
-    if (!vsFile.Read(L"vs_triangle.cso"))
+    if (!vsFile.Read(L"vs_primitive.cso"))
     {
         return false;
     }
     // コンパイル済みピクセルシェーダーファイルの読み込み
     Framework::System::File::Binary psFile;
-    if (!psFile.Read(L"ps_triangle.cso"))
+    if (!psFile.Read(L"ps_primitive.cso"))
     {
         return false;
     }
