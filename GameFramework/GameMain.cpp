@@ -1,10 +1,15 @@
 #include "Framework/Includes.h"
 
+#include "Framework/Graphics/Quadrangle.h"
+
+Framework::Graphics::Quadrangle s_Quadrangle;
+
 /**
  * create game object
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+    s_Quadrangle.Create(device, context);
     return true;
 }
 
@@ -21,7 +26,7 @@ void Update(const DWORD /*nowTime*/)
  */
 void Draw(ID3D11DeviceContext* context)
 {
-
+    s_Quadrangle.Render(context);
 }
 
 /**

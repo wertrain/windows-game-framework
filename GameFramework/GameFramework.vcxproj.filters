@@ -63,6 +63,9 @@
     <ClInclude Include="Framework\Graphics\Texture.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\Quadrangle.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -97,6 +100,9 @@
       <Filter>Framework\Core</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Texture.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Quadrangle.cpp">
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
