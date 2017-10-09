@@ -10,7 +10,7 @@
 namespace Framework {
 namespace Graphics {
 
-//シェーダ定数バッファ
+// シェーダ定数バッファ
 struct ConstBuffer
 {
     Matrix44 mtxProj;
@@ -226,7 +226,7 @@ void Primitive::Render(ID3D11DeviceContext* context)
     // インデックスバッファ
     context->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-    // プリミティブ形状（三角形リスト）
+    // プリミティブ形状
     context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
     // シェーダ
