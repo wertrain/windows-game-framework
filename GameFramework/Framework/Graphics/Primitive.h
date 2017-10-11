@@ -33,7 +33,8 @@ protected:
 
     bool Create(
         ID3D11Device* device, ID3D11DeviceContext* context,
-        VertexData* vertices, const unsigned int vertex_num
+        VertexData* vertices, const unsigned int vertex_num,
+        const wchar_t* texture_filename
     );
 
 public:

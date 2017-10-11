@@ -41,22 +41,31 @@ Primitive::~Primitive()
 
 bool Primitive::Create(
     ID3D11Device* device, ID3D11DeviceContext* context,
-    VertexData* vertices, const unsigned int vertex_num
+    VertexData* vertices, const unsigned int vertex_num,
+    const wchar_t* texture_filename
 )
 {
     mVertexNum = vertex_num;
 
-    // コンパイル済みバーテックスシェーダーファイルの読み込み
     Framework::System::File::Binary vsFile;
-    if (!vsFile.Read(L"vs_primitive.cso"))
-    {
-        return false;
-    }
-    // コンパイル済みピクセルシェーダーファイルの読み込み
     Framework::System::File::Binary psFile;
-    if (!psFile.Read(L"ps_primitive.cso"))
+
+    if (texture_filename == nullptr)
     {
-        return false;
+        // コンパイル済みバーテックスシェーダーファイルの読み込み
+        if (!vsFile.Read(L"vs_primitive.cso"))
+        {
+            return false;
+        }
+        // コンパイル済みピクセルシェーダーファイルの読み込み
+        if (!psFile.Read(L"ps_primitive.cso"))
+        {
+            return false;
+        }
+    }
+    else
+    {
+
     }
 
     // 頂点シェーダー生成
@@ -74,9 +83,9 @@ bool Primitive::Create(
     // 入力レイアウト定義
     D3D11_INPUT_ELEMENT_DESC layout[] = {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        //{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
-    UINT elem_num = ARRAYSIZE(layout);
+    UINT elem_num = (texture_filename == nullptr) ? 1 : ARRAYSIZE(layout);
 
     // 入力レイアウト作成
     HRESULT hr = device->CreateInputLayout(layout, elem_num, vsFile.Get(), vsFile.Size(), &mVertexLayout);

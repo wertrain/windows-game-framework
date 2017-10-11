@@ -39,7 +39,7 @@ bool Quadrangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         {  0.5f, -0.5f, 0.0f },
         { -0.5f, -0.5f, 0.0f },
     };
-    return Primitive::Create(device, context, vertices, 4);
+    return Primitive::Create(device, context, vertices, 4, nullptr);
 }
 
 } // namespace Graphics
