@@ -32,14 +32,24 @@ Quadrangle::~Quadrangle()
 
 bool Quadrangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    // 頂点バッファ作成
-    Primitive::VertexData vertices[] = {
-        {  0.5f,  0.5f, 0.0f },
-        { -0.5f,  0.5f, 0.0f },
-        {  0.5f, -0.5f, 0.0f },
-        { -0.5f, -0.5f, 0.0f },
+    // 頂点データ構造体
+    struct VertexData
+    {
+        float x;
+        float y;
+        float z;
+        float tx;
+        float ty;
     };
-    return Primitive::Create(device, context, vertices, 4, nullptr);
+
+    // 頂点バッファ作成
+    VertexData vertices[] = {
+        {  0.5f,  0.5f, 0.0f, 1.0f, 1.0f },
+        { -0.5f,  0.5f, 0.0f, 0.0f, 1.0f },
+        {  0.5f, -0.5f, 0.0f, 1.0f, 0.0f },
+        { -0.5f, -0.5f, 0.0f, 0.0f, 0.0f },
+    };
+    return Primitive::Create(device, context, reinterpret_cast<float*>(vertices), sizeof(VertexData), 4, L"image.png");
 }
 
 } // namespace Graphics

@@ -117,6 +117,7 @@
     <ClInclude Include="Framework\Constants.h" />
     <ClInclude Include="Framework\Core\DirectX.h" />
     <ClInclude Include="Framework\Core\ObjectBase.h" />
+    <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
     <ClInclude Include="Framework\GameMain.h" />
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="Framework\Common\Types.cpp" />
     <ClCompile Include="Framework\Core\DirectX.cpp" />
     <ClCompile Include="Framework\Core\ObjectBase.cpp" />
+    <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive.cpp" />

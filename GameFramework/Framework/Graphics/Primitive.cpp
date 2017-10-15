@@ -4,6 +4,7 @@
 #include "../Common/Includes.h"
 #include "../System/Includes.h"
 #include "../Constants.h"
+#include "../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
 
 #include "Primitive.h"
 
@@ -30,6 +31,10 @@ Primitive::Primitive()
     , mVertexShader(nullptr)
     , mPixelShader(nullptr)
     , mVertexNum(0)
+    , mVertexDataSize(0)
+    , mTexture(nullptr)
+    , mShaderResView(nullptr)
+    , mSampler(nullptr)
 {
 
 }
@@ -41,16 +46,32 @@ Primitive::~Primitive()
 
 bool Primitive::Create(
     ID3D11Device* device, ID3D11DeviceContext* context,
-    VertexData* vertices, const unsigned int vertex_num,
+    float* vertices, const unsigned int vertex_data_size, const unsigned int vertex_num,
     const wchar_t* texture_filename
 )
 {
+    const bool use_texture = texture_filename != nullptr;
+
+    mVertexDataSize = vertex_data_size;
     mVertexNum = vertex_num;
 
     Framework::System::File::Binary vsFile;
     Framework::System::File::Binary psFile;
 
-    if (texture_filename == nullptr)
+    if (use_texture)
+    {
+        // コンパイル済みバーテックスシェーダーファイルの読み込み
+        if (!vsFile.Read(L"vs_textured_primitive.cso"))
+        {
+            return false;
+        }
+        // コンパイル済みピクセルシェーダーファイルの読み込み
+        if (!psFile.Read(L"ps_textured_primitive.cso"))
+        {
+            return false;
+        }
+    }
+    else
     {
         // コンパイル済みバーテックスシェーダーファイルの読み込み
         if (!vsFile.Read(L"vs_primitive.cso"))
@@ -62,10 +83,6 @@ bool Primitive::Create(
         {
             return false;
         }
-    }
-    else
-    {
-
     }
 
     // 頂点シェーダー生成
@@ -85,7 +102,7 @@ bool Primitive::Create(
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
-    UINT elem_num = (texture_filename == nullptr) ? 1 : ARRAYSIZE(layout);
+    UINT elem_num = use_texture ? ARRAYSIZE(layout) : 1;
 
     // 入力レイアウト作成
     HRESULT hr = device->CreateInputLayout(layout, elem_num, vsFile.Get(), vsFile.Size(), &mVertexLayout);
@@ -97,7 +114,7 @@ bool Primitive::Create(
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(VertexData) * mVertexNum;
+        bd.ByteWidth = mVertexDataSize * mVertexNum;
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = 0;
         D3D11_SUBRESOURCE_DATA InitData;
@@ -129,6 +146,30 @@ bool Primitive::Create(
         }
     }
     delete[] indices;
+
+    if (use_texture)
+    {
+        // テクスチャ作成
+        hr = DirectX::CreateWICTextureFromFile(device, texture_filename, &mTexture, &mShaderResView);
+        if (FAILED(hr)) {
+            return hr;
+        }
+
+        // サンプラー作成
+        D3D11_SAMPLER_DESC sampDesc;
+        ZeroMemory(&sampDesc, sizeof(sampDesc));
+        sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+        sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+        sampDesc.MinLOD = 0;
+        sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+        hr = device->CreateSamplerState(&sampDesc, &mSampler);
+        if (FAILED(hr)) {
+            return hr;
+        }
+    }
 
     // 定数バッファ
     {
@@ -173,6 +214,24 @@ bool Primitive::Create(
 
 void Primitive::Destroy()
 {
+    if (mSampler)
+    {
+        mSampler->Release();
+        mSampler = nullptr;
+    }
+
+    if (mShaderResView)
+    {
+        mShaderResView->Release();
+        mShaderResView = nullptr;
+    }
+
+    if (mTexture)
+    {
+        mTexture->Release();
+        mTexture = nullptr;
+    }
+
     if (mPixelShader)
     {
         mPixelShader->Release();
@@ -225,7 +284,7 @@ void Primitive::Render(ID3D11DeviceContext* context)
     // 頂点バッファ
     UINT vb_slot = 0;
     ID3D11Buffer* vb[1] = { mVertexBuffer };
-    UINT stride[1] = { sizeof(VertexData) };
+    UINT stride[1] = { mVertexDataSize };
     UINT offset[1] = { 0 };
     context->IASetVertexBuffers(vb_slot, 1, vb, stride, offset);
 
@@ -242,15 +301,19 @@ void Primitive::Render(ID3D11DeviceContext* context)
     context->VSSetShader(mVertexShader, nullptr, 0);
     context->PSSetShader(mPixelShader, nullptr, 0);
 
-    // サンプラー
-    //UINT smp_slot = 0;
-    //ID3D11SamplerState* smp[1] = { pSampler.Get() };
-    //pImContext->PSSetSamplers(smp_slot, 1, smp);
 
-    // シェーダーリソースビュー（テクスチャ）
-    //UINT srv_slot = 0;
-    //ID3D11ShaderResourceView* srv[1] = { pShaderResView.Get() };
-    //pImContext->PSSetShaderResources(srv_slot, 1, srv);
+    // サンプラー
+    if (mTexture)
+    {
+        UINT smp_slot = 0;
+        ID3D11SamplerState* smp[1] = { mSampler };
+        context->PSSetSamplers(smp_slot, 1, smp);
+
+        // シェーダーリソースビュー（テクスチャ）
+        UINT srv_slot = 0;
+        ID3D11ShaderResourceView* srv[1] = { mShaderResView };
+        context->PSSetShaderResources(srv_slot, 1, srv);
+    }
 
     //定数バッファ
     ConstBuffer cbuff;

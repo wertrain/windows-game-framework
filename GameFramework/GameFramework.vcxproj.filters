@@ -16,6 +16,15 @@
     <Filter Include="Framework\Core">
       <UniqueIdentifier>{7c3a7714-77ef-445d-8d8f-55b150684eb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\External">
+      <UniqueIdentifier>{fdbcd92d-af80-4176-90bd-4ccbba8c4de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\External\DirectXTex">
+      <UniqueIdentifier>{ca7a58b4-12c5-4fba-b6c4-aed70fda0e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\External\DirectXTex\WICTextureLoader">
+      <UniqueIdentifier>{c29ccbb0-a8b0-4fbc-bd5e-1a47d36c16aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
@@ -66,6 +75,9 @@
     <ClInclude Include="Framework\Graphics\Quadrangle.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h">
+      <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -104,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Quadrangle.cpp">
       <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp">
+      <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

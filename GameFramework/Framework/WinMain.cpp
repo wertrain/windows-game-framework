@@ -147,6 +147,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
 
     if (hWnd == NULL) return 0;
 
+    // COM ライブラリを初期化
+    // これ呼ばなくて大丈夫な状況もあるのか？
+    HRESULT hr = ::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    if (FAILED(hr)) return 0;
+
     // DirectXの初期化
     Framework::System::DirectX* directX = &Framework::s_ThreadParam.directX;
     directX->Initialize(hWnd, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);

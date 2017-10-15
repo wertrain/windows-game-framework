@@ -12,28 +12,22 @@ struct ID3D11PixelShader;
 struct ID3D11DepthStencilState;
 struct ID3D11RasterizerState;
 struct ID3D11BlendState;
+struct ID3D11Resource;
+struct ID3D11ShaderResourceView;
+struct ID3D11SamplerState;
 
 namespace Framework {
 namespace Graphics {
 
 class Primitive : public GraphicsBase
 {
-public:
-    // 頂点データ構造体
-    struct VertexData
-    {
-        float x;
-        float y;
-        float z;
-    };
-
 protected:
     Primitive() ;
     virtual ~Primitive();
 
     bool Create(
         ID3D11Device* device, ID3D11DeviceContext* context,
-        VertexData* vertices, const unsigned int vertex_num,
+        float* vertices, const unsigned int vertex_data_size, const unsigned int vertex_num,
         const wchar_t* texture_filename
     );
 
@@ -54,6 +48,11 @@ protected:
     ID3D11VertexShader* mVertexShader;
     ID3D11PixelShader* mPixelShader;
     unsigned int mVertexNum;
+    unsigned int mVertexDataSize;
+
+    ID3D11Resource* mTexture;
+    ID3D11ShaderResourceView* mShaderResView;
+    ID3D11SamplerState* mSampler;
 };
 
 } // namespace Graphics

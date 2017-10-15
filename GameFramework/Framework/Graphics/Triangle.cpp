@@ -23,13 +23,23 @@ Triangle::~Triangle()
 
 bool Triangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+    // 頂点データ構造体
+    struct VertexData
+    {
+        float x;
+        float y;
+        float z;
+        float tx;
+        float ty;
+    };
+
     // 頂点バッファ作成
-    Primitive::VertexData vertices[] = {
+    VertexData vertices[] = {
         {  0.0f,  0.5f, 0.0f },
         {  0.5f, -0.5f, 0.0f },
         { -0.5f, -0.5f, 0.0f },
     };
-    return Primitive::Create(device, context, vertices, 3, nullptr);
+    return Primitive::Create(device, context, reinterpret_cast<float*>(vertices), sizeof(VertexData), 3, nullptr);
 }
 
 } // namespace Graphics
