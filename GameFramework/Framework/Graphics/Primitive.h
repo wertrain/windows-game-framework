@@ -27,7 +27,7 @@ protected:
 
     bool Create(
         ID3D11Device* device, ID3D11DeviceContext* context,
-        float* vertices, const unsigned int vertex_data_size, const unsigned int vertex_num,
+        const f32* vertices, const u32 vertex_data_size, const u32 vertex_num,
         const wchar_t* texture_filename
     );
 
@@ -47,8 +47,8 @@ protected:
 
     ID3D11VertexShader* mVertexShader;
     ID3D11PixelShader* mPixelShader;
-    unsigned int mVertexNum;
-    unsigned int mVertexDataSize;
+    u32 mVertexNum;
+    u32 mVertexDataSize;
 
     ID3D11Resource* mTexture;
     ID3D11ShaderResourceView* mShaderResView;

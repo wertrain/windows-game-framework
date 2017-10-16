@@ -38,6 +38,4 @@ typedef DirectX::XMMATRIX Matrix44;
 
 #endif // FRAMEWORK_USE_DIRECT_X_
 
-
-
 #endif // TYPES_H_

@@ -1,6 +1,6 @@
 #include <d3d11.h>
 #include <atlbase.h>
-#include <cstdint>
+#include "../Common/Includes.h"
 #include "DirectX.h"
 
 #pragma comment(lib, "d3d11.lib")
@@ -22,7 +22,7 @@ DirectX::~DirectX()
 
 }
 
-bool DirectX::Initialize(const HWND hWnd, const uint32_t width, const uint32_t height)
+bool DirectX::Initialize(const HWND hWnd, const u32 width, const u32 height)
 {
     // デバイスの生成
     HRESULT hr = D3D11CreateDevice(

@@ -35,11 +35,11 @@ bool Quadrangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     // 頂点データ構造体
     struct VertexData
     {
-        float x;
-        float y;
-        float z;
-        float tx;
-        float ty;
+        f32 x;
+        f32 y;
+        f32 z;
+        f32 tx;
+        f32 ty;
     };
 
     // 頂点バッファ作成

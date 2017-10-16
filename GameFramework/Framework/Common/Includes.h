@@ -5,7 +5,6 @@
 // 外部ライブラリにした時にはプリコンパイルヘッダーにしたほうがよさそう
 
 #include "Defines.h"
-#include <DirectXMath.h>
 #include "Types.h"
 
 #endif // COMMON_INCLUDES_H_
