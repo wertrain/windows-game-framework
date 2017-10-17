@@ -11,8 +11,8 @@ namespace System {
 class ObjectBase
 {
 public:
-    ObjectBase() ;
-    virtual ~ObjectBase();
+    ObjectBase();
+    virtual ~ObjectBase() = 0;
 };
 
 } // namespace System 

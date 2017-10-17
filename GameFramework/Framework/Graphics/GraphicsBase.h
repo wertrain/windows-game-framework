@@ -10,7 +10,7 @@ class GraphicsBase : public Framework::System::ObjectBase
 {
 public:
     GraphicsBase() ;
-    virtual ~GraphicsBase();
+    virtual ~GraphicsBase() = 0;
 };
 
 } // namespace Graphics
