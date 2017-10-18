@@ -13,7 +13,7 @@ public:
     Bitmap() ;
     virtual ~Bitmap();
 
-    bool CreateFromFile(LPCTSTR filename);
+    bool CreateFromFile(wchar_t* filename);
     void Draw(const HDC hdc, const int x, const int y);
     void Destroy();
     void SetTransparentColor(const int color);

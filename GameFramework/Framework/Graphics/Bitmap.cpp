@@ -17,7 +17,7 @@ Bitmap::~Bitmap()
 
 }
 
-bool Bitmap::CreateFromFile(LPCTSTR filename)
+bool Bitmap::CreateFromFile(wchar_t* filename)
 {
     // ‰æ‘œ“Ç‚İ‚İ
     mHBitmap = static_cast<HBITMAP>(LoadImage(NULL, filename, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE));
