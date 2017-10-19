@@ -78,6 +78,9 @@
     <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h">
       <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\Text.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp">
       <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Text.cpp">
+      <Filter>Framework\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

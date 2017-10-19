@@ -123,6 +123,7 @@
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Primitive.h" />
     <ClInclude Include="Framework\Graphics\Quadrangle.h" />
+    <ClInclude Include="Framework\Graphics\Text.h" />
     <ClInclude Include="Framework\Graphics\Texture.h" />
     <ClInclude Include="Framework\Graphics\Triangle.h" />
     <ClInclude Include="Framework\Includes.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive.cpp" />
     <ClCompile Include="Framework\Graphics\Quadrangle.cpp" />
+    <ClCompile Include="Framework\Graphics\Text.cpp" />
     <ClCompile Include="Framework\Graphics\Texture.cpp" />
     <ClCompile Include="Framework\Graphics\Triangle.cpp" />
     <ClCompile Include="Framework\System\File.cpp" />
