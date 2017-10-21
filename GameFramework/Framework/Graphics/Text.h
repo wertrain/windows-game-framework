@@ -1,5 +1,5 @@
 #ifndef TEXT_H_
-#define TRIANGLE_H_
+#define TEXT_H_
 
 #include "GraphicsBase.h"
 
@@ -16,4 +16,4 @@ public:
 } // namespace Graphics
 } // namespace Framework
 
-#endif // TRIANGLE_H_
+#endif // TEXT_H_
