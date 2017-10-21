@@ -1,9 +1,9 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
-#include "../Common/Includes.h"
-#include "../System/Includes.h"
-#include "../Constants.h"
+#include "../../Common/Includes.h"
+#include "../../System/Includes.h"
+#include "../../Constants.h"
 
 #include "Quadrangle.h"
 

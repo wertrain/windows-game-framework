@@ -1,7 +1,7 @@
 #ifndef PRIMITIVE_H_
 #define PRIMITIVE_H_
 
-#include "GraphicsBase.h"
+#include "../GraphicsBase.h"
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;

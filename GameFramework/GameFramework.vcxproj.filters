@@ -25,6 +25,9 @@
     <Filter Include="Framework\External\DirectXTex\WICTextureLoader">
       <UniqueIdentifier>{c29ccbb0-a8b0-4fbc-bd5e-1a47d36c16aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Graphics\Primitive">
+      <UniqueIdentifier>{8d3d8d63-bfbe-406f-9fa7-420dbe2f28db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
@@ -48,12 +51,6 @@
     <ClInclude Include="Framework\Graphics\GraphicsBase.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Graphics\Primitive.h">
-      <Filter>Framework\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Graphics\Triangle.h">
-      <Filter>Framework\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Common\Defines.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
@@ -72,14 +69,20 @@
     <ClInclude Include="Framework\Graphics\Texture.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Graphics\Quadrangle.h">
-      <Filter>Framework\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h">
       <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Text.h">
       <Filter>Framework\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Graphics\Primitive\Primitive.h">
+      <Filter>Framework\Graphics\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Graphics\Primitive\Quadrangle.h">
+      <Filter>Framework\Graphics\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Graphics\Primitive\Triangle.h">
+      <Filter>Framework\Graphics\Primitive</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -93,12 +96,6 @@
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp">
-      <Filter>Framework\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Graphics\Primitive.cpp">
-      <Filter>Framework\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Graphics\Triangle.cpp">
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Common\Defines.cpp">
@@ -117,14 +114,20 @@
     <ClCompile Include="Framework\Graphics\Texture.cpp">
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Graphics\Quadrangle.cpp">
-      <Filter>Framework\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp">
       <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Text.cpp">
       <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Primitive\Primitive.cpp">
+      <Filter>Framework\Graphics\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Primitive\Quadrangle.cpp">
+      <Filter>Framework\Graphics\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Primitive\Triangle.cpp">
+      <Filter>Framework\Graphics\Primitive</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

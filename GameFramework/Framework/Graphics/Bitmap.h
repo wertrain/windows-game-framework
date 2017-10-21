@@ -1,7 +1,7 @@
 #ifndef BITMAP_H_
 #define BITMAP_H_
 
-#include "Primitive.h"
+#include "Primitive/Primitive.h"
 #include <Windows.h>
 
 namespace Framework {

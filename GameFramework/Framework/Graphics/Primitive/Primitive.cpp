@@ -1,10 +1,10 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
-#include "../Common/Includes.h"
-#include "../System/Includes.h"
-#include "../Constants.h"
-#include "../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
+#include "../../Common/Includes.h"
+#include "../../System/Includes.h"
+#include "../../Constants.h"
+#include "../../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
 
 #include "Primitive.h"
 

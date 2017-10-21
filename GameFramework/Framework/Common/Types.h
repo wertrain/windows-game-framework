@@ -5,6 +5,8 @@
 
 typedef double f64;
 typedef float f32;
+typedef long long s64;
+typedef unsigned long long u64;
 typedef int s32;
 typedef unsigned int u32;
 typedef short s16;
@@ -13,7 +15,9 @@ typedef char s8;
 
 static_assert(sizeof(f64) == 8, "sizeof f64 == 8");
 static_assert(sizeof(f32) == 4, "sizeof f32 == 4");
-static_assert(sizeof(s32) == 4, "sizeof s32 == 4"); 
+static_assert(sizeof(s64) == 8, "sizeof s64 == 8"); 
+static_assert(sizeof(u64) == 8, "sizeof u64 == 8"); 
+static_assert(sizeof(s32) == 4, "sizeof s32 == 4");
 static_assert(sizeof(u32) == 4, "sizeof u32 == 4");
 static_assert(sizeof(s16) == 2, "sizeof u32 == 2");
 static_assert(sizeof(f16) == 2, "sizeof s16 == 2");

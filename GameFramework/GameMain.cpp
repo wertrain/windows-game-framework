@@ -1,15 +1,15 @@
 #include "Framework/Includes.h"
 
-#include "Framework/Graphics/Quadrangle.h"
+#include "Framework/Graphics/Text.h"
 
-Framework::Graphics::Quadrangle s_Quadrangle;
+Framework::Graphics::Text s_Text;
 
 /**
  * create game object
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    s_Quadrangle.Create(device, context);
+    s_Text.Create(TEXT("APJapanesefontF.ttf"), TEXT("‚ ‚ñ‚¸‚à‚¶’X"), 24);
     return true;
 }
 
@@ -26,7 +26,7 @@ void Update(const DWORD /*nowTime*/)
  */
 void Draw(ID3D11DeviceContext* context)
 {
-    s_Quadrangle.Render(context);
+
 }
 
 /**
@@ -34,5 +34,5 @@ void Draw(ID3D11DeviceContext* context)
  */
 void Destroy()
 {
-
+    s_Text.Destroy();
 }
