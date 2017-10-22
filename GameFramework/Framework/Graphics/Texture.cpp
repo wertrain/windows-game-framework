@@ -77,5 +77,10 @@ const ID3D11SamplerState* Texture::GetSamplerState()
     return mSampler;
 }
 
+const ID3D11ShaderResourceView* Texture::GetShaderResourceView()
+{
+    return mShaderResView;
+}
+
 } // namespace Graphics
 } // namespace Framework

@@ -18,6 +18,7 @@ public:
     bool CreateFromFile(ID3D11Device* device, const wchar_t* filename);
     const ID3D11Resource* GetTexture();
     const ID3D11SamplerState* GetSamplerState();
+    const ID3D11ShaderResourceView* GetShaderResourceView();
 
 protected:
     ID3D11Resource* mTexture;
