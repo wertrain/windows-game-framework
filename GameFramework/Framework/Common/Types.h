@@ -30,12 +30,14 @@ static_assert(sizeof( s8) == 1, "sizeof  s8 == 1");
 namespace DirectX
 {
 
+struct XMFLOAT2;
 struct XMFLOAT3;
 struct XMFLOAT4;
 struct XMMATRIX;
 
 };
 
+typedef DirectX::XMFLOAT2 Vector2;
 typedef DirectX::XMFLOAT3 Vector3;
 typedef DirectX::XMFLOAT4 Vector4;
 typedef DirectX::XMMATRIX Matrix44;
