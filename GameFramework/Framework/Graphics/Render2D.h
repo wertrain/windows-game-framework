@@ -12,6 +12,7 @@ public:
     Render2D() ;
     virtual ~Render2D();
     bool Create(ID3D11Device* device);
+    void Destroy();
     void Render(ID3D11DeviceContext* context, const f32 x1, const f32 y1, const f32 x2, const f32 y2);
     void Render(ID3D11DeviceContext* context, const f32 x1, const f32 y1, const f32 x2, const f32 y2, Texture* texture);
 

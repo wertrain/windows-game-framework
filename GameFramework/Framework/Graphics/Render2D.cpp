@@ -58,6 +58,35 @@ bool Render2D::Create(ID3D11Device* device)
     return true;
 }
 
+void Render2D::Destroy()
+{
+    if (mIndexBuffer != nullptr)
+    {
+        mIndexBuffer->Release();
+        mIndexBuffer = nullptr;
+    }
+    if (mPixelShader != nullptr)
+    {
+        mPixelShader->Release();
+        mPixelShader = nullptr;
+    }
+    if (mVertexShader != nullptr)
+    {
+        mVertexShader->Release();
+        mVertexShader = nullptr;
+    }
+    if (mConstantBuffer != nullptr)
+    {
+        mConstantBuffer->Release();
+        mConstantBuffer = nullptr;
+    }
+    if (mVertexLayout != nullptr)
+    {
+        mVertexLayout->Release();
+        mVertexLayout = nullptr;
+    }
+}
+
 HRESULT Render2D::CreateShader(ID3D11Device* device)
 {
     // コンパイル済みバーテックスシェーダーファイルの読み込み
