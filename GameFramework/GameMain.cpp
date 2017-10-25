@@ -32,7 +32,7 @@ void Update(const DWORD /*nowTime*/)
  */
 void Draw(ID3D11DeviceContext* context)
 {
-    s_Render2D.Render(context, 0, 0, 1.0f, 1.0f, &s_Texure);
+    s_Render2D.Render(context, -0.5f, -0.5f, 0.5f, 0.5f, &s_Texure);
 }
 
 /**

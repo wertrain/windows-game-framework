@@ -22,16 +22,16 @@ const u32 sVertexNum = 4;
 // 頂点データ構造体
 struct VertexData
 {
-    Vector3 pos;
-    Vector3 color;
-    Vector2 uv;
+    Vector4 pos;
+    Vector4 color;
+    Vector4 uv;
 }
 sVertices[sVertexNum] = 
 {
-    { Vector3( 0.5f,  0.5f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Vector2(1.0f, 1.0f) },
-    { Vector3(-0.5f,  0.5f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Vector2(0.0f, 1.0f) },
-    { Vector3( 0.5f, -0.5f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Vector2(1.0f, 0.0f) },
-    { Vector3(-0.5f, -0.5f, 0.0f), Vector3(1.0f, 1.0f, 1.0f), Vector2(0.0f, 0.0f) }
+    { Vector4( 0.5f,  0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(1.0f, 1.0f, 0.0f, 0.0f) },
+    { Vector4(-0.5f,  0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f) },
+    { Vector4( 0.5f, -0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(1.0f, 0.0f, 0.0f, 0.0f) },
+    { Vector4(-0.5f, -0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) }
 };
 
 Render2D::Render2D()
@@ -120,9 +120,9 @@ HRESULT Render2D::CreateShader(ID3D11Device* device)
 
     // 入力レイアウト定義
     D3D11_INPUT_ELEMENT_DESC layout[] = {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "COLOR",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
     u32 elem_num = ARRAYSIZE(layout);
     // 入力レイアウト作成
@@ -156,19 +156,17 @@ HRESULT Render2D::CreateBuffer(ID3D11Device* device)
 
     //インデックスバッファ
     {
-        std::unique_ptr<UINT> indices(new UINT[sVertexNum]);
-        for (uint32_t i = 0; i < sVertexNum; ++i)
-            indices.get()[i] = i;
+        UINT indices[sVertexNum] = { 1,0,3,2 };
 
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(int) * sVertexNum;
+        bd.ByteWidth = sizeof(UINT) * sVertexNum;
         bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
         bd.CPUAccessFlags = 0;
         D3D11_SUBRESOURCE_DATA InitData;
         ZeroMemory(&InitData, sizeof(InitData));
-        InitData.pSysMem = indices.get();
+        InitData.pSysMem = indices;
         HRESULT hr = device->CreateBuffer(&bd, &InitData, &mIndexBuffer);
         if (FAILED(hr)) {
             return hr;
@@ -198,10 +196,10 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x1, const f32 y1, 
 
 void Render2D::Render(ID3D11DeviceContext* context, const f32 x1, const f32 y1, const f32 x2, const f32 y2, Texture* texture)
 {
-    sVertices[0].pos = Vector3(x1, y1, 0.0f);
-    sVertices[1].pos = Vector3(x2, y1, 0.0f);
-    sVertices[2].pos = Vector3(x2, y2, 0.0f);
-    sVertices[3].pos = Vector3(x1, y2, 0.0f);
+    sVertices[0].pos = Vector4(x2, y2, 0.0f, 1.0f);
+    sVertices[1].pos = Vector4(x1, y2, 0.0f, 1.0f);
+    sVertices[2].pos = Vector4(x2, y1, 0.0f, 1.0f);
+    sVertices[3].pos = Vector4(x1, y1, 0.0f, 1.0f);
 
     // 頂点バッファ内容更新
     context->UpdateSubresource(mVertexBuffer, 0, NULL, &sVertices, 0, 0);
@@ -225,6 +223,13 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x1, const f32 y1, 
     // シェーダ
     context->VSSetShader(mVertexShader, nullptr, 0);
     context->PSSetShader(mPixelShader, nullptr, 0);
+
+    //定数バッファ
+    ConstBuffer cbuff;
+    cbuff.mtxWorld = DirectX::XMMatrixIdentity();
+    // シェーダーでは行列を転置してから渡す
+    // 定数バッファ内容更新
+    context->UpdateSubresource(mConstantBuffer, 0, NULL, &cbuff, 0, 0);
 
     // 定数バッファ
     u32 cb_slot = 0;
