@@ -5,6 +5,7 @@
 
 #include "../Common/Includes.h"
 #include "../System/Includes.h"
+#include "../Constants.h"
 #include "Texture.h"
 #include "Render2D.h"
 
@@ -189,17 +190,24 @@ HRESULT Render2D::CreateBuffer(ID3D11Device* device)
     return S_OK;
 }
 
-void Render2D::Render(ID3D11DeviceContext* context, const f32 x1, const f32 y1, const f32 x2, const f32 y2)
+void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, const f32 width, const f32 height)
 {
-    Render(context, x1, y1, x2, y2, nullptr);
+    Render(context, x, y, width, height, nullptr);
 }
 
-void Render2D::Render(ID3D11DeviceContext* context, const f32 x1, const f32 y1, const f32 x2, const f32 y2, Texture* texture)
+void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, const f32 width, const f32 height, Texture* texture)
 {
-    sVertices[0].pos = Vector4(x2, y2, 0.0f, 1.0f);
-    sVertices[1].pos = Vector4(x1, y2, 0.0f, 1.0f);
-    sVertices[2].pos = Vector4(x2, y1, 0.0f, 1.0f);
-    sVertices[3].pos = Vector4(x1, y1, 0.0f, 1.0f);
+    const f32 wh = Constants::WIDTH * 0.5f;
+    const f32 hh = Constants::HEIGHT * 0.5f;
+    const f32 x1 = -1.0f + (x / wh);
+    const f32 x2 = x1 + (width / wh);
+    const f32 y1 =  1.0f - (y / hh);
+    const f32 y2 = y1 - (height / hh);
+
+    sVertices[0].pos = Vector4(x2, y1, 0.0f, 1.0f);
+    sVertices[1].pos = Vector4(x1, y1, 0.0f, 1.0f);
+    sVertices[2].pos = Vector4(x2, y2, 0.0f, 1.0f);
+    sVertices[3].pos = Vector4(x1, y2, 0.0f, 1.0f);
 
     // 頂点バッファ内容更新
     context->UpdateSubresource(mVertexBuffer, 0, NULL, &sVertices, 0, 0);
