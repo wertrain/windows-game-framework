@@ -27,12 +27,13 @@ struct VertexData
     Vector4 color;
     Vector4 uv;
 }
+
 sVertices[sVertexNum] = 
 {
-    { Vector4( 0.5f,  0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(1.0f, 1.0f, 0.0f, 0.0f) },
-    { Vector4(-0.5f,  0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f) },
     { Vector4( 0.5f, -0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(1.0f, 0.0f, 0.0f, 0.0f) },
-    { Vector4(-0.5f, -0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) }
+    { Vector4(-0.5f, -0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) },
+    { Vector4( 0.5f,  0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(1.0f, 1.0f, 0.0f, 0.0f) },
+    { Vector4(-0.5f,  0.5f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f) }
 };
 
 Render2D::Render2D()
@@ -208,6 +209,8 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, co
     sVertices[1].pos = Vector4(x1, y1, 0.0f, 1.0f);
     sVertices[2].pos = Vector4(x2, y2, 0.0f, 1.0f);
     sVertices[3].pos = Vector4(x1, y2, 0.0f, 1.0f);
+
+
 
     // 頂点バッファ内容更新
     context->UpdateSubresource(mVertexBuffer, 0, NULL, &sVertices, 0, 0);
