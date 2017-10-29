@@ -45,7 +45,7 @@ bool Texture::CreateFromFile(ID3D11Device* device, const wchar_t* filename)
     HRESULT hr = DirectX::CreateWICTextureFromFile(device, filename, &mTexture, &mShaderResView);
     if (FAILED(hr))
     {
-        return hr;
+        return false;
     }
 
     // サンプラー作成
@@ -61,7 +61,49 @@ bool Texture::CreateFromFile(ID3D11Device* device, const wchar_t* filename)
     hr = device->CreateSamplerState(&sampDesc, &mSampler);
     if (FAILED(hr))
     {
-        return hr;
+        return false;
+    }
+
+    return true;
+}
+
+bool Texture::Create(ID3D11Device* device, ID3D11Resource* texture)
+{
+    mTexture = texture;
+
+    // テクスチャ情報を取得する
+    D3D11_TEXTURE2D_DESC texDesc;
+    static_cast<ID3D11Texture2D*>(mTexture)->GetDesc(&texDesc);
+
+    // ShaderResourceViewの情報を作成する
+    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+    ZeroMemory(&srvDesc, sizeof(srvDesc));
+    srvDesc.Format = texDesc.Format;
+    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    srvDesc.Texture2D.MostDetailedMip = 0;
+    srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
+
+    // ShaderResourceViewを作成する
+    HRESULT hr = device->CreateShaderResourceView(mTexture, &srvDesc, &mShaderResView);
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    // サンプラー作成
+    D3D11_SAMPLER_DESC sampDesc;
+    ZeroMemory(&sampDesc, sizeof(sampDesc));
+    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+    sampDesc.MinLOD = 0;
+    sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    hr = device->CreateSamplerState(&sampDesc, &mSampler);
+    if (FAILED(hr))
+    {
+        return false;
     }
 
     return true;

@@ -16,6 +16,7 @@ public:
     Texture() ;
     virtual ~Texture();
     bool CreateFromFile(ID3D11Device* device, const wchar_t* filename);
+    bool Create(ID3D11Device* device, ID3D11Resource* texture);
     const ID3D11Resource* GetTexture();
     const ID3D11SamplerState* GetSamplerState();
     const ID3D11ShaderResourceView* GetShaderResourceView();
