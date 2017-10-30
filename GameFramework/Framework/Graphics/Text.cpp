@@ -11,6 +11,78 @@
 namespace Framework {
 namespace Graphics {
 
+// 指定領域のビットマップ保存
+BOOL funcSaveRect(LPCTSTR lpFname, HDC hDC, LONG cx, LONG cy, LONG sx, LONG sy)
+{
+    HANDLE hFile = CreateFile(lpFname, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if (hFile != INVALID_HANDLE_VALUE) {
+        LONG    lHeadSize = (sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFO));
+        LONG    lWidthSize = (sx * sizeof(DWORD));
+        LONG    lImageSize = (lWidthSize * sy);
+        DWORD   dwSize;
+
+        // BITMAPFILEHEADERの初期化
+        BITMAPFILEHEADER bmpHead = { 0 };
+        bmpHead.bfType = 0x4D42;       // 識別子(BM)
+        bmpHead.bfSize = lHeadSize + lImageSize;
+        bmpHead.bfReserved1 = 0;
+        bmpHead.bfReserved2 = 0;
+        bmpHead.bfOffBits = lHeadSize;
+
+        // BITMAPINFOの初期化
+        BITMAPINFO bmpInfo = { 0 };
+        bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+        bmpInfo.bmiHeader.biWidth = sx;
+        bmpInfo.bmiHeader.biHeight = sy;
+        bmpInfo.bmiHeader.biPlanes = 1;
+        bmpInfo.bmiHeader.biBitCount = 32;
+        bmpInfo.bmiHeader.biCompression = BI_RGB;
+        bmpInfo.bmiHeader.biSizeImage = 0;
+        bmpInfo.bmiHeader.biXPelsPerMeter = 0;
+        bmpInfo.bmiHeader.biYPelsPerMeter = 0;
+        bmpInfo.bmiHeader.biClrUsed = 0;
+        bmpInfo.bmiHeader.biClrImportant = 0;
+
+        // DIBセクションの作成
+        LPDWORD     lpPixel;    // ピクセル配列
+        HBITMAP     hBitmap;    // ビットマップ
+        HDC         hSaveDC;    // 保存スクリーン
+        hBitmap = CreateDIBSection(NULL, &bmpInfo, DIB_RGB_COLORS, (LPVOID*)&lpPixel, NULL, 0);
+        hSaveDC = CreateCompatibleDC(hDC);
+        SelectObject(hSaveDC, hBitmap);
+
+        // 保存領域のコピー
+        BitBlt(hSaveDC, 0, 0, sx, sy, hDC, cx, cy, SRCCOPY);
+
+        // ファイルに書き込む
+        WriteFile(hFile, &bmpHead, sizeof(BITMAPFILEHEADER), &dwSize, NULL);
+        WriteFile(hFile, &bmpInfo, sizeof(BITMAPINFO), &dwSize, NULL);
+        WriteFile(hFile, lpPixel, lImageSize, &dwSize, NULL);
+
+        // DIBセクションの破棄
+        DeleteDC(hSaveDC);
+        DeleteObject(hBitmap);
+        CloseHandle(hFile);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+VOID funcSaveFile(HWND hWnd, LPCTSTR lpFname)
+{
+    HDC hDC;
+
+    hDC = GetDC(hWnd);
+    funcSaveRect(lpFname, hDC, 0, 0, 256, 256);
+    ReleaseDC(hWnd, hDC);
+}
+
+VOID funcSaveFile(HDC hDC, LPCTSTR lpFname)
+{
+    funcSaveRect(lpFname, hDC, 0, 0, 256, 256);
+}
+
 Text::Text()
     : GraphicsBase()
     , m_FontHandle(nullptr)
@@ -65,7 +137,7 @@ bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture
 {
     HDC hdc = GetDC(NULL);
     HFONT oldFont = (HFONT)SelectObject(hdc, m_FontHandle);
-    UINT code = (UINT)"その幸せおいかけなさいあああ";     // テクスチャに書き込む文字
+    UINT code = (UINT)L'あ';     // テクスチャに書き込む文字
 
     // フォントビットマップ取得
     TEXTMETRIC TM;
@@ -75,7 +147,7 @@ bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture
     DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, 0, NULL, &Mat);
     std::unique_ptr<BYTE> ptr(new BYTE[size]);
     GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, size, ptr.get(), &Mat);
-
+    funcSaveFile(hdc, L"test.bmp");
     // デバイスコンテキストとフォントハンドルの開放
     SelectObject(hdc, oldFont);
     DeleteObject(m_FontHandle);
@@ -133,16 +205,7 @@ bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture
             memcpy((BYTE*)pBits + hMappedResource.RowPitch * y + 4 * x, &Color, sizeof(DWORD));
         }
     }
-    for (y = iOfs_y; y < iOfs_y + iBmp_h; y++)
-    {
-        for (x = iOfs_x; x < iOfs_x + iBmp_w; x++)
-        {
-            Alpha = 255;
-            Color = 0x0000ff00 | (Alpha << 24);
 
-            memcpy((BYTE*)pBits + hMappedResource.RowPitch * y + 4 * x, &Color, sizeof(DWORD));
-        }
-    }
     context->Unmap(texture2d, 0);
 
     if (!texture->Create(device, static_cast<ID3D11Resource*>(texture2d)))

@@ -16,7 +16,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
     s_Render2D.Create(device);
     //s_Texure.CreateFromFile(device, TEXT("usa.png"));
 
-    s_Text.Create(TEXT("APJapanesefontF.ttf"), TEXT("‚ ‚ñ‚¸‚à‚¶’X"), 24);
+    s_Text.Create(TEXT("uzura.ttf"), TEXT("‚¤‚¸‚çƒtƒHƒ“ƒg"), 24);
 
     s_Text.WriteText(device, context, &s_Texure);
 
