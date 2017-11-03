@@ -147,7 +147,7 @@ bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture
     DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, 0, NULL, &Mat);
     std::unique_ptr<BYTE> ptr(new BYTE[size]);
     GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, size, ptr.get(), &Mat);
-    funcSaveFile(hdc, L"test.bmp");
+    
     // デバイスコンテキストとフォントハンドルの開放
     SelectObject(hdc, oldFont);
     DeleteObject(m_FontHandle);
