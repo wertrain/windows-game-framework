@@ -8,8 +8,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Archiver\Archiver.cpp">
+      <Filter>Archiver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Archiver.h" />
+    <ClInclude Include="Archiver\Archiver.h">
+      <Filter>Archiver</Filter>
+    </ClInclude>
+    <ClInclude Include="Archiver\Includes.h">
+      <Filter>Archiver</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

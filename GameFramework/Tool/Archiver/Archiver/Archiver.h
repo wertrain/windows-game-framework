@@ -4,6 +4,12 @@
 namespace Framework {
 namespace Tool {
 
+class Archiver
+{
+public:
+    Archiver();
+    ~Archiver();
+};
 
 } // namespace Tool 
 } // namespace Framework
