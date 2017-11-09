@@ -10,6 +10,7 @@ typedef unsigned long long u64;
 typedef int s32;
 typedef unsigned int u32;
 typedef short s16;
+typedef unsigned short u16;
 typedef short f16;
 typedef char s8;
 
@@ -19,8 +20,9 @@ static_assert(sizeof(s64) == 8, "sizeof s64 == 8");
 static_assert(sizeof(u64) == 8, "sizeof u64 == 8"); 
 static_assert(sizeof(s32) == 4, "sizeof s32 == 4");
 static_assert(sizeof(u32) == 4, "sizeof u32 == 4");
-static_assert(sizeof(s16) == 2, "sizeof u32 == 2");
-static_assert(sizeof(f16) == 2, "sizeof s16 == 2");
+static_assert(sizeof(s16) == 2, "sizeof s16 == 2");
+static_assert(sizeof(u16) == 2, "sizeof u16 == 2");
+static_assert(sizeof(f16) == 2, "sizeof f16 == 2");
 static_assert(sizeof( s8) == 1, "sizeof  s8 == 1");
 
 #endif // FRAMEWORK_COMMON_TYPES_
