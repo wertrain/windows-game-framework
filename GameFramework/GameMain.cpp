@@ -20,6 +20,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 
     s_Text.WriteText(device, context, &s_Texure);
 
+
     return true;
 }
 

@@ -16,8 +16,6 @@
     <ClInclude Include="Archiver\Archiver.h">
       <Filter>Archiver</Filter>
     </ClInclude>
-    <ClInclude Include="Archiver\Includes.h">
-      <Filter>Archiver</Filter>
-    </ClInclude>
+    <ClInclude Include="Includes.h" />
   </ItemGroup>
 </Project>

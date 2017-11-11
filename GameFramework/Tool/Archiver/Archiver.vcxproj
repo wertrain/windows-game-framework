@@ -116,7 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Archiver\Archiver.h" />
-    <ClInclude Include="Archiver\Includes.h" />
+    <ClInclude Include="Includes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
