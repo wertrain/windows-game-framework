@@ -2,6 +2,7 @@
 #define ARCHIVER_H_
 
 #include "../../../Framework/Common/Includes.h"
+#include <vector>
 
 namespace Framework {
 namespace Tool {
@@ -9,8 +10,14 @@ namespace Tool {
 class Archiver
 {
 public:
-    Archiver();
+    Archiver(const u32 count = 0);
     ~Archiver();
+
+    void SetWorkBuffer(void* buffer, const u32 size);
+    bool Add(const void* data, const u32 size);
+    void WriteBinary(void* buffer);
+    bool ReadBinary(const void* buffer, const u32 size);
+    const u32 GetBinarySize() const ;
 
 private:
     struct FixedArchiveHeader
@@ -22,13 +29,20 @@ private:
     };
     static_assert(sizeof(FixedArchiveHeader) == 64, "sizeof ArchiveHeader == 64");
 
-    struct DataHeader
+    struct ArchiveData
     {
         u32 size;          // データサイズ
         s8 reserved[4];    // 予約領域
-        void* data;        // 実データ部分
+        const void* data;  // 実データ部分
     };
-    static_assert(sizeof(DataHeader) == 16, "sizeof DataHeader == 16");
+    static_assert(sizeof(ArchiveData) == 16, "sizeof DataHeader == 16");
+
+private:
+    const u32 CalcBinarySize();
+
+private:
+    std::vector<ArchiveData*> mData;
+    u32 mDataSize;
 };
 
 } // namespace Tool 

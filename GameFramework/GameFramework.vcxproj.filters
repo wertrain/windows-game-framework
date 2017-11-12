@@ -87,6 +87,9 @@
     <ClInclude Include="Framework\Graphics\Render2D.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\System\Utility.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -134,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Render2D.cpp">
       <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Utility.cpp">
+      <Filter>Framework\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
