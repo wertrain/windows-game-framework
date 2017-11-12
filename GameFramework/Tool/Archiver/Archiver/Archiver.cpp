@@ -96,6 +96,7 @@ bool Archiver::ReadBinary(const void* buffer, const u32 size)
         p += (sizeof(ArchiveData) - sizeof(ArchiveData::data));
         d->data = p;
         mData.push_back(d);
+        p += d->size;
     }
     return true;
 }
