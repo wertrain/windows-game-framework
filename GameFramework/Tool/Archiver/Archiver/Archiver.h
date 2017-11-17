@@ -13,8 +13,14 @@ public:
     Archiver(const u32 count = 0);
     ~Archiver();
 
+    void Clear();
     void SetWorkBuffer(void* buffer, const u32 size);
-    bool Add(const void* data, const u32 size);
+    bool Add(const wchar_t* name, const void* data, const u32 size);
+    const u32 Get(const u32 index, void* data);
+    const u32 GetDataSize(const u32 index);
+    const wchar_t* GetDataName(const u32 index);
+    const u32 GetDataCount();
+
     void WriteBinary(void* buffer);
     bool ReadBinary(const void* buffer, const u32 size);
     const u32 GetBinarySize() const ;
@@ -31,11 +37,15 @@ private:
 
     struct ArchiveData
     {
-        u32 size;          // データサイズ
-        s8 reserved[4];    // 予約領域
-        const void* data;  // 実データ部分
+        u32 size;       // データサイズ
+        u32 offset;     // 実データまでのオフセット
+        s8 reserved[8]; // 予約領域
+        wchar_t* name;  // ファイル識別名
+        void* data;     // 実データ部分
+
+        static const u32 FixedParamSize = 16; // 構造体のうち、固定長メンバのサイズ
     };
-    static_assert(sizeof(ArchiveData) == 16, "sizeof DataHeader == 16");
+    static_assert(sizeof(ArchiveData) == 32, "sizeof DataHeader == 32");
 
 private:
     const u32 CalcBinarySize();

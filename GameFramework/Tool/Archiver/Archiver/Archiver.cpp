@@ -22,7 +22,18 @@ Archiver::Archiver(const u32 count)
 
 Archiver::~Archiver()
 {
+    Clear();
+}
 
+void Archiver::Clear()
+{
+    for each (const ArchiveData *data in mData)
+    {
+        delete [] data->name;
+        delete [] data->data;
+        delete data;
+    }
+    mData.clear();
 }
 
 void Archiver::SetWorkBuffer(void* /*buffer*/, const u32 /*size*/)
@@ -31,17 +42,54 @@ void Archiver::SetWorkBuffer(void* /*buffer*/, const u32 /*size*/)
     // 外部からバッファを指定してそこを使うように
 }
 
-bool Archiver::Add(const void* data, const u32 size)
+bool Archiver::Add(const wchar_t* name, const void* data, const u32 size)
 {
     ArchiveData* d = new ArchiveData();
+    memset(d, 0, ArchiveData::FixedParamSize);
     d->size = size;
-    d->data = data;
+    d->data = new s8[size];
+    memcpy(d->data, data, size);
+    u32 namesize = static_cast<u32>(wcslen(name)) + 1; // null 文字込み
+    d->name = new wchar_t[namesize];
+    memset(d->name, 0, namesize);
+    wcscpy_s(d->name, namesize, name);
+    d->offset = ArchiveData::FixedParamSize + namesize;
     mData.push_back(d);
     
-    mDataSize += (sizeof(ArchiveData) - sizeof(ArchiveData::data));
+    mDataSize += ArchiveData::FixedParamSize + namesize;
     mDataSize += size;
 
     return true;
+}
+
+const u32 Archiver::Get(const u32 index, void* data)
+{
+    if (mData.size() <= index) return 0;
+
+    ArchiveData* d = mData[index];
+    memcpy(data, d->data, d->size);
+    return d->size;
+}
+
+const u32 Archiver::GetDataSize(const u32 index)
+{
+    if (mData.size() <= index) return 0;
+
+    ArchiveData* d = mData[index];
+    return d->size;
+}
+
+const wchar_t* Archiver::GetDataName(const u32 index)
+{
+    if (mData.size() <= index) return 0;
+
+    ArchiveData* d = mData[index];
+    return d->name;
+}
+
+const u32 Archiver::GetDataCount()
+{
+    return static_cast<u32>(mData.size());
 }
 
 void Archiver::WriteBinary(void* buffer)
@@ -52,7 +100,7 @@ void Archiver::WriteBinary(void* buffer)
     header.token[1] = 'W';
     header.token[2] = 'A';
     header.token[3] = 'C';
-    header.count = mData.size();
+    header.count = static_cast<u32>(mData.size());
     header.version = ARCHIVE_FILE_HEADER_VERSION::V_0000;
 
     s8* p = static_cast<s8*>(buffer);
@@ -61,9 +109,13 @@ void Archiver::WriteBinary(void* buffer)
 
     for each (const ArchiveData *data in mData)
     {
-        memcpy(p, data, sizeof(ArchiveData));
-        p += (sizeof(ArchiveData) - sizeof(ArchiveData::data));
+        memcpy(p, data, ArchiveData::FixedParamSize);
+        p += ArchiveData::FixedParamSize;
+        size_t namesize = data->offset - ArchiveData::FixedParamSize;
+        memcpy(p, data->name, namesize);
+        p += namesize;
         memcpy(p, data->data, data->size);
+        p += data->size;
     }
 }
 
@@ -72,7 +124,7 @@ bool Archiver::ReadBinary(const void* buffer, const u32 size)
     FixedArchiveHeader header;
     memcpy(&header, buffer, sizeof(FixedArchiveHeader));
 
-    if (header.token[0] != 'F' || header.token[1] != 'W' || header.token[2] != 'A' || header.token[3] == 'C')
+    if (header.token[0] != 'F' || header.token[1] != 'W' || header.token[2] != 'A' || header.token[3] != 'C')
         return false;
 
     // バージョン依存処理
@@ -89,14 +141,19 @@ bool Archiver::ReadBinary(const void* buffer, const u32 size)
 
     const s8* p = static_cast<const s8*>(buffer);
     p += sizeof(FixedArchiveHeader);
-    for (s32 i = 0; i < header.count; ++i)
+    for (u32 i = 0; i < header.count; ++i)
     {
         ArchiveData* d = new ArchiveData();
-        memcpy(d, p, sizeof(ArchiveData));
-        p += (sizeof(ArchiveData) - sizeof(ArchiveData::data));
-        d->data = p;
-        mData.push_back(d);
+        memcpy(d, p, ArchiveData::FixedParamSize);
+        p += ArchiveData::FixedParamSize;
+        u32 namesize = d->offset - ArchiveData::FixedParamSize;
+        d->name = new wchar_t[namesize];
+        memcpy(d->name, p, namesize);
+        p += namesize;
+        d->data = new s8[d->size];
+        memcpy(d->data, p, d->size);
         p += d->size;
+        mData.push_back(d);
     }
     return true;
 }
