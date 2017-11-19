@@ -19,5 +19,5 @@ struct PS_INPUT
 
 float4 psMain(PS_INPUT input) : SV_Target
 {
-    return texDiffuse.Sample(samLinear, input.UV) ;
+    return texDiffuse.Sample(samLinear, input.UV.xy) ;
 }
