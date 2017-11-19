@@ -16,7 +16,7 @@ public:
     void Clear();
     void SetWorkBuffer(void* buffer, const u32 size);
     bool Add(const wchar_t* name, const void* data, const u32 size);
-    const u32 Get(const u32 index, void* data);
+    const u32 GetData(const u32 index, void* data);
     const u32 GetDataSize(const u32 index);
     const wchar_t* GetDataName(const u32 index);
     const u32 GetDataCount();

@@ -49,7 +49,7 @@ bool Archiver::Add(const wchar_t* name, const void* data, const u32 size)
     d->size = size;
     d->data = new s8[size];
     memcpy(d->data, data, size);
-    u32 namesize = static_cast<u32>(wcslen(name)) + 1; // null ï∂éöçûÇ›
+    u32 namesize = static_cast<u32>(wcslen(name) + 1) * sizeof(wchar_t); // null ï∂éöçûÇ›
     d->name = new wchar_t[namesize];
     memset(d->name, 0, namesize);
     wcscpy_s(d->name, namesize, name);
@@ -62,7 +62,7 @@ bool Archiver::Add(const wchar_t* name, const void* data, const u32 size)
     return true;
 }
 
-const u32 Archiver::Get(const u32 index, void* data)
+const u32 Archiver::GetData(const u32 index, void* data)
 {
     if (mData.size() <= index) return 0;
 
@@ -111,7 +111,7 @@ void Archiver::WriteBinary(void* buffer)
     {
         memcpy(p, data, ArchiveData::FixedParamSize);
         p += ArchiveData::FixedParamSize;
-        size_t namesize = data->offset - ArchiveData::FixedParamSize;
+        size_t namesize = (wcslen(data->name) + 1) * sizeof(wchar_t); // null ï∂éöçûÇ›
         memcpy(p, data->name, namesize);
         p += namesize;
         memcpy(p, data->data, data->size);

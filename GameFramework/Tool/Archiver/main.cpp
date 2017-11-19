@@ -106,6 +106,13 @@ int wmain(const int argc, const wchar_t*argv[])
                 {
                     std::wcout << archiver.GetDataName(i) << std::endl;
                 }
+
+                std::ofstream writef("test.png", std::ios::out | std::ios::binary);
+                std::unique_ptr<char> file(new char[archiver.GetDataSize(0)]);
+                archiver.GetData(0, file.get());
+                writef.write(file.get(), archiver.GetDataSize(0));
+                writef.close();
+
                 break;
             }
             else
