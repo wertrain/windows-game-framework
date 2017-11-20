@@ -1,20 +1,57 @@
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <direct.h>
 #include "Includes.h"
 
 void PrintUsage()
 {
     std::cout << "Usage:" << std::endl;
-    std::cout << "    Archiver.exe [-a] [-e] <file> ..." << std::endl;
+    std::cout << "    Archiver.exe [-a] [-e] -o <output> <file> ..." << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "    -a   指定されたファイルを圧縮する" << std::endl;
     std::cout << "    -e   指定されたファイルを展開する" << std::endl;
+    std::cout << "    -o   出力ファイル（フォルダ）パスの指定" << std::endl;
+}
+
+const wchar_t* GetExtension(const wchar_t* path, std::wstring& dest)
+{
+    std::wstring fullpath = path;
+    const size_t path_i = fullpath.find_last_of(L"\\") + 1;
+    const size_t ext_i = fullpath.find_last_of(L".");
+    dest = fullpath.substr(ext_i, fullpath.size() - ext_i).c_str();
+    return dest.c_str();
+}
+
+const wchar_t* GetFilename(const wchar_t* path, std::wstring& dest)
+{
+    std::wstring fullpath = path;
+    const size_t path_i = fullpath.find_last_of(L"\\") + 1;
+    dest = fullpath.substr(path_i).c_str();
+    return dest.c_str();
+}
+
+const wchar_t* GetFilenameWithoutExtension(const wchar_t* path, std::wstring& dest)
+{
+    std::wstring fullpath = path;
+    const size_t path_i = fullpath.find_last_of(L"\\") + 1;
+    const size_t ext_i = fullpath.find_last_of(L".");
+    dest = fullpath.substr(path_i, ext_i - path_i).c_str();
+    return dest.c_str();
+}
+
+const wchar_t* GetDirectoryPath(const wchar_t* path, std::wstring& dest)
+{
+    std::wstring fullpath = path;
+    const size_t path_i = fullpath.find_last_of(L"\\") + 1;
+    const size_t ext_i = fullpath.find_last_of(L".");
+    dest = fullpath.substr(0, path_i + 1).c_str();
+    return dest.c_str();
 }
 
 int wmain(const int argc, const wchar_t*argv[])
 {
-    if (argc <= 2)
+    if (argc <= 4)
     {
         PrintUsage();
         return 1;
@@ -26,14 +63,28 @@ int wmain(const int argc, const wchar_t*argv[])
         Extract
     }
     mode;
-    
-    if (wcscmp(L"-a", argv[1]) == 0)
+
+    s32 argindex = 0;
+    ++argindex;
+
+    if (wcscmp(L"-a", argv[argindex]) == 0)
     {
         mode = Archive;
     }
-    else if (wcscmp(L"-e", argv[1]) == 0)
+    else if (wcscmp(L"-e", argv[argindex]) == 0)
     {
         mode = Extract;
+    }
+    else
+    {
+        PrintUsage();
+        return 1;
+    }
+
+    std::wstring output;
+    if (wcscmp(L"-o", argv[++argindex]) == 0)
+    {
+        output = argv[++argindex];
     }
     else
     {
@@ -73,7 +124,8 @@ int wmain(const int argc, const wchar_t*argv[])
                 binfile.seekg(0, std::ios::beg);
                 std::unique_ptr<char> data(new char[fsize]);
                 binfile.read(data.get(), fsize);
-                archiver.Add(L"test.dds", data.get(), fsize);
+                std::wstring dest;
+                archiver.Add(GetFilename(path.c_str(), dest), data.get(), fsize);
             }
             else
             {
@@ -82,7 +134,7 @@ int wmain(const int argc, const wchar_t*argv[])
             }
         }
 
-        std::ofstream binfile("test.bin", std::ios::out | std::ios::binary);
+        std::ofstream binfile(output, std::ios::out | std::ios::binary);
         std::unique_ptr<char> file(new char[archiver.GetBinarySize()]);
         archiver.WriteBinary(file.get());
         binfile.write(file.get(), archiver.GetBinarySize());
@@ -100,19 +152,26 @@ int wmain(const int argc, const wchar_t*argv[])
                 binfile.seekg(0, std::ios::beg);
                 std::unique_ptr<char> data(new char[fsize]);
                 binfile.read(data.get(), fsize);
-                
                 archiver.ReadBinary(data.get(), fsize);
-                for (u32 i = 0; i < archiver.GetDataCount(); ++i)
+
+                std::wstring dir;
+                std::wstring output_dir = output + L"\\" + GetFilenameWithoutExtension(path.c_str(), dir) + L"\\";
+
+                if (_wmkdir(output_dir.c_str()) == 0)
                 {
-                    std::wcout << archiver.GetDataName(i) << std::endl;
+                    for (u32 i = 0; i < archiver.GetDataCount(); ++i)
+                    {
+                        std::ofstream file(output_dir + archiver.GetDataName(i), std::ios::out | std::ios::binary);
+                        std::unique_ptr<char> data(new char[archiver.GetDataSize(0)]);
+                        archiver.GetData(0, data.get());
+                        file.write(data.get(), archiver.GetDataSize(0));
+                        file.close();
+                    }
                 }
-
-                std::ofstream writef("test.png", std::ios::out | std::ios::binary);
-                std::unique_ptr<char> file(new char[archiver.GetDataSize(0)]);
-                archiver.GetData(0, file.get());
-                writef.write(file.get(), archiver.GetDataSize(0));
-                writef.close();
-
+                else
+                {
+                    return 3;
+                }
                 break;
             }
             else
