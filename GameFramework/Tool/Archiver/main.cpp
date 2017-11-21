@@ -7,10 +7,11 @@
 void PrintUsage()
 {
     std::cout << "Usage:" << std::endl;
-    std::cout << "    Archiver.exe [-a] [-e] -o <output> <file> ..." << std::endl;
+    std::cout << "    Archiver.exe [-a] [-e] -o <output> -i <file> ..." << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "    -a   指定されたファイルを圧縮する" << std::endl;
     std::cout << "    -e   指定されたファイルを展開する" << std::endl;
+    std::cout << "    -i   入力ファイル（圧縮対象・展開対象）パスの指定" << std::endl; 
     std::cout << "    -o   出力ファイル（フォルダ）パスの指定" << std::endl;
 }
 
@@ -59,52 +60,48 @@ int wmain(const int argc, const wchar_t*argv[])
 
     enum
     {
+        Error,
         Archive,
         Extract
     }
-    mode;
+    mode = Error;
 
-    s32 argindex = 0;
-    ++argindex;
-
-    if (wcscmp(L"-a", argv[argindex]) == 0)
-    {
-        mode = Archive;
-    }
-    else if (wcscmp(L"-e", argv[argindex]) == 0)
-    {
-        mode = Extract;
-    }
-    else
-    {
-        PrintUsage();
-        return 1;
-    }
 
     std::wstring output;
-    if (wcscmp(L"-o", argv[++argindex]) == 0)
-    {
-        output = argv[++argindex];
-    }
-    else
-    {
-        PrintUsage();
-        return 1;
-    }
+    auto file_list = std::vector<std::wstring>(); 
 
-    auto file_list = std::vector<std::wstring>();
-    for (s32 index = 2; index < argc; ++index)
+    for (s32 argindex = 1; argindex< argc; ++argindex)
     {
-        std::wstring path = argv[index];
-        std::ifstream ifs(path);
-        if (ifs.is_open())
+        if (wcscmp(L"-a", argv[argindex]) == 0)
         {
-            file_list.push_back(path);
+            mode = Archive;
         }
-        ifs.close();
+        else if (wcscmp(L"-e", argv[argindex]) == 0)
+        {
+            mode = Extract;
+        }
+        else if (wcscmp(L"-o", argv[argindex]) == 0)
+        {
+            output = argv[++argindex];
+        }
+        else if (wcscmp(L"-i", argv[argindex]) == 0)
+        {
+            std::wstring path = argv[++argindex];
+            std::ifstream ifs(path);
+            if (ifs.is_open())
+            {
+                file_list.push_back(path);
+            }
+            ifs.close();
+        }
+        else
+        {
+            mode = Error;
+            break;
+        }
     }
 
-    if (file_list.empty())
+    if (mode == Error || output.empty() || file_list.empty())
     {
         PrintUsage();
         return 1;
