@@ -52,12 +52,6 @@ const wchar_t* GetDirectoryPath(const wchar_t* path, std::wstring& dest)
 
 int wmain(const int argc, const wchar_t*argv[])
 {
-    if (argc <= 4)
-    {
-        PrintUsage();
-        return 1;
-    }
-
     enum
     {
         Error,
@@ -65,7 +59,6 @@ int wmain(const int argc, const wchar_t*argv[])
         Extract
     }
     mode = Error;
-
 
     std::wstring output;
     auto file_list = std::vector<std::wstring>(); 
@@ -159,9 +152,9 @@ int wmain(const int argc, const wchar_t*argv[])
                     for (u32 i = 0; i < archiver.GetDataCount(); ++i)
                     {
                         std::ofstream file(output_dir + archiver.GetDataName(i), std::ios::out | std::ios::binary);
-                        std::unique_ptr<char> data(new char[archiver.GetDataSize(0)]);
-                        archiver.GetData(0, data.get());
-                        file.write(data.get(), archiver.GetDataSize(0));
+                        std::unique_ptr<char> data(new char[archiver.GetDataSize(i)]);
+                        archiver.GetData(i, data.get());
+                        file.write(data.get(), archiver.GetDataSize(i));
                         file.close();
                     }
                 }
