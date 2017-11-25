@@ -119,7 +119,7 @@ void Archiver::WriteBinary(void* buffer)
     }
 }
 
-bool Archiver::ReadBinary(const void* buffer, const u32 size)
+bool Archiver::ReadBinary(const void* buffer, const size_t size)
 {
     FixedArchiveHeader header;
     memcpy(&header, buffer, sizeof(FixedArchiveHeader));

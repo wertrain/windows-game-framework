@@ -22,7 +22,7 @@ public:
     const u32 GetDataCount();
 
     void WriteBinary(void* buffer);
-    bool ReadBinary(const void* buffer, const u32 size);
+    bool ReadBinary(const void* buffer, const size_t size);
     const u32 GetBinarySize() const ;
 
 private:
