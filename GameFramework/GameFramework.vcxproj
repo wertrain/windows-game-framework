@@ -84,6 +84,8 @@
     <ClInclude Include="Framework\System\File.h" />
     <ClInclude Include="Framework\System\Includes.h" />
     <ClInclude Include="Framework\System\Utility.h" />
+    <ClInclude Include="Tool\Archiver\Archiver\Archiver.h" />
+    <ClInclude Include="Tool\Archiver\Includes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Common\Defines.cpp" />
@@ -103,6 +105,7 @@
     <ClCompile Include="Framework\System\Utility.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -28,6 +28,15 @@
     <Filter Include="Framework\Graphics\Primitive">
       <UniqueIdentifier>{8d3d8d63-bfbe-406f-9fa7-420dbe2f28db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Tool">
+      <UniqueIdentifier>{3c6fef00-2268-43ae-a63d-c5c16f220206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Tool\Archiver">
+      <UniqueIdentifier>{1679a594-a253-448b-a0cb-88ae509806f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Tool\Archiver\Archiver">
+      <UniqueIdentifier>{0dd249e4-6e5e-46b0-a402-33e955fa8027}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
@@ -90,6 +99,12 @@
     <ClInclude Include="Framework\System\Utility.h">
       <Filter>Framework\System</Filter>
     </ClInclude>
+    <ClInclude Include="Tool\Archiver\Includes.h">
+      <Filter>Framework\Tool\Archiver</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Archiver\Archiver\Archiver.h">
+      <Filter>Framework\Tool\Archiver\Archiver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -140,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="Framework\System\Utility.cpp">
       <Filter>Framework\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp">
+      <Filter>Framework\Tool\Archiver\Archiver</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
