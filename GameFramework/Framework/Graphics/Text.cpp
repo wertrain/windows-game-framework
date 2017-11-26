@@ -136,6 +136,206 @@ void Text::Destroy()
         FR_PRIVATE,
         &mDesign
     );
+
+    if (mFontHandle != nullptr)
+    {
+        DeleteObject(mFontHandle);
+        mFontHandle = nullptr;
+    }
+}
+
+bool Text::WriteChar(const wchar_t c, ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)
+{
+    HDC hdc = GetDC(NULL);
+    HFONT oldFont = (HFONT)SelectObject(hdc, mFontHandle);
+    UINT code = static_cast<UINT>(c); // テクスチャに書き込む文字
+
+    // フォントビットマップ取得
+    TEXTMETRIC TM;
+    GetTextMetrics(hdc, &TM);
+    GLYPHMETRICS GM;
+    CONST MAT2 Mat = { { 0,1 },{ 0,0 },{ 0,0 },{ 0,1 } };
+    DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, 0, NULL, &Mat);
+    std::unique_ptr<BYTE> ptr(new BYTE[size]);
+    if (GDI_ERROR == GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, size, ptr.get(), &Mat))
+    {
+        return false;
+    }
+
+    // デバイスコンテキストとフォントハンドルの開放
+    SelectObject(hdc, oldFont);
+    DeleteObject(mFontHandle);
+    ReleaseDC(NULL, hdc);
+
+    // CPUで書き込みができるテクスチャを作成
+    D3D11_TEXTURE2D_DESC desc;
+    memset(&desc, 0, sizeof(desc));
+    desc.Width = GM.gmCellIncX;
+    desc.Height = TM.tmHeight;
+    desc.MipLevels = 1;
+    desc.ArraySize = 1;
+    // RGBA(255,255,255,255)タイプ
+    desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    desc.SampleDesc.Count = 1;
+    // 動的（書き込みするための必須条件）
+    desc.Usage = D3D11_USAGE_DYNAMIC;
+    // シェーダリソースとして使う	
+    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    // CPUからアクセスして書き込みOK
+    desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    ID3D11Texture2D* texture2d;
+    HRESULT hr = device->CreateTexture2D(&desc, 0, &texture2d);
+    assert(SUCCEEDED(hr));
+
+    // フォント情報をテクスチャに書き込む部分
+    D3D11_MAPPED_SUBRESOURCE hMappedResource;
+    hr = context->Map(
+        texture2d,
+        0,
+        D3D11_MAP_WRITE_DISCARD,
+        0,
+        &hMappedResource);
+    assert(SUCCEEDED(hr));
+
+    BYTE* pBits = (BYTE*)hMappedResource.pData;
+    // フォント情報の書き込み
+    // iOfs_x, iOfs_y : 書き出し位置(左上)
+    // iBmp_w, iBmp_h : フォントビットマップの幅高
+    // Level : α値の段階 (GGO_GRAY4_BITMAPなので17段階)
+    int iOfs_x = GM.gmptGlyphOrigin.x;
+    int iOfs_y = TM.tmAscent - GM.gmptGlyphOrigin.y;
+    int iBmp_w = GM.gmBlackBoxX + (4 - (GM.gmBlackBoxX % 4)) % 4;
+    int iBmp_h = GM.gmBlackBoxY;
+    int Level = 17;
+    int x, y;
+    DWORD Alpha, Color;
+    memset(pBits, 0, hMappedResource.RowPitch * TM.tmHeight);
+    for (y = iOfs_y; y < iOfs_y + iBmp_h; y++)
+    {
+        for (x = iOfs_x; x < iOfs_x + iBmp_w; x++)
+        {
+            Alpha = (255 * ptr.get()[x - iOfs_x + iBmp_w * (y - iOfs_y)]) / (Level - 1);
+            Color = 0x00ffffff | (Alpha << 24);
+
+            memcpy((BYTE*)pBits + hMappedResource.RowPitch * y + 4 * x, &Color, sizeof(DWORD));
+        }
+    }
+
+    context->Unmap(texture2d, 0);
+
+    if (!texture->Create(device, static_cast<ID3D11Resource*>(texture2d)))
+    {
+        return false;
+    }
+
+    return SUCCEEDED(hr);
+}
+
+bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)
+{
+    HDC hdc = GetDC(NULL);
+    HFONT oldFont = (HFONT)SelectObject(hdc, mFontHandle);
+
+    int textureWidth = 0;
+    int textureHeight = 0;
+
+    const size_t textLength = wcslen(text);
+    std::unique_ptr<TEXTMETRIC> tmArray(new TEXTMETRIC[textLength]);
+    std::unique_ptr<GLYPHMETRICS> gmArray(new GLYPHMETRICS[textLength]);
+
+    for (s32 index = 0; index < textLength; ++index)
+    {
+        UINT code = (UINT)text[index];
+        
+        TEXTMETRIC* TM = &tmArray.get()[index];
+        GLYPHMETRICS* GM = &gmArray.get()[index];
+
+        GetTextMetrics(hdc, TM);
+        CONST MAT2 Mat = { { 0,1 },{ 0,0 },{ 0,0 },{ 0,1 } };
+        DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, GM, 0, NULL, &Mat);
+        std::unique_ptr<BYTE> ptr(new BYTE[size]);
+        GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, GM, size, ptr.get(), &Mat);
+
+        textureWidth += GM->gmCellIncX;
+        textureHeight = max(textureHeight, TM->tmHeight);
+    }
+    
+    // デバイスコンテキストとフォントハンドルの開放
+    SelectObject(hdc, oldFont);
+    //DeleteObject(mFontHandle);
+    ReleaseDC(NULL, hdc);
+
+    // CPUで書き込みができるテクスチャを作成
+    D3D11_TEXTURE2D_DESC desc;
+    memset(&desc, 0, sizeof(desc));
+    desc.Width = textureWidth;
+    desc.Height = textureHeight;
+    desc.MipLevels = 1;
+    desc.ArraySize = 1;
+    // RGBA(255,255,255,255)タイプ
+    desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    desc.SampleDesc.Count = 1;
+    // 動的（書き込みするための必須条件）
+    desc.Usage = D3D11_USAGE_DYNAMIC;
+    // シェーダリソースとして使う	
+    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    // CPUからアクセスして書き込みOK
+    desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+    ID3D11Texture2D* texture2d;
+    HRESULT hr = device->CreateTexture2D(&desc, 0, &texture2d);
+    assert(SUCCEEDED(hr));
+
+    // フォント情報をテクスチャに書き込む部分
+    D3D11_MAPPED_SUBRESOURCE hMappedResource;
+    hr = context->Map(
+        texture2d,
+        0,
+        D3D11_MAP_WRITE_DISCARD,
+        0,
+        &hMappedResource);
+    assert(SUCCEEDED(hr));
+
+    BYTE* pBits = (BYTE*)hMappedResource.pData;
+
+    for (s32 index = 0; index < textLength; ++index)
+    {
+        TEXTMETRIC* TM = &tmArray.get()[index];
+        GLYPHMETRICS* GM = &gmArray.get()[index];
+
+        // フォント情報の書き込み
+        // iOfs_x, iOfs_y : 書き出し位置(左上)
+        // iBmp_w, iBmp_h : フォントビットマップの幅高
+        // Level : α値の段階 (GGO_GRAY4_BITMAPなので17段階)
+        int iOfs_x = GM->gmptGlyphOrigin.x;
+        int iOfs_y = TM->tmAscent - GM->gmptGlyphOrigin.y;
+        int iBmp_w = GM->gmBlackBoxX + (4 - (GM->gmBlackBoxX % 4)) % 4;
+        int iBmp_h = GM->gmBlackBoxY;
+        int Level = 17;
+        int x, y;
+        DWORD Alpha, Color;
+        memset(pBits, 0, hMappedResource.RowPitch * TM->tmHeight);
+        for (y = iOfs_y; y < iOfs_y + iBmp_h; y++)
+        {
+            for (x = iOfs_x; x < iOfs_x + iBmp_w; x++)
+            {
+                Alpha = 0;// (255 * ptr.get()[x - iOfs_x + iBmp_w * (y - iOfs_y)]) / (Level - 1);
+                Color = 0x00ffffff | (Alpha << 24);
+
+                memcpy((BYTE*)pBits + hMappedResource.RowPitch * y + 4 * x, &Color, sizeof(DWORD));
+            }
+        }
+    }
+
+    context->Unmap(texture2d, 0);
+
+    if (!texture->Create(device, static_cast<ID3D11Resource*>(texture2d)))
+    {
+        return false;
+    }
+
+    return SUCCEEDED(hr);
 }
 
 bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)

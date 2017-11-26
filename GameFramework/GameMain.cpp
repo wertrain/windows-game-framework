@@ -87,7 +87,7 @@ void Draw(ID3D11DeviceContext* context)
 {
     context->OMSetBlendState(s_BlendState, 0, 0xffffffff);
 
-    s_Render2D.Render(context, 200.0f, 100.0f, s_Texure.GetWidth(), s_Texure.GetHeight(), &s_Texure);
+    s_Render2D.Render(context, 200.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 }
 
 /**
