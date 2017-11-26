@@ -1,7 +1,8 @@
 #include <d3d11.h>
 
 #include "../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
-#include "../System/Includes.h"
+#include "../Common/Includes.h"
+#include "../System/Utility.h"
 #include "Texture.h"
 
 namespace Framework {
@@ -12,7 +13,7 @@ Texture::Texture()
     , mShaderResView(nullptr)
     , mSampler(nullptr)
 {
-
+    Framework::System::Utility::memset_zero(&mTexDesc, sizeof(D3D11_TEXTURE2D_DESC));
 }
 
 Texture::~Texture()
@@ -71,6 +72,9 @@ bool Texture::CreateFromMemory(ID3D11Device* device, const void* buffer, const s
         return false;
     }
 
+    // テクスチャ情報を取得する
+    static_cast<ID3D11Texture2D*>(mTexture)->GetDesc(&mTexDesc);
+
     // サンプラー作成
     D3D11_SAMPLER_DESC sampDesc;
     ZeroMemory(&sampDesc, sizeof(sampDesc));
@@ -95,16 +99,15 @@ bool Texture::Create(ID3D11Device* device, ID3D11Resource* texture)
     mTexture = texture;
 
     // テクスチャ情報を取得する
-    D3D11_TEXTURE2D_DESC texDesc;
-    static_cast<ID3D11Texture2D*>(mTexture)->GetDesc(&texDesc);
+    static_cast<ID3D11Texture2D*>(mTexture)->GetDesc(&mTexDesc);
 
     // ShaderResourceViewの情報を作成する
     D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
     ZeroMemory(&srvDesc, sizeof(srvDesc));
-    srvDesc.Format = texDesc.Format;
+    srvDesc.Format = mTexDesc.Format;
     srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
     srvDesc.Texture2D.MostDetailedMip = 0;
-    srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
+    srvDesc.Texture2D.MipLevels = mTexDesc.MipLevels;
 
     // ShaderResourceViewを作成する
     HRESULT hr = device->CreateShaderResourceView(mTexture, &srvDesc, &mShaderResView);
@@ -145,6 +148,16 @@ const ID3D11SamplerState* Texture::GetSamplerState()
 const ID3D11ShaderResourceView* Texture::GetShaderResourceView()
 {
     return mShaderResView;
+}
+
+const u32 Texture::GetWidth()
+{
+    return mTexDesc.Width;
+}
+
+const u32 Texture::GetHeight()
+{
+    return mTexDesc.Height;
 }
 
 } // namespace Graphics

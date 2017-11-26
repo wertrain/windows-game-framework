@@ -1,3 +1,5 @@
+#ifdef _WIN64
+
 // メモリリーク検出の有効化
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
@@ -14,19 +16,15 @@
 #include <cstdint>
 #include "Common/Includes.h"
 #include "Core/DirectX.h"
+#include "System/Application.h"
 #include "GameMain.h"
 #include "Constants.h"
-
-namespace Framework {
 
 struct ThreadParam 
 {
     DWORD id;       // スレッドID
     HANDLE handle;  // スレッドハンドル
     bool exit;      // 終了フラグ
-
-    System::DirectX directX;
-    HWND hWnd;
 }
 s_ThreadParam;
 
@@ -47,8 +45,12 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     // 初期時間の取得
     beforeTime = timeGetTime();
 
+    Framework::System::Application& application = Framework::System::Application::GetInstance();
+    HWND hwnd = application.GetWindowHandle();
+    Framework::System::DirectX* directX = application.GetDirectX();
+
     // ゲームループ
-    while (IsWindow(param->hWnd))
+    while (IsWindow(hwnd))
     {
         DWORD nowTime, progress;
         // 現在の時間を取得
@@ -68,14 +70,14 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         Update(nowTime);
 
         // --- 描画処理 ---
-        param->directX.ClearRenderView();
+        directX->ClearRenderView();
 
-        Draw(param->directX.GetDeviceContext());
+        Draw(directX->GetDeviceContext());
 
-        param->directX.Present();
+        directX->Present();
 
         // 理想時間の算出
-        DWORD idealTime = (DWORD)(frames * (1000.0 / Constants::FPS));
+        DWORD idealTime = (DWORD)(frames * (1000.0 / Framework::Constants::FPS));
         if (idealTime > progress)
         {
             Sleep(idealTime - progress);
@@ -86,8 +88,6 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     return TRUE;
 }
 
-} // namespace Framework 
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     DWORD dwParam;
@@ -96,9 +96,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         case WM_DESTROY:
             // スレッドを終了させる
-            Framework::s_ThreadParam.exit = true;
-            GetExitCodeThread(Framework::s_ThreadParam.handle, &dwParam);
-            WaitForSingleObject(Framework::s_ThreadParam.handle, INFINITE);
+            s_ThreadParam.exit = true;
+            GetExitCodeThread(s_ThreadParam.handle, &dwParam);
+            WaitForSingleObject(s_ThreadParam.handle, INFINITE);
             PostQuitMessage(0);
             return 0;
 
@@ -116,46 +116,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     // メモリリークチェック
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    HWND hWnd;
-    WNDCLASSEX winc;
-    MSG msg;
-
-    // 内部の情報を全て0
-    ZeroMemory(&winc, sizeof(WNDCLASSEX));
-
-    winc.cbSize = sizeof(WNDCLASSEX);
-    winc.style = CS_HREDRAW | CS_VREDRAW;
-    winc.lpfnWndProc = WndProc;
-    winc.cbClsExtra = winc.cbWndExtra = 0;
-    winc.hInstance = hInstance;
-    winc.hIcon = LoadIcon(NULL , IDI_APPLICATION);
-    winc.hCursor = LoadCursor(NULL , IDC_ARROW);
-    winc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-    winc.lpszClassName = TEXT("GameFramework");
-
-    if (!RegisterClassEx(&winc)) return 0;
-
-    DWORD dwStyle = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX; // ウィンドウの大きさ変更できないように
-
-    hWnd = CreateWindowEx(
-        0, TEXT("GameFramework") , TEXT("Windows GameFramework") ,
-        dwStyle,
-        CW_USEDEFAULT, CW_USEDEFAULT ,
-        CW_USEDEFAULT, CW_USEDEFAULT ,
-        NULL, NULL ,
-        hInstance, NULL
-    );
-
-    if (hWnd == NULL) return 0;
-
-    // COM ライブラリを初期化
-    // これ呼ばなくて大丈夫な状況もあるのか？
-    HRESULT hr = ::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-    if (FAILED(hr)) return 0;
-
-    // DirectXの初期化
-    Framework::System::DirectX* directX = &Framework::s_ThreadParam.directX;
-    directX->Initialize(hWnd, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
+    Framework::System::Application& application = Framework::System::Application::GetInstance();
+    if (!application.Create(hInstance, WndProc))
+    {
+        return 0;
+    }
+    Framework::System::DirectX* directX = application.GetDirectX();
 
     // ゲームオブジェクトの作成
     if (!Create(directX->GetDevice(), directX->GetDeviceContext()))
@@ -164,27 +130,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         return 0;
     }
 
-    // ウィンドウのサイズ調整
-    RECT window_rect;
-    SetRect(&window_rect, 0, 0, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
-    AdjustWindowRectEx(&window_rect, GetWindowLong(hWnd, GWL_STYLE), GetMenu(hWnd) != NULL, GetWindowLong(hWnd, GWL_EXSTYLE));
-    const int nWidth  = window_rect.right  - window_rect.left;
-    const int nHeight = window_rect.bottom - window_rect.top;
-    SetWindowPos(hWnd, NULL, 0, 0, nWidth, nHeight, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
-
     // スレッドの作成と実行
-    Framework::s_ThreadParam.hWnd = hWnd;
-    Framework::s_ThreadParam.exit = false;
-    Framework::s_ThreadParam.handle = CreateThread(
+    s_ThreadParam.exit = false;
+    s_ThreadParam.handle = CreateThread(
         NULL,                              // ハンドルを他のプロセスと共有する場合
         0,                                 // スタックサイズ(デフォルト:0)
-        Framework::GameMainFunc,           // スレッド関数名
-        reinterpret_cast<LPVOID>(&Framework::s_ThreadParam), // スレッドに渡す構造体
+        GameMainFunc,                      // スレッド関数名
+        reinterpret_cast<LPVOID>(&s_ThreadParam), // スレッドに渡す構造体
         0,                                 // 0:作成と同時に実行
-        &Framework::s_ThreadParam.id);     // スレッドID
+        &s_ThreadParam.id);     // スレッドID
 
-    ShowWindow(hWnd, nCmdShow); // ウィンドウ表示
+    application.GetInstance().ShowWindow(nCmdShow); // ウィンドウ表示
 
+    MSG msg;
     while (GetMessage(&msg, NULL, 0, 0) > 0)
     {
         DispatchMessage(&msg);
@@ -192,7 +150,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
 
     Destroy();
 
-    directX->Finalize();
+    application.Destroy();
 
     return 0;
 }
+
+#endif // _WIN64

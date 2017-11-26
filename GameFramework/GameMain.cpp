@@ -1,16 +1,16 @@
 #include "Framework/Includes.h"
 
-#include "Framework/Graphics/Text.h"
-#include "Framework/Graphics/Texture.h"
-#include "Framework/Graphics/Render2D.h"
+#include "Framework/Graphics/Includes.h"
 #include "Tool/Archiver/Includes.h"
 
 Framework::Graphics::Text s_Text;
 Framework::Graphics::Texture s_Texure;
 Framework::Graphics::Render2D s_Render2D;
 
-#define ARCHIVER_TEST
-//#define TEXTWRITE_TEST
+ID3D11BlendState* s_BlendState;
+
+//#define ARCHIVER_TEST
+#define TEXTWRITE_TEST
 
 #ifdef ARCHIVER_TEST
 void ArchiverTest(ID3D11Device* device)
@@ -33,7 +33,7 @@ void ArchiverTest(ID3D11Device* device)
 #ifdef TEXTWRITE_TEST
 void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    s_Text.Create(TEXT("uzura.ttf"), TEXT("うずらフォント"), 24);
+    s_Text.Create(TEXT("APJapanesefontF.ttf"), TEXT("あんずもじ湛"), 200);
     s_Text.WriteText(device, context, &s_Texure);
 }
 #endif // TEXTWRITE_TEST
@@ -43,12 +43,28 @@ void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+    //ブレンド描画の設定
+    D3D11_BLEND_DESC BlendDesc;
+    ZeroMemory(&BlendDesc, sizeof(D3D11_BLEND_DESC));
+    BlendDesc.AlphaToCoverageEnable = FALSE;
+    BlendDesc.IndependentBlendEnable = FALSE;
+    BlendDesc.RenderTarget[0].BlendEnable = TRUE;
+    BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    BlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    device->CreateBlendState(&BlendDesc, &s_BlendState);
+
     s_Render2D.Create(device);
 
 #if defined ARCHIVER_TEST
     ArchiverTest(device);
 #elif defined TEXTWRITE_TEST
-    TextWriteTest(device);
+    TextWriteTest(device, context);
 #else
     s_Texure.CreateFromFile(device, TEXT("usa.png"));
 #endif
@@ -69,7 +85,9 @@ void Update(const DWORD /*nowTime*/)
  */
 void Draw(ID3D11DeviceContext* context)
 {
-    s_Render2D.Render(context, 200.0f, 100.0f, 400.0f, 300.0f, &s_Texure);
+    context->OMSetBlendState(s_BlendState, 0, 0xffffffff);
+
+    s_Render2D.Render(context, 200.0f, 100.0f, s_Texure.GetWidth(), s_Texure.GetHeight(), &s_Texure);
 }
 
 /**

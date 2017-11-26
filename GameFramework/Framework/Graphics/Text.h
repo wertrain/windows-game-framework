@@ -21,7 +21,9 @@ public:
     void Render(ID3D11DeviceContext* context);
 
 private:
-    HFONT m_FontHandle;
+    std::wstring mFontFileName;
+    HFONT mFontHandle;
+    DESIGNVECTOR mDesign;
 };
 
 } // namespace Graphics

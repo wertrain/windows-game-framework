@@ -105,6 +105,12 @@
     <ClInclude Include="Tool\Archiver\Archiver\Archiver.h">
       <Filter>Framework\Tool\Archiver\Archiver</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\System\Application.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Graphics\Includes.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -158,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp">
       <Filter>Framework\Tool\Archiver\Archiver</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Application.cpp">
+      <Filter>Framework\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

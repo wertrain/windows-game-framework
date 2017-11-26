@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 #include <memory>
 #include <Shlwapi.h>
+#include <string>
 #include "../Common/Includes.h"
 #include "../System/Includes.h"
 #include "Texture.h"
@@ -85,7 +86,8 @@ VOID funcSaveFile(HDC hDC, LPCTSTR lpFname)
 
 Text::Text()
     : GraphicsBase()
-    , m_FontHandle(nullptr)
+    , mFontFileName(std::wstring())
+    , mFontHandle(nullptr)
 {
 
 }
@@ -98,12 +100,15 @@ Text::~Text()
 bool Text::Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const s32 font_size)
 {
     // フォントを使えるようにする
-    DESIGNVECTOR design;
-    AddFontResourceEx(
+    if (0 == AddFontResourceEx(
         font_ttf_file, // ttfファイルへのパス
         FR_PRIVATE,
-        &design
-    );
+        &mDesign
+    ))
+    {
+        return false;
+    }
+    mFontFileName = font_ttf_file;
 
     // フォントの生成
     LOGFONT lf = {
@@ -116,27 +121,27 @@ bool Text::Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const 
         TEXT("")
     };
     wcscpy_s(lf.lfFaceName, face_name);
-    m_FontHandle = CreateFontIndirect(&lf);
+    mFontHandle = CreateFontIndirect(&lf);
 
-    // リソース削除
-    /*RemoveFontResourceEx(
-        font_ttf_file, 
-        FR_PRIVATE,
-        &design
-    );*/
+    assert(mFontHandle);
 
-    return m_FontHandle != NULL;
+    return mFontHandle != NULL;
 }
 
 void Text::Destroy()
 {
-
+    // リソース削除
+    RemoveFontResourceEx(
+        mFontFileName.c_str(),
+        FR_PRIVATE,
+        &mDesign
+    );
 }
 
 bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)
 {
     HDC hdc = GetDC(NULL);
-    HFONT oldFont = (HFONT)SelectObject(hdc, m_FontHandle);
+    HFONT oldFont = (HFONT)SelectObject(hdc, mFontHandle);
     UINT code = (UINT)L'あ';     // テクスチャに書き込む文字
 
     // フォントビットマップ取得
@@ -146,11 +151,14 @@ bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture
     CONST MAT2 Mat = { { 0,1 },{ 0,0 },{ 0,0 },{ 0,1 } };
     DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, 0, NULL, &Mat);
     std::unique_ptr<BYTE> ptr(new BYTE[size]);
-    GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, size, ptr.get(), &Mat);
+    if (GDI_ERROR == GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, size, ptr.get(), &Mat))
+    {
+        return false;
+    }
     
     // デバイスコンテキストとフォントハンドルの開放
     SelectObject(hdc, oldFont);
-    DeleteObject(m_FontHandle);
+    DeleteObject(mFontHandle);
     ReleaseDC(NULL, hdc);
 
     // CPUで書き込みができるテクスチャを作成
@@ -172,6 +180,7 @@ bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture
 
     ID3D11Texture2D* texture2d;
     HRESULT hr = device->CreateTexture2D(&desc, 0, &texture2d);
+    assert(SUCCEEDED(hr));
 
     // フォント情報をテクスチャに書き込む部分
     D3D11_MAPPED_SUBRESOURCE hMappedResource;
@@ -181,6 +190,7 @@ bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context, Texture
         D3D11_MAP_WRITE_DISCARD,
         0,
         &hMappedResource);
+    assert(SUCCEEDED(hr));
 
     BYTE* pBits = (BYTE*)hMappedResource.pData;
     // フォント情報の書き込み

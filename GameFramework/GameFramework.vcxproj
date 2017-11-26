@@ -74,6 +74,7 @@
     <ClInclude Include="Framework\GameMain.h" />
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
+    <ClInclude Include="Framework\Graphics\Includes.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Primitive.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Quadrangle.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Triangle.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="Framework\Graphics\Text.h" />
     <ClInclude Include="Framework\Graphics\Texture.h" />
     <ClInclude Include="Framework\Includes.h" />
+    <ClInclude Include="Framework\System\Application.h" />
     <ClInclude Include="Framework\System\File.h" />
     <ClInclude Include="Framework\System\Includes.h" />
     <ClInclude Include="Framework\System\Utility.h" />
@@ -101,6 +103,7 @@
     <ClCompile Include="Framework\Graphics\Render2D.cpp" />
     <ClCompile Include="Framework\Graphics\Text.cpp" />
     <ClCompile Include="Framework\Graphics\Texture.cpp" />
+    <ClCompile Include="Framework\System\Application.cpp" />
     <ClCompile Include="Framework\System\File.cpp" />
     <ClCompile Include="Framework\System\Utility.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />

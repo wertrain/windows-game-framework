@@ -6,6 +6,7 @@ struct ID3D11DeviceContext;
 struct ID3D11Texture2D;
 struct ID3D11ShaderResourceView;
 struct ID3D11SamplerState;
+struct D3D11_TEXTURE2D_DESC;
 
 namespace Framework {
 namespace Graphics {
@@ -21,11 +22,14 @@ public:
     const ID3D11Resource* GetTexture();
     const ID3D11SamplerState* GetSamplerState();
     const ID3D11ShaderResourceView* GetShaderResourceView();
+    const u32 GetWidth();
+    const u32 GetHeight();
 
 protected:
     ID3D11Resource* mTexture;
     ID3D11ShaderResourceView* mShaderResView;
     ID3D11SamplerState* mSampler;
+    D3D11_TEXTURE2D_DESC mTexDesc;
 };
 
 } // namespace Graphics 
