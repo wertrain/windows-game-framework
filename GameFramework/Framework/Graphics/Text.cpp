@@ -3,6 +3,7 @@
 #include <memory>
 #include <Shlwapi.h>
 #include <string>
+#include <vector>
 #include "../Common/Includes.h"
 #include "../System/Includes.h"
 #include "Texture.h"
@@ -243,7 +244,7 @@ bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceCont
     const size_t textLength = wcslen(text);
     std::unique_ptr<TEXTMETRIC> tmArray(new TEXTMETRIC[textLength]);
     std::unique_ptr<GLYPHMETRICS> gmArray(new GLYPHMETRICS[textLength]);
-
+    std::vector<std::unique_ptr<BYTE>> ptrVector;
     for (s32 index = 0; index < textLength; ++index)
     {
         UINT code = (UINT)text[index];
@@ -259,6 +260,8 @@ bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceCont
 
         textureWidth += GM->gmCellIncX;
         textureHeight = max(textureHeight, TM->tmHeight);
+
+        ptrVector.push_back(std::move(ptr));
     }
     
     // デバイスコンテキストとフォントハンドルの開放
@@ -320,7 +323,7 @@ bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceCont
         {
             for (x = iOfs_x; x < iOfs_x + iBmp_w; x++)
             {
-                Alpha = 0;// (255 * ptr.get()[x - iOfs_x + iBmp_w * (y - iOfs_y)]) / (Level - 1);
+                Alpha = (255 * ptrVector[index].get()[x - iOfs_x + iBmp_w * (y - iOfs_y)]) / (Level - 1);
                 Color = 0x00ffffff | (Alpha << 24);
 
                 memcpy((BYTE*)pBits + hMappedResource.RowPitch * y + 4 * x, &Color, sizeof(DWORD));
