@@ -302,23 +302,25 @@ bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceCont
 
     BYTE* pBits = (BYTE*)hMappedResource.pData;
 
+    int x_Offset = 0;
     for (s32 index = 0; index < textLength; ++index)
     {
         TEXTMETRIC* TM = &tmArray.get()[index];
         GLYPHMETRICS* GM = &gmArray.get()[index];
 
+
         // フォント情報の書き込み
         // iOfs_x, iOfs_y : 書き出し位置(左上)
         // iBmp_w, iBmp_h : フォントビットマップの幅高
         // Level : α値の段階 (GGO_GRAY4_BITMAPなので17段階)
-        int iOfs_x = GM->gmptGlyphOrigin.x;
+        int iOfs_x = GM->gmptGlyphOrigin.x + x_Offset;
         int iOfs_y = TM->tmAscent - GM->gmptGlyphOrigin.y;
         int iBmp_w = GM->gmBlackBoxX + (4 - (GM->gmBlackBoxX % 4)) % 4;
         int iBmp_h = GM->gmBlackBoxY;
         int Level = 17;
         int x, y;
         DWORD Alpha, Color;
-        memset(pBits, 0, hMappedResource.RowPitch * TM->tmHeight);
+        //memset(pBits, 0, hMappedResource.RowPitch * TM->tmHeight);
         for (y = iOfs_y; y < iOfs_y + iBmp_h; y++)
         {
             for (x = iOfs_x; x < iOfs_x + iBmp_w; x++)
@@ -329,6 +331,7 @@ bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceCont
                 memcpy((BYTE*)pBits + hMappedResource.RowPitch * y + 4 * x, &Color, sizeof(DWORD));
             }
         }
+        x_Offset += iBmp_w;
     }
 
     context->Unmap(texture2d, 0);

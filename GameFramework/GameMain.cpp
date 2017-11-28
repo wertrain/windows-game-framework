@@ -34,7 +34,7 @@ void ArchiverTest(ID3D11Device* device)
 void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
 {
     s_Text.Create(TEXT("APJapanesefontF.ttf"), TEXT("‚ ‚ñ‚¸‚à‚¶’X"), 200);
-    s_Text.WriteText(device, context, &s_Texure);
+    s_Text.WriteText(L"abcdf", device, context, &s_Texure);
 }
 #endif // TEXTWRITE_TEST
 
