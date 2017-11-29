@@ -33,8 +33,8 @@ void ArchiverTest(ID3D11Device* device)
 #ifdef TEXTWRITE_TEST
 void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    s_Text.Create(TEXT("APJapanesefontF.ttf"), TEXT("‚ ‚ñ‚¸‚à‚¶’X"), 200);
-    s_Text.WriteText(L"abcdf", device, context, &s_Texure);
+    s_Text.Create(TEXT("APJapanesefontF.ttf"), TEXT("‚ ‚ñ‚¸‚à‚¶’X"), 180);
+    s_Text.WriteText(L"abcdf‚ ‚¢‚¤", device, context, &s_Texure);
 }
 #endif // TEXTWRITE_TEST
 
@@ -87,7 +87,7 @@ void Draw(ID3D11DeviceContext* context)
 {
     context->OMSetBlendState(s_BlendState, 0, 0xffffffff);
 
-    s_Render2D.Render(context, 200.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
+    s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 }
 
 /**
