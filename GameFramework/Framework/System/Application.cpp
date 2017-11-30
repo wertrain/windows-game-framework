@@ -24,8 +24,10 @@ Application& Application::GetInstance()
 }
 
 Application::Application()
+#ifdef _WIN64
     : mHWnd(NULL)
     , mDirectX(nullptr)
+#endif // _WIN64
 {
 
 }
