@@ -7,13 +7,8 @@
 
 #include <windows.h>
 #include <time.h>
-#include <tchar.h>
-#include <mmsystem.h>
-#pragma comment (lib, "winmm.lib")
-
 #include <d3d11.h>
-#include <atlbase.h>
-#include <cstdint>
+
 #include "Common/Includes.h"
 #include "Core/DirectX.h"
 #include "System/Application.h"
