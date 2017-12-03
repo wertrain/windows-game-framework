@@ -5,6 +5,9 @@ namespace Framework {
 namespace System {
 namespace File {
 
+/// <summary>
+/// バイナリファイルリーダー
+/// </summary>
 class Binary
 {
 public:

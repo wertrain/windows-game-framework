@@ -6,6 +6,9 @@ namespace System {
 
 class DirectX;
 
+/// <summary>
+/// アプリケーション管理クラス
+/// </summary>
 class Application
 {
 public:

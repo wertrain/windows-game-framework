@@ -5,9 +5,9 @@ namespace Framework {
 namespace System {
 namespace Utility {
 
-/**
- * 時間計測用ユーティリティ
- */
+/// <summary>
+/// 時間計測用ユーティリティ
+/// </summary>
 class Stopwatch
 {
 public:
