@@ -117,6 +117,9 @@
     <ClInclude Include="Framework\System\Utility\Stopwatch.h">
       <Filter>Framework\System\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Common\Debug.h">
+      <Filter>Framework\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -176,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="Framework\System\Utility\Stopwatch.cpp">
       <Filter>Framework\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Common\Debug.cpp">
+      <Filter>Framework\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

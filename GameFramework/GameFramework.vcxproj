@@ -64,6 +64,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Common\Debug.h" />
     <ClInclude Include="Framework\Common\Defines.h" />
     <ClInclude Include="Framework\Common\Includes.h" />
     <ClInclude Include="Framework\Common\Types.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="Tool\Archiver\Includes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Common\Debug.cpp" />
     <ClCompile Include="Framework\Common\Defines.cpp" />
     <ClCompile Include="Framework\Common\Types.cpp" />
     <ClCompile Include="Framework\Core\DirectX.cpp" />
