@@ -86,6 +86,7 @@
     <ClInclude Include="Framework\System\File.h" />
     <ClInclude Include="Framework\System\Includes.h" />
     <ClInclude Include="Framework\System\Utility.h" />
+    <ClInclude Include="Framework\System\Utility\Stopwatch.h" />
     <ClInclude Include="Tool\Archiver\Archiver\Archiver.h" />
     <ClInclude Include="Tool\Archiver\Includes.h" />
   </ItemGroup>
@@ -106,6 +107,7 @@
     <ClCompile Include="Framework\System\Application.cpp" />
     <ClCompile Include="Framework\System\File.cpp" />
     <ClCompile Include="Framework\System\Utility.cpp" />
+    <ClCompile Include="Framework\System\Utility\Stopwatch.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp" />

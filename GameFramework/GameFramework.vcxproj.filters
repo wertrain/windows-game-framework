@@ -37,6 +37,9 @@
     <Filter Include="Framework\Tool\Archiver\Archiver">
       <UniqueIdentifier>{0dd249e4-6e5e-46b0-a402-33e955fa8027}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\System\Utility">
+      <UniqueIdentifier>{25f31d81-e122-40a0-9864-76ebff0a484d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
@@ -111,6 +114,9 @@
     <ClInclude Include="Framework\Graphics\Includes.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\System\Utility\Stopwatch.h">
+      <Filter>Framework\System\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -167,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="Framework\System\Application.cpp">
       <Filter>Framework\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Utility\Stopwatch.cpp">
+      <Filter>Framework\System\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
