@@ -78,6 +78,15 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
             Sleep(idealTime - progress);
         }
 
+        if (progress >= 1000)
+        {
+            beforeTime = nowTime;
+            frames = 0;
+        }
+        else
+        {
+            ++frames;
+        }
         if (param->exit) break;
     }
     return TRUE;
