@@ -6,5 +6,6 @@
 
 #include "Defines.h"
 #include "Types.h"
+#include "Debug.h"
 
 #endif // COMMON_INCLUDES_H_
