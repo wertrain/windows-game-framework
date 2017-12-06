@@ -9,7 +9,7 @@ void DebugPrintf(wchar_t* pszFormat, ...)
 #ifdef _DEBUG
 #ifdef _WIN64
 
-    va_list	argp;
+    va_list argp;
     TCHAR pszBuf[256];
     va_start(argp, pszFormat);
 
