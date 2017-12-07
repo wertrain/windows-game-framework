@@ -30,7 +30,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     // フレーム数と以前の時間
     DWORD frames = 0;
     // FPSの表示用
-    TCHAR str[16] = {0};
+    //TCHAR str[16] = {0};
     // キーボードの状態を格納
     //BYTE keyTable[256];
 
