@@ -40,6 +40,9 @@
     <Filter Include="Framework\System\Utility">
       <UniqueIdentifier>{25f31d81-e122-40a0-9864-76ebff0a484d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Graphics\Font">
+      <UniqueIdentifier>{ea43b31b-d624-4856-890c-38651c13950b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
@@ -120,6 +123,9 @@
     <ClInclude Include="Framework\Common\Debug.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\Font\DefaultFont.h">
+      <Filter>Framework\Graphics\Font</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -182,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Common\Debug.cpp">
       <Filter>Framework\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Font\DefaultFont.cpp">
+      <Filter>Framework\Graphics\Font</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

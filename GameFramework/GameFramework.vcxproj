@@ -74,6 +74,7 @@
     <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
     <ClInclude Include="Framework\GameMain.h" />
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
+    <ClInclude Include="Framework\Graphics\Font\DefaultFont.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Includes.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Primitive.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="Framework\Core\ObjectBase.cpp" />
     <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
+    <ClCompile Include="Framework\Graphics\Font\DefaultFont.cpp" />
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive\Primitive.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive\Quadrangle.cpp" />
