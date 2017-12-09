@@ -9,11 +9,11 @@ namespace Graphics {
 class DefaultFont 
 {
 public:
-    DefaultFont() ;
+    DefaultFont();
     virtual ~DefaultFont();
 };
 
 } // namespace Graphics
 } // namespace Framework
 
-#endif // TEXT_H_
+#endif // DEFAULTFONT_H_
