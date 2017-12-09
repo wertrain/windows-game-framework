@@ -11,6 +11,10 @@ class DefaultFont
 public:
     DefaultFont();
     virtual ~DefaultFont();
+
+public:
+    bool Create(ID3D11Device* device);
+    void Destroy();
 };
 
 } // namespace Graphics

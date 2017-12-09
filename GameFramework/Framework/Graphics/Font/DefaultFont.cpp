@@ -1,3 +1,5 @@
+#include <d3d11.h>
+
 #include "DefaultFont.h"
 
 namespace Framework {
@@ -9,6 +11,16 @@ DefaultFont::DefaultFont()
 }
 
 DefaultFont::~DefaultFont()
+{
+
+}
+
+bool Create(ID3D11Device* device)
+{
+    return true;
+}
+
+void Destroy()
 {
 
 }
