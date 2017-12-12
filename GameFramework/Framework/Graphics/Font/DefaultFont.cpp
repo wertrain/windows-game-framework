@@ -363,15 +363,5 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     context->DrawIndexed(mVertexNum, 0, 0);
 }
 
-bool Create(ID3D11Device* device)
-{
-    return true;
-}
-
-void Destroy()
-{
-
-}
-
 } // namespace Graphics
 } // namespace Framework
