@@ -50,39 +50,21 @@ bool DefaultFont::Create(
     const wchar_t* texture_filename
 )
 {
-    const bool use_texture = texture_filename != nullptr;
-
     mVertexDataSize = vertex_data_size;
     mVertexNum = vertex_num;
 
     Framework::System::File::Binary vsFile;
     Framework::System::File::Binary psFile;
 
-    if (use_texture)
+    // コンパイル済みバーテックスシェーダーファイルの読み込み
+    if (!vsFile.Read(L"vs_2d_instancing.cso"))
     {
-        // コンパイル済みバーテックスシェーダーファイルの読み込み
-        if (!vsFile.Read(L"vs_2d_instancing.cso"))
-        {
-            return false;
-        }
-        // コンパイル済みピクセルシェーダーファイルの読み込み
-        if (!psFile.Read(L"ps_2d_instancing.cso"))
-        {
-            return false;
-        }
+        return false;
     }
-    else
+    // コンパイル済みピクセルシェーダーファイルの読み込み
+    if (!psFile.Read(L"ps_2d_instancing.cso"))
     {
-        // コンパイル済みバーテックスシェーダーファイルの読み込み
-        if (!vsFile.Read(L"vs_2d_instancing.cso"))
-        {
-            return false;
-        }
-        // コンパイル済みピクセルシェーダーファイルの読み込み
-        if (!psFile.Read(L"ps_2d_instancing.cso"))
-        {
-            return false;
-        }
+        return false;
     }
 
     // 頂点シェーダー生成
@@ -108,7 +90,7 @@ bool DefaultFont::Create(
         { "MATRIX",   2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
         { "MATRIX",   3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
-    UINT elem_num = use_texture ? ARRAYSIZE(layout) : 1;
+    const UINT elem_num = ARRAYSIZE(layout);
 
     // 入力レイアウト作成
     HRESULT hr = device->CreateInputLayout(layout, elem_num, vsFile.Get(), vsFile.Size(), &mVertexLayout);
@@ -153,7 +135,7 @@ bool DefaultFont::Create(
     }
     delete[] indices;
 
-    if (use_texture)
+    /*if (use_texture)
     {
         // テクスチャ作成
         hr = DirectX::CreateWICTextureFromFile(device, texture_filename, &mTexture, &mShaderResView);
@@ -175,7 +157,7 @@ bool DefaultFont::Create(
         if (FAILED(hr)) {
             return hr;
         }
-    }
+    }*/
 
     // 定数バッファ
     {
