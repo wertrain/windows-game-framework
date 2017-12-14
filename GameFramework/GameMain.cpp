@@ -10,7 +10,8 @@ Framework::Graphics::Render2D s_Render2D;
 ID3D11BlendState* s_BlendState;
 
 //#define ARCHIVER_TEST
-#define TEXTWRITE_TEST
+//#define TEXTWRITE_TEST
+#define DEFAULTFONT_TEST
 
 #ifdef ARCHIVER_TEST
 void ArchiverTest(ID3D11Device* device)
@@ -37,6 +38,13 @@ void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
     s_Text.WriteText(L"abcdf‚ ‚¢‚¤", device, context, &s_Texure);
 }
 #endif // TEXTWRITE_TEST
+void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
+{
+
+}
+#ifdef DEFAULTFONT_TEST
+
+#endif
 
 /**
  * create game object
@@ -65,6 +73,8 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
     ArchiverTest(device);
 #elif defined TEXTWRITE_TEST
     TextWriteTest(device, context);
+#elif defined DEFAULTFONT_TEST
+    DefaultFontTest(device, context);
 #else
     s_Texure.CreateFromFile(device, TEXT("usa.png"));
 #endif
