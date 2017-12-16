@@ -5,5 +5,6 @@
 #include "Text.h"
 #include "Texture.h"
 #include "Render2D.h"
+#include "Font/DefaultFont.h"
 
 #endif // GRAPHICS_INCLUDES_H_
