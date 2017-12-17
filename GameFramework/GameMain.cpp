@@ -6,6 +6,7 @@
 Framework::Graphics::Text s_Text;
 Framework::Graphics::Texture s_Texure;
 Framework::Graphics::Render2D s_Render2D;
+Framework::Graphics::DefaultFont s_DefaultFont;
 
 ID3D11BlendState* s_BlendState;
 
@@ -40,7 +41,7 @@ void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
 #endif // TEXTWRITE_TEST
 void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-
+    //s_DefaultFont.
 }
 #ifdef DEFAULTFONT_TEST
 

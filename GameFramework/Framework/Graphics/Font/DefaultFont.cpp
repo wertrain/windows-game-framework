@@ -98,6 +98,7 @@ bool DefaultFont::Create(
         return false;
     }
 
+    // バーテックスバッファ
     {
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
@@ -114,7 +115,7 @@ bool DefaultFont::Create(
         }
     }
 
-    //インデックスバッファ
+    // インデックスバッファ
     UINT* indices = new UINT[mVertexNum];
     for (uint32_t i = 0; i < mVertexNum; ++i)
         indices[i] = i;
