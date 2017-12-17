@@ -8,7 +8,7 @@ namespace Graphics {
 
 class DefaultFont : public GraphicsBase
 {
-protected:
+public:
     DefaultFont();
     virtual ~DefaultFont();
 

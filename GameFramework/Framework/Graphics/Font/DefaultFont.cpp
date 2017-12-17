@@ -11,6 +11,9 @@
 namespace Framework {
 namespace Graphics {
 
+static const s32 FONT_WIDTH = 10;
+static const s32 FONT_HEIGHT = 20;
+
 // シェーダ定数バッファ
 struct ConstBuffer
 {
@@ -343,7 +346,9 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
     // ポリゴン描画
-    context->DrawIndexed(mVertexNum, 0, 0);
+    //context->DrawIndexed(mVertexNum, 0, 0);
+
+    context->DrawIndexedInstanced(mVertexNum, 10, 0, 0, 0);
 }
 
 } // namespace Graphics
