@@ -11,8 +11,11 @@
 namespace Framework {
 namespace Graphics {
 
-static const s32 FONT_WIDTH = 10;
-static const s32 FONT_HEIGHT = 20;
+static const s32 FONT_X_NUM = 34;
+static const s32 FONT_Y_NUM = 20;
+static const s32 FONT_WIDTH = Constants::WIDTH / FONT_X_NUM;
+static const s32 FONT_HEIGHT = Constants::HEIGHT / FONT_Y_NUM;
+static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
 
 // シェーダ定数バッファ
 struct ConstBuffer
