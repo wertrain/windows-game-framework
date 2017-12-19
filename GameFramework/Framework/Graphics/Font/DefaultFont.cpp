@@ -22,7 +22,7 @@ struct ConstBuffer
 {
     Matrix44 mtxProj;
     Matrix44 mtxView;
-    Matrix44 mtxWorld;
+    Matrix44 mtxWorld[INSTANCE_NUM];
     Vector4 Diffuse;
 };
 
@@ -326,7 +326,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
     f32 RotateY = 0.0f;
-    cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(RotateY));
+    cbuff.mtxWorld[0] = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(RotateY));
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
     // ƒVƒF[ƒ_[‚Å‚Ís—ñ‚ð“]’u‚µ‚Ä‚©‚ç“n‚·
 
@@ -351,7 +351,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     // ƒ|ƒŠƒSƒ“•`‰æ
     //context->DrawIndexed(mVertexNum, 0, 0);
 
-    context->DrawIndexedInstanced(mVertexNum, 10, 0, 0, 0);
+    context->DrawIndexedInstanced(mVertexNum, INSTANCE_NUM, 0, 0, 0);
 }
 
 } // namespace Graphics
