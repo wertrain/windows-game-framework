@@ -326,7 +326,14 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
     f32 RotateY = 0.0f;
-    cbuff.mtxWorld[0] = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(RotateY));
+    for (s32 y = 0; y < FONT_Y_NUM; ++y)
+    {
+        for (s32 x = 0; x < FONT_X_NUM; ++x)
+        {
+            s32 index = y * FONT_X_NUM + x;
+            cbuff.mtxWorld[index] = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(RotateY));
+        }
+    }
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
     // シェーダーでは行列を転置してから渡す
 
