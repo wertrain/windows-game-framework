@@ -22,7 +22,7 @@ struct ConstBuffer
 {
     Matrix44 mtxProj;
     Matrix44 mtxView;
-    Matrix44 mtxWorld[INSTANCE_NUM];
+    Vector2 worldPos[INSTANCE_NUM];
     Vector4 Diffuse;
 };
 
@@ -91,10 +91,10 @@ bool DefaultFont::Create(
         { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
-        { "MATRIX",   0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "MATRIX",   1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "MATRIX",   2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "MATRIX",   3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "VECTOR2",  0, DXGI_FORMAT_R32G32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "VECTOR2",  1, DXGI_FORMAT_R32G32_FLOAT, 1,  8, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "VECTOR2",  2, DXGI_FORMAT_R32G32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "VECTOR2",  3, DXGI_FORMAT_R32G32_FLOAT, 1, 24, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
     const UINT elem_num = ARRAYSIZE(layout);
 
@@ -331,7 +331,8 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         for (s32 x = 0; x < FONT_X_NUM; ++x)
         {
             s32 index = y * FONT_X_NUM + x;
-            cbuff.mtxWorld[index] = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(RotateY));
+            cbuff.worldPos[index].x = x * FONT_WIDTH;
+            cbuff.worldPos[index].y = y * FONT_HEIGHT;
         }
     }
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
