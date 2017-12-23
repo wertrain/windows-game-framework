@@ -298,7 +298,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
 
 
     // サンプラー
-    if (mTexture)
+    /*if (mTexture)
     {
         u32 smp_slot = 0;
         ID3D11SamplerState* smp[1] = { mSampler };
@@ -308,7 +308,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         u32 srv_slot = 0;
         ID3D11ShaderResourceView* srv[1] = { mShaderResView };
         context->PSSetShaderResources(srv_slot, 1, srv);
-    }
+    }*/
 
     //定数バッファ
     ConstBuffer cbuff;
