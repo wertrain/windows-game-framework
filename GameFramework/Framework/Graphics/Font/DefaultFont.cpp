@@ -57,14 +57,43 @@ DefaultFont::~DefaultFont()
 
 }
 
-bool DefaultFont::Create(
-    ID3D11Device* device, ID3D11DeviceContext* context,
-    const f32* vertices, const u32 vertex_data_size, const u32 vertex_num,
-    const wchar_t* texture_filename
-)
+bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t* texture_filename)
 {
-    mVertexDataSize = vertex_data_size;
-    mVertexNum = vertex_num;
+    // 頂点データ構造体
+    struct VertexData
+    {
+        f32 x, y, z, w;
+        f32 r, g, b, a;
+        f32 u, v, s, t;
+    };
+
+    // 頂点バッファ作成
+    VertexData vertices[] =
+    {
+        { 
+            0.5f, 0.5f, 0.0f, 0.0f, 
+            0.0f, 0.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, 0.0f, 
+        },
+        {
+           -0.5f, 0.5f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+        },
+        {
+            0.5f,-0.5f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 0.0f, 0.0f,
+        },
+        {
+           -0.5f,-0.5f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f, 0.0f,
+        },
+    };
+
+    mVertexDataSize = sizeof(VertexData);
+    mVertexNum = 4;
 
     Framework::System::File::Binary vsFile;
     Framework::System::File::Binary psFile;
@@ -99,9 +128,9 @@ bool DefaultFont::Create(
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
         { "VECTOR2",  0, DXGI_FORMAT_R32G32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "VECTOR2",  1, DXGI_FORMAT_R32G32_FLOAT, 1,  8, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "VECTOR2",  2, DXGI_FORMAT_R32G32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "VECTOR2",  3, DXGI_FORMAT_R32G32_FLOAT, 1, 24, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "VECTOR2",  1, DXGI_FORMAT_R32G32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "VECTOR2",  2, DXGI_FORMAT_R32G32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "VECTOR2",  3, DXGI_FORMAT_R32G32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
     const UINT elem_num = ARRAYSIZE(layout);
 

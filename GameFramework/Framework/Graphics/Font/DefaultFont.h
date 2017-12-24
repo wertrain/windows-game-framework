@@ -13,9 +13,7 @@ public:
     virtual ~DefaultFont();
 
     bool Create(
-        ID3D11Device* device, ID3D11DeviceContext* context,
-        const f32* vertices, const u32 vertex_data_size, const u32 vertex_num,
-        const wchar_t* texture_filename
+        ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t* texture_filename
     );
 
 public:
