@@ -22,13 +22,20 @@ struct ConstBuffer
 {
     Matrix44 mtxProj;
     Matrix44 mtxView;
-    Vector2 worldPos[INSTANCE_NUM];
+    Matrix44 mtxWorld;
     Vector4 Diffuse;
 };
+
+struct InstancingPos 
+{
+    f32 x, y, z, w;
+};
+static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
 
 DefaultFont::DefaultFont()
     : mVertexLayout(nullptr)
     , mVertexBuffer(nullptr)
+    , mInstancingVertexBuffer(nullptr)
     , mIndexBuffer(nullptr)
     , mCBuffer(nullptr)
     , mRsState(nullptr)
@@ -116,6 +123,21 @@ bool DefaultFont::Create(
         ZeroMemory(&InitData, sizeof(InitData));
         InitData.pSysMem = vertices;
         hr = device->CreateBuffer(&bd, &InitData, &mVertexBuffer);
+        if (FAILED(hr)) {
+            return hr;
+        }
+    }
+
+    {
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(bd));
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.ByteWidth = sizeof(Vector2) * INSTANCE_NUM;
+        bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        bd.CPUAccessFlags = 0;
+        D3D11_SUBRESOURCE_DATA InitData;
+        ZeroMemory(&InitData, sizeof(InitData));
+        hr = device->CreateBuffer(&bd, &InitData, &mInstancingVertexBuffer);
         if (FAILED(hr)) {
             return hr;
         }
@@ -278,9 +300,9 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
 {
     // 頂点バッファ
     u32 vb_slot = 0;
-    ID3D11Buffer* vb[1] = { mVertexBuffer };
-    u32 stride[1] = { mVertexDataSize };
-    u32 offset[1] = { 0 };
+    ID3D11Buffer* vb[2] = { mVertexBuffer, mInstancingVertexBuffer };
+    u32 stride[2] = { mVertexDataSize, sizeof(Vector2) };
+    u32 offset[2] = { 0, 0 };
     context->IASetVertexBuffers(vb_slot, 1, vb, stride, offset);
 
     // 入力レイアウト
@@ -325,17 +347,27 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
-    f32 RotateY = 0.0f;
-    for (s32 y = 0; y < FONT_Y_NUM; ++y)
-    {
-        for (s32 x = 0; x < FONT_X_NUM; ++x)
-        {
-            s32 index = y * FONT_X_NUM + x;
-            cbuff.worldPos[index].x = x * FONT_WIDTH;
-            cbuff.worldPos[index].y = y * FONT_HEIGHT;
-        }
-    }
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
+
+    {
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+        HRESULT hr = context->Map(mInstancingVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        if (FAILED(hr)) return;
+        InstancingPos* pos = (InstancingPos*)(mappedResource.pData);
+        
+        for (s32 y = 0; y < FONT_Y_NUM; ++y)
+        {
+            for (s32 x = 0; x < FONT_X_NUM; ++x)
+            {
+                s32 index = y * FONT_X_NUM + x;
+                pos[index].x = static_cast<f32>(x * FONT_WIDTH);
+                pos[index].y = static_cast<f32>(y * FONT_HEIGHT);
+            }
+        }
+        context->Unmap(mInstancingVertexBuffer, 0);
+    }
+
     // シェーダーでは行列を転置してから渡す
 
     // 定数バッファ内容更新

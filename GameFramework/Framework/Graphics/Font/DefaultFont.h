@@ -25,6 +25,7 @@ public:
 protected:
     ID3D11InputLayout* mVertexLayout;
     ID3D11Buffer* mVertexBuffer;
+    ID3D11Buffer* mInstancingVertexBuffer;
     ID3D11Buffer* mIndexBuffer;
 
     ID3D11Buffer* mCBuffer;

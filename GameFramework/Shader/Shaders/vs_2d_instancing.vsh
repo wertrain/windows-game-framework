@@ -4,7 +4,7 @@
 
 cbuffer ConstBuff : register(b0)
 {
-    matrix mtxWorld;
+    float2 mtxWorld;
 };
 
 //--------------------------------------------------------------------------------------
