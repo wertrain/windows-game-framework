@@ -39,13 +39,12 @@ void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
     s_Text.WriteText(L"abcdf‚ ‚¢‚¤", device, context, &s_Texure);
 }
 #endif // TEXTWRITE_TEST
+#ifdef DEFAULTFONT_TEST
 void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
 {
     //s_DefaultFont.
 }
-#ifdef DEFAULTFONT_TEST
-
-#endif
+#endif // DEFAULTFONT_TEST
 
 /**
  * create game object
