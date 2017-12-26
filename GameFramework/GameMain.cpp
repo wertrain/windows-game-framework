@@ -42,7 +42,7 @@ void TextWriteTest(ID3D11Device* device, ID3D11DeviceContext* context)
 #ifdef DEFAULTFONT_TEST
 void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    //s_DefaultFont.
+    s_DefaultFont.Create(device, context, L"");
 }
 #endif // DEFAULTFONT_TEST
 
