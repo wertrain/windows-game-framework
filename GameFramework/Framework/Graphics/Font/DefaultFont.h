@@ -12,9 +12,7 @@ public:
     DefaultFont();
     virtual ~DefaultFont();
 
-    bool Create(
-        ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t* texture_filename
-    );
+    bool Create(ID3D11Device* device, ID3D11DeviceContext* context);
 
 public:
     void Destroy();
