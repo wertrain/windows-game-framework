@@ -98,6 +98,10 @@ void Draw(ID3D11DeviceContext* context)
     context->OMSetBlendState(s_BlendState, 0, 0xffffffff);
 
     s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
+
+#ifdef DEFAULTFONT_TEST
+    s_DefaultFont.Render(context);
+#endif // DEFAULTFONT_TEST
 }
 
 /**
@@ -105,6 +109,10 @@ void Draw(ID3D11DeviceContext* context)
  */
 void Destroy()
 {
+#ifdef DEFAULTFONT_TEST
+    s_DefaultFont.Destroy();
+#endif // DEFAULTFONT_TEST
+
     s_Render2D.Destroy();
     s_Text.Destroy();
 }
