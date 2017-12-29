@@ -100,7 +100,7 @@ bool DirectX::Initialize(const HWND hWnd, const u32 width, const u32 height)
         return false;
     }
 
-    // そのバックバッファから描画ターゲット生成    
+    // そのバックバッファから描画ターゲット生成
     if (FAILED(mDevice->CreateRenderTargetView(hpBackBuffer, NULL, &mRenderTargetView)))
     {
         return false;
