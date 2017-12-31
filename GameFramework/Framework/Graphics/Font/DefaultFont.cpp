@@ -28,9 +28,10 @@ struct ConstBuffer
 
 struct InstancingPos 
 {
-    f32 x, y, z, w;
+    Matrix44 mat;
 };
-static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
+//static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
+static_assert(sizeof(InstancingPos) == 64, "sizeof InstancingPos == 64");
 
 DefaultFont::DefaultFont()
     : mVertexLayout(nullptr)
@@ -127,10 +128,10 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
-        { "VECTOR2",  0, DXGI_FORMAT_R32G32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "VECTOR2",  1, DXGI_FORMAT_R32G32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "VECTOR2",  2, DXGI_FORMAT_R32G32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "VECTOR2",  3, DXGI_FORMAT_R32G32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "Matrix", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "Matrix", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "Matrix", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "Matrix", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
     const UINT elem_num = ARRAYSIZE(layout);
 
@@ -160,13 +161,11 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     {
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
-        bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(Vector2) * INSTANCE_NUM;
+        bd.Usage = D3D11_USAGE_DYNAMIC;
+        bd.ByteWidth = sizeof(InstancingPos) * INSTANCE_NUM;
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        bd.CPUAccessFlags = 0;
-        D3D11_SUBRESOURCE_DATA InitData;
-        ZeroMemory(&InitData, sizeof(InitData));
-        hr = device->CreateBuffer(&bd, &InitData, &mInstancingVertexBuffer);
+        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        hr = device->CreateBuffer(&bd, NULL, &mInstancingVertexBuffer);
         if (FAILED(hr)) {
             return hr;
         }
@@ -330,7 +329,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     // 頂点バッファ
     u32 vb_slot = 0;
     ID3D11Buffer* vb[2] = { mVertexBuffer, mInstancingVertexBuffer };
-    u32 stride[2] = { mVertexDataSize, sizeof(Vector2) };
+    u32 stride[2] = { mVertexDataSize, sizeof(InstancingPos) };
     u32 offset[2] = { 0, 0 };
     context->IASetVertexBuffers(vb_slot, 1, vb, stride, offset);
 
@@ -390,8 +389,9 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
             for (s32 x = 0; x < FONT_X_NUM; ++x)
             {
                 s32 index = y * FONT_X_NUM + x;
-                pos[index].x = static_cast<f32>(x * FONT_WIDTH);
-                pos[index].y = static_cast<f32>(y * FONT_HEIGHT);
+                //pos[index].x = static_cast<f32>(x * FONT_WIDTH);
+                //pos[index].y = static_cast<f32>(y * FONT_HEIGHT);
+                DirectX::XMMatrixIsIdentity(pos[index].mat);
             }
         }
         context->Unmap(mInstancingVertexBuffer, 0);
