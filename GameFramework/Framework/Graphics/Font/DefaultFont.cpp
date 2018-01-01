@@ -11,34 +11,24 @@
 namespace Framework {
 namespace Graphics {
 
-static const s32 FONT_X_NUM = 34;
-static const s32 FONT_Y_NUM = 20;
+// スクリーン中の一行・一列あたり文字数定義
+static const s32 FONT_X_NUM = 36;
+static const s32 FONT_Y_NUM = 24;
 static const s32 FONT_WIDTH = Constants::WIDTH / FONT_X_NUM;
 static const s32 FONT_HEIGHT = Constants::HEIGHT / FONT_Y_NUM;
 static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
 
-// シェーダ定数バッファ
-struct ConstBuffer
-{
-    Matrix44 mtxProj;
-    Matrix44 mtxView;
-    Matrix44 mtxWorld;
-    Vector4 Diffuse;
-};
-
 struct InstancingPos 
 {
-    Matrix44 mat;
+    Vector4 pos;
 };
-//static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
-static_assert(sizeof(InstancingPos) == 64, "sizeof InstancingPos == 64");
+static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
 
 DefaultFont::DefaultFont()
     : mVertexLayout(nullptr)
     , mVertexBuffer(nullptr)
     , mInstancingVertexBuffer(nullptr)
     , mIndexBuffer(nullptr)
-    , mCBuffer(nullptr)
     , mRsState(nullptr)
     , mDsState(nullptr)
     , mBdState(nullptr)
@@ -63,34 +53,19 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     // 頂点データ構造体
     struct VertexData
     {
-        f32 x, y, z, w;
-        f32 r, g, b, a;
-        f32 u, v, s, t;
+        Vector4 pos;
+        Vector4 color;
+        Vector4 uv;
     };
+    static_assert(sizeof(VertexData) == (4 * 4 * 3), "sizeof VertexData == (4 * 4 * 3)");
 
-    // 頂点バッファ作成
+    const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
     VertexData vertices[] =
     {
-        { 
-            0.5f, 0.5f, 0.0f, 0.0f, 
-            0.0f, 0.0f, 0.0f, 1.0f,
-            1.0f, 1.0f, 0.0f, 0.0f, 
-        },
-        {
-           -0.5f, 0.5f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 1.0f,
-            0.0f, 1.0f, 0.0f, 0.0f,
-        },
-        {
-            0.5f,-0.5f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 0.0f, 0.0f,
-        },
-        {
-           -0.5f,-0.5f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 0.0f, 0.0f,
-        },
+        { Vector4( pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(1.0f, 0.0f, 0.0f, 0.0f) },
+        { Vector4(-pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) },
+        { Vector4( pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 0.0f, 0.0f) },
+        { Vector4(-pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f) }
     };
 
     mVertexDataSize = sizeof(VertexData);
@@ -128,10 +103,10 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
-        { "Matrix", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "Matrix", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "Matrix", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "Matrix", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "INSTANCEPOS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "INSTANCEPOS", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "INSTANCEPOS", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "INSTANCEPOS", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
     const UINT elem_num = ARRAYSIZE(layout);
 
@@ -165,21 +140,19 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         bd.ByteWidth = sizeof(InstancingPos) * INSTANCE_NUM;
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        hr = device->CreateBuffer(&bd, NULL, &mInstancingVertexBuffer);
+        hr = device->CreateBuffer(&bd, nullptr, &mInstancingVertexBuffer);
         if (FAILED(hr)) {
             return hr;
         }
     }
 
     // インデックスバッファ
-    UINT* indices = new UINT[mVertexNum];
-    for (uint32_t i = 0; i < mVertexNum; ++i)
-        indices[i] = i;
+    UINT indices[] = { 1, 0, 3, 2 };
     {
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(int) * mVertexNum;
+        bd.ByteWidth = sizeof(UINT) * mVertexNum;
         bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
         bd.CPUAccessFlags = 0;
         D3D11_SUBRESOURCE_DATA InitData;
@@ -190,7 +163,6 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
             return hr;
         }
     }
-    delete[] indices;
 
     /*if (use_texture)
     {
@@ -215,20 +187,6 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
             return hr;
         }
     }*/
-
-    // 定数バッファ
-    {
-        D3D11_BUFFER_DESC bd;
-        ZeroMemory(&bd, sizeof(bd));
-        bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(ConstBuffer);
-        bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        bd.CPUAccessFlags = 0;
-        hr = device->CreateBuffer(&bd, nullptr, &mCBuffer);
-        if (FAILED(hr)) {
-            return hr;
-        }
-    }
 
     // ラスタライザステート
     CD3D11_DEFAULT default_state;
@@ -302,11 +260,6 @@ void DefaultFont::Destroy()
         mRsState->Release();
         mRsState = nullptr;
     }
-    if (mCBuffer)
-    {
-        mCBuffer->Release();
-        mCBuffer = nullptr;
-    }
     if (mIndexBuffer)
     {
         mIndexBuffer->Release();
@@ -331,7 +284,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     ID3D11Buffer* vb[2] = { mVertexBuffer, mInstancingVertexBuffer };
     u32 stride[2] = { mVertexDataSize, sizeof(InstancingPos) };
     u32 offset[2] = { 0, 0 };
-    context->IASetVertexBuffers(vb_slot, 1, vb, stride, offset);
+    context->IASetVertexBuffers(vb_slot, ARRAYSIZE(vb), vb, stride, offset);
 
     // 入力レイアウト
     context->IASetInputLayout(mVertexLayout);
@@ -346,7 +299,6 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     context->VSSetShader(mVertexShader, nullptr, 0);
     context->PSSetShader(mPixelShader, nullptr, 0);
 
-
     // サンプラー
     /*if (mTexture)
     {
@@ -360,53 +312,26 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         context->PSSetShaderResources(srv_slot, 1, srv);
     }*/
 
-    //定数バッファ
-    ConstBuffer cbuff;
-
-    // プロジェクション行列
-    f32 aspect = Framework::Constants::WIDTH / Framework::Constants::HEIGHT;//アスペクト比
-    f32 min_z = 0.01f;
-    f32 max_z = 1000.0f;
-    f32 fov = DirectX::XM_PIDIV4;//画角
-    cbuff.mtxProj = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(fov, aspect, min_z, max_z));
-
-    // カメラ行列
-    DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -3.0f, 0.0f);
-    DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-    DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-    cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
-    cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
-
     {
         D3D11_MAPPED_SUBRESOURCE mappedResource;
 
         HRESULT hr = context->Map(mInstancingVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         if (FAILED(hr)) return;
-        InstancingPos* pos = (InstancingPos*)(mappedResource.pData);
+        InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
         
+        const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
         for (s32 y = 0; y < FONT_Y_NUM; ++y)
         {
             for (s32 x = 0; x < FONT_X_NUM; ++x)
             {
                 s32 index = y * FONT_X_NUM + x;
-                //pos[index].x = static_cast<f32>(x * FONT_WIDTH);
-                //pos[index].y = static_cast<f32>(y * FONT_HEIGHT);
-                DirectX::XMMatrixIsIdentity(pos[index].mat);
+                instancing[index].pos.x = -1.0f + static_cast<f32>(x * pw);
+                instancing[index].pos.y = -1.0f + static_cast<f32>(y * ph);
+                instancing[index].pos.z = instancing[index].pos.w = 0.0f;
             }
         }
         context->Unmap(mInstancingVertexBuffer, 0);
     }
-
-    // シェーダーでは行列を転置してから渡す
-
-    // 定数バッファ内容更新
-    context->UpdateSubresource(mCBuffer, 0, NULL, &cbuff, 0, 0);
-
-    // 定数バッファ
-    u32 cb_slot = 0;
-    ID3D11Buffer* cb[1] = { mCBuffer };
-    context->VSSetConstantBuffers(cb_slot, 1, cb);
-    context->PSSetConstantBuffers(cb_slot, 1, cb);
 
     // ラスタライザステート
     context->RSSetState(mRsState);
@@ -418,8 +343,6 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
     // ポリゴン描画
-    //context->DrawIndexed(mVertexNum, 0, 0);
-
     context->DrawIndexedInstanced(mVertexNum, INSTANCE_NUM, 0, 0, 0);
 }
 

@@ -233,7 +233,7 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, co
     context->VSSetShader(mVertexShader, nullptr, 0);
     context->PSSetShader(mPixelShader, nullptr, 0);
 
-    //定数バッファ
+    // 定数バッファ
     ConstBuffer cbuff;
     cbuff.mtxWorld = DirectX::XMMatrixIdentity();
     // シェーダーでは行列を転置してから渡す

@@ -24,7 +24,6 @@ protected:
     ID3D11Buffer* mInstancingVertexBuffer;
     ID3D11Buffer* mIndexBuffer;
 
-    ID3D11Buffer* mCBuffer;
     ID3D11RasterizerState* mRsState;
     ID3D11DepthStencilState* mDsState;
     ID3D11BlendState* mBdState;
