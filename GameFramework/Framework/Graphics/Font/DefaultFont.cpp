@@ -164,10 +164,9 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         }
     }
 
-    /*if (use_texture)
     {
         // テクスチャ作成
-        hr = DirectX::CreateWICTextureFromFile(device, texture_filename, &mTexture, &mShaderResView);
+        hr = DirectX::CreateWICTextureFromFile(device, TEXT("usa.png"), &mTexture, &mShaderResView);
         if (FAILED(hr)) {
             return hr;
         }
@@ -186,7 +185,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         if (FAILED(hr)) {
             return hr;
         }
-    }*/
+    }
 
     // ラスタライザステート
     CD3D11_DEFAULT default_state;
@@ -300,7 +299,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     context->PSSetShader(mPixelShader, nullptr, 0);
 
     // サンプラー
-    /*if (mTexture)
+    if (mTexture)
     {
         u32 smp_slot = 0;
         ID3D11SamplerState* smp[1] = { mSampler };
@@ -310,7 +309,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         u32 srv_slot = 0;
         ID3D11ShaderResourceView* srv[1] = { mShaderResView };
         context->PSSetShaderResources(srv_slot, 1, srv);
-    }*/
+    }
 
     {
         D3D11_MAPPED_SUBRESOURCE mappedResource;
