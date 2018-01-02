@@ -17,6 +17,9 @@ static const s32 FONT_Y_NUM = 24;
 static const s32 FONT_WIDTH = Constants::WIDTH / FONT_X_NUM;
 static const s32 FONT_HEIGHT = Constants::HEIGHT / FONT_Y_NUM;
 static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
+// テクスチャの文字数定義
+static const s32 TEXTURE_CHAR_X_NUM = 16;
+static const s32 TEXTURE_CHAR_Y_NUM = 6;
 
 struct InstancingPos 
 {
@@ -60,12 +63,13 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     static_assert(sizeof(VertexData) == (4 * 4 * 3), "sizeof VertexData == (4 * 4 * 3)");
 
     const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
+    const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM;
     VertexData vertices[] =
     {
-        { Vector4( pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(1.0f, 0.0f, 0.0f, 0.0f) },
+        { Vector4( pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu, 0.0f, 0.0f, 0.0f) },
         { Vector4(-pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) },
-        { Vector4( pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 0.0f, 0.0f) },
-        { Vector4(-pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f) }
+        { Vector4( pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu,   tv, 0.0f, 0.0f) },
+        { Vector4(-pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f,   tv, 0.0f, 0.0f) }
     };
 
     mVertexDataSize = sizeof(VertexData);

@@ -24,6 +24,6 @@ PS_INPUT vsMain(VS_INPUT input)
     PS_INPUT output = (PS_INPUT)0;
     output.Pos = input.Pos + input.InstancePos;
     output.Color = input.Color;
-    output.UV = float4(input.UV.x, input.UV.y, input.InstanceId % 3, 0.0);
+    output.UV = float4(input.UV.x, input.UV.y, 0.0, 0.0);
     return output;
 }
