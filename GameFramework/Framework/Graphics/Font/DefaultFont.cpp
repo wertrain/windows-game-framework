@@ -170,7 +170,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 
     {
         // テクスチャ作成
-        hr = DirectX::CreateWICTextureFromFile(device, TEXT("usa.png"), &mTexture, &mShaderResView);
+        hr = DirectX::CreateWICTextureFromFile(device, TEXT("font.png"), &mTexture, &mShaderResView);
         if (FAILED(hr)) {
             return hr;
         }
