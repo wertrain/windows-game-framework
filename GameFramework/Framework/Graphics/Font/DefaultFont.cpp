@@ -62,14 +62,16 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     };
     static_assert(sizeof(VertexData) == (4 * 4 * 3), "sizeof VertexData == (4 * 4 * 3)");
 
-    const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
-    const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM;
+    //const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
+    const f32 pw = 1.0f, ph = 1.0f;
+    //const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM;
+    const f32 tu = 1.0f, tv = 1.0f;
     VertexData vertices[] =
     {
-        { Vector4( pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu, 0.0f, 0.0f, 0.0f) },
-        { Vector4(-pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) },
-        { Vector4( pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu,   tv, 0.0f, 0.0f) },
-        { Vector4(-pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f,   tv, 0.0f, 0.0f) }
+        { Vector4( pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu, 0.0f, 0.0f, 0.0f) },
+        { Vector4(-pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) },
+        { Vector4( pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu,   tv, 0.0f, 0.0f) },
+        { Vector4(-pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f,   tv, 0.0f, 0.0f) }
     };
 
     mVertexDataSize = sizeof(VertexData);
@@ -151,7 +153,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     }
 
     // インデックスバッファ
-    UINT indices[] = { 1, 0, 3, 2 };
+    UINT indices[] = { 0, 1, 2, 3 };
     {
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
@@ -323,6 +325,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
         
         const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
+        const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM; 
         for (s32 y = 0; y < FONT_Y_NUM; ++y)
         {
             for (s32 x = 0; x < FONT_X_NUM; ++x)
@@ -331,6 +334,8 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
                 instancing[index].pos.x = -1.0f + static_cast<f32>(x * pw);
                 instancing[index].pos.y = -1.0f + static_cast<f32>(y * ph);
                 instancing[index].pos.z = instancing[index].pos.w = 0.0f;
+                //instancing[index].pos.z = tu * x;
+                //instancing[index].pos.w = tv * y;
             }
         }
         context->Unmap(mInstancingVertexBuffer, 0);
@@ -340,10 +345,10 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     context->RSSetState(mRsState);
 
     // デプスステンシルステート
-    context->OMSetDepthStencilState(mDsState, 0);
+    //context->OMSetDepthStencilState(mDsState, 0);
 
     // ブレンドステート
-    context->OMSetBlendState(mBdState, NULL, 0xfffffff);
+    //context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
     // ポリゴン描画
     context->DrawIndexedInstanced(mVertexNum, INSTANCE_NUM, 0, 0, 0);
