@@ -22,8 +22,7 @@ struct PS_INPUT
 PS_INPUT vsMain(VS_INPUT input)
 {
     PS_INPUT output = (PS_INPUT)0;
-    output.Pos = input.Pos;// +float4(input.InstancePos.x, input.InstancePos.y, 0.0f, 0.0f);
-    //output.Pos.w = 0.0f;
+    output.Pos = input.Pos + float4(input.InstancePos.x, input.InstancePos.y, 0.0f, 0.0f);
     output.Color = input.Color;
     output.UV = float4(input.UV.x + input.InstancePos.z, input.UV.y + input.InstancePos.w, 0.0f, 0.0f);
     //output.UV = float4(input.UV.x, input.UV.y, 0.0f, 0.0f);

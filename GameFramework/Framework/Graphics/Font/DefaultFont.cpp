@@ -11,15 +11,15 @@
 namespace Framework {
 namespace Graphics {
 
-// スクリーン中の一行・一列あたり文字数定義
-static const s32 FONT_X_NUM = 36;
-static const s32 FONT_Y_NUM = 24;
-static const s32 FONT_WIDTH = Constants::WIDTH / FONT_X_NUM;
-static const s32 FONT_HEIGHT = Constants::HEIGHT / FONT_Y_NUM;
-static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
 // テクスチャの文字数定義
 static const s32 TEXTURE_CHAR_X_NUM = 16;
-static const s32 TEXTURE_CHAR_Y_NUM = 6;
+static const s32 TEXTURE_CHAR_Y_NUM = 7;
+static const s32 TEXTURE_FONT_WIDTH = 30;
+static const s32 TEXTURE_FONT_HEIGHT = 36;
+// スクリーン中の一行・一列あたり文字数定義
+static const s32 FONT_X_NUM = Constants::WIDTH / TEXTURE_FONT_WIDTH;
+static const s32 FONT_Y_NUM = Constants::HEIGHT / TEXTURE_FONT_HEIGHT;
+static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
 
 struct InstancingPos 
 {
@@ -62,10 +62,10 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     };
     static_assert(sizeof(VertexData) == (4 * 4 * 3), "sizeof VertexData == (4 * 4 * 3)");
 
-    //const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
-    const f32 pw = 1.0f, ph = 1.0f;
-    //const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM;
-    const f32 tu = 1.0f, tv = 1.0f;
+    const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
+    //const f32 pw = 1.0f, ph = 1.0f;
+    const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM;
+    //const f32 tu = 1.0f, tv = 1.0f;
     VertexData vertices[] =
     {
         { Vector4( pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu, 0.0f, 0.0f, 0.0f) },
@@ -172,7 +172,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 
     {
         // テクスチャ作成
-        hr = DirectX::CreateWICTextureFromFile(device, TEXT("font.png"), &mTexture, &mShaderResView);
+        hr = DirectX::CreateWICTextureFromFile(device, TEXT("font2.png"), &mTexture, &mShaderResView);
         if (FAILED(hr)) {
             return hr;
         }
@@ -333,7 +333,7 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
                 s32 index = y * FONT_X_NUM + x;
                 instancing[index].pos.x = -1.0f + static_cast<f32>(x * pw);
                 instancing[index].pos.y = -1.0f + static_cast<f32>(y * ph);
-                instancing[index].pos.z = instancing[index].pos.w = 0.0f;
+                //instancing[index].pos.z = instancing[index].pos.w = 0.0f;
                 //instancing[index].pos.z = tu * x;
                 //instancing[index].pos.w = tv * y;
             }
