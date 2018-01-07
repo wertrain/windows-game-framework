@@ -10,11 +10,10 @@ template <class T>
 class Singleton
 {
 public:
-    static T& singleton()
+    static T& GetInstance()
     {
-        static typename T::singleton_pointer_type s_singleton(T::createInstance());
-
-        return GetReference(s_singleton);
+        static typename T::singleton_pointer_type instance(T::CreateInstance());
+        return GetReference(instance);
     }
 
 private:
