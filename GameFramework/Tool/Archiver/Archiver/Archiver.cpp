@@ -2,8 +2,7 @@
 
 #include "Archiver.h"
 
-namespace Framework {
-namespace Tool {
+NS_FW_TOOL_BEGIN
 
 enum ARCHIVE_FILE_HEADER_VERSION
 {
@@ -174,5 +173,4 @@ const u32 Archiver::CalcBinarySize()
     return size;
 }
 
-} // namespace Tool 
-} // namespace Framework
+NS_FW_TOOL_END

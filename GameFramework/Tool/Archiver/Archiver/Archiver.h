@@ -4,8 +4,7 @@
 #include "../../../Framework/Common/Includes.h"
 #include <vector>
 
-namespace Framework {
-namespace Tool {
+NS_FW_TOOL_BEGIN
 
 class Archiver
 {
@@ -55,7 +54,6 @@ private:
     u32 mDataSize;
 };
 
-} // namespace Tool 
-} // namespace Framework
+NS_FW_TOOL_END
 
 #endif // ARCHIVER_H_
