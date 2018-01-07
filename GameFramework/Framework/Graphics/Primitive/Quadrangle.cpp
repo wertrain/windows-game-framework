@@ -7,8 +7,7 @@
 
 #include "Quadrangle.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 //シェーダ定数バッファ
 struct ConstBuffer
@@ -52,5 +51,4 @@ bool Quadrangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     return Primitive::Create(device, context, reinterpret_cast<float*>(vertices), sizeof(VertexData), 4, L"image.png");
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

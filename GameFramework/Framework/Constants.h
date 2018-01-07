@@ -1,15 +1,12 @@
 #ifndef CONSTANTS_H_
 #define CONSTANTS_H_
 
-namespace Framework {
-namespace Constants {
+NS_FW_CONST_BEGIN
 
 static const int WIDTH = 800;
 static const int HEIGHT = 600;
 static const int FPS = 60;
 
-} // namespace Constants
-} // namespace Framework
-
+NS_FW_CONST_END
 
 #endif

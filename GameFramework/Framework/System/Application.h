@@ -1,8 +1,7 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
-namespace Framework {
-namespace System {
+NS_FW_SYS_BEGIN
 
 class DirectX;
 
@@ -35,9 +34,6 @@ private:
 #endif // _WIN64
 };
 
-
-
-} // namespace System
-} // namespace Framework
+NS_FW_SYS_END
 
 #endif // APPLICATION_H_

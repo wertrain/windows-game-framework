@@ -1,9 +1,7 @@
 #ifndef FILE_H_
 #define FILE_H_
 
-namespace Framework {
-namespace System {
-namespace File {
+NS_FW_SYS_BEGIN
 
 /// <summary>
 /// バイナリファイルリーダー
@@ -21,8 +19,6 @@ private:
     std::unique_ptr<char> mData;
 };
 
-} // namespace File
-} // namespace System
-} // namespace Framework
+NS_FW_SYS_END
 
 #endif // FILE_H_

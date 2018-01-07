@@ -3,17 +3,15 @@
 
 #include "../Core/ObjectBase.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
-class GraphicsBase : public Framework::System::ObjectBase
+class GraphicsBase : public NS_FW_SYS::ObjectBase
 {
 public:
     GraphicsBase() ;
     virtual ~GraphicsBase() = 0;
 };
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // GRAPHICSBASE_H_

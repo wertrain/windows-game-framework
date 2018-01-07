@@ -8,8 +8,7 @@
 
 #include "Primitive.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 // シェーダ定数バッファ
 struct ConstBuffer
@@ -55,8 +54,8 @@ bool Primitive::Create(
     mVertexDataSize = vertex_data_size;
     mVertexNum = vertex_num;
 
-    Framework::System::File::Binary vsFile;
-    Framework::System::File::Binary psFile;
+    NS_FW_SYS::Binary vsFile;
+    NS_FW_SYS::Binary psFile;
 
     if (use_texture)
     {
@@ -319,7 +318,7 @@ void Primitive::Render(ID3D11DeviceContext* context)
     ConstBuffer cbuff;
 
     // プロジェクション行列
-    f32 aspect = Framework::Constants::WIDTH / Framework::Constants::HEIGHT;//アスペクト比
+    f32 aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
     f32 min_z = 0.01f;
     f32 max_z = 1000.0f;
     f32 fov = DirectX::XM_PIDIV4;//画角
@@ -357,5 +356,4 @@ void Primitive::Render(ID3D11DeviceContext* context)
     context->DrawIndexed(mVertexNum, 0, 0);
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

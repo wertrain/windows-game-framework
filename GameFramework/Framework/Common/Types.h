@@ -27,7 +27,7 @@ static_assert(sizeof( s8) == 1, "sizeof  s8 == 1");
 
 #else
 
-#include <cstdint>
+#include <cinttypes>
 
 #endif // FRAMEWORK_COMMON_TYPES_
 

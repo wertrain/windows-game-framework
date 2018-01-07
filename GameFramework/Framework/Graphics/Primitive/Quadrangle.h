@@ -3,8 +3,7 @@
 
 #include "Primitive.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 class Quadrangle : public Primitive
 {
@@ -15,7 +14,6 @@ public:
     bool Create(ID3D11Device* device, ID3D11DeviceContext* context);
 };
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // QUADRANGLE_H_

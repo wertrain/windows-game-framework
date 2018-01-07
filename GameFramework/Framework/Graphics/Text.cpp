@@ -10,8 +10,7 @@
 
 #include "Text.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 // 指定領域のビットマップ保存
 BOOL funcSaveRect(LPCTSTR lpFname, HDC hDC, LONG cx, LONG cy, LONG sx, LONG sy)
@@ -354,5 +353,4 @@ void Text::Render(ID3D11DeviceContext* context)
 
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

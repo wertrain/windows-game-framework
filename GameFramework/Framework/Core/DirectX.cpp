@@ -5,8 +5,7 @@
 
 #pragma comment(lib, "d3d11.lib")
 
-namespace Framework {
-namespace System {
+NS_FW_SYS_BEGIN
 
 DirectX::DirectX()
     : mDevice(nullptr)
@@ -158,5 +157,4 @@ void DirectX::Present()
     mDXGISwpChain->Present(0, 0);
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_SYS_END

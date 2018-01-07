@@ -3,12 +3,10 @@
 #include "Framework/Graphics/Includes.h"
 #include "Tool/Archiver/Includes.h"
 
-Framework::Graphics::Text s_Text;
-Framework::Graphics::Texture s_Texure;
-Framework::Graphics::Render2D s_Render2D;
-Framework::Graphics::DefaultFont s_DefaultFont;
-
-ID3D11BlendState* s_BlendState;
+fw::gfx::Text s_Text;
+fw::gfx::Texture s_Texure;
+fw::gfx::Render2D s_Render2D;
+fw::gfx::DefaultFont s_DefaultFont;
 
 //#define ARCHIVER_TEST
 //#define TEXTWRITE_TEST
@@ -52,23 +50,7 @@ void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    //ƒuƒŒƒ“ƒh•`‰æ‚ÌÝ’è
-    D3D11_BLEND_DESC BlendDesc;
-    ZeroMemory(&BlendDesc, sizeof(D3D11_BLEND_DESC));
-    BlendDesc.AlphaToCoverageEnable = FALSE;
-    BlendDesc.IndependentBlendEnable = FALSE;
-    BlendDesc.RenderTarget[0].BlendEnable = TRUE;
-    BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-    BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-    BlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-    BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-    BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-    BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-    device->CreateBlendState(&BlendDesc, &s_BlendState);
-
-    s_Render2D.Create(device);
+    s_Render2D.Create(device); 
 
 #if defined ARCHIVER_TEST
     ArchiverTest(device);
@@ -96,13 +78,13 @@ void Update(const DWORD /*nowTime*/)
  */
 void Draw(ID3D11DeviceContext* context)
 {
-    context->OMSetBlendState(s_BlendState, 0, 0xffffffff);
-
-    //s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
-
-#ifdef DEFAULTFONT_TEST
-    s_DefaultFont.Render(context);
-#endif // DEFAULTFONT_TEST
+#if defined ARCHIVER_TEST
+#elif defined TEXTWRITE_TEST
+    s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
+#elif defined DEFAULTFONT_TEST
+    s_DefaultFont.Render(context); 
+#else
+#endif
 }
 
 /**

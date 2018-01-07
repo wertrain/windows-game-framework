@@ -3,8 +3,7 @@
 
 #include "../GraphicsBase.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 class DefaultFont : public GraphicsBase
 {
@@ -38,7 +37,6 @@ protected:
     ID3D11SamplerState* mSampler;
 };
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // DEFAULTFONT_H_

@@ -8,8 +8,7 @@ struct ID3D11ShaderResourceView;
 struct ID3D11SamplerState;
 struct D3D11_TEXTURE2D_DESC;
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 class Texture
 {
@@ -32,7 +31,6 @@ protected:
     D3D11_TEXTURE2D_DESC mTexDesc;
 };
 
-} // namespace Graphics 
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // TEXTURE_H_

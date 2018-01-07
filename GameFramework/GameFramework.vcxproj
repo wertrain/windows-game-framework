@@ -89,6 +89,7 @@
     <ClInclude Include="Framework\System\File.h" />
     <ClInclude Include="Framework\System\Includes.h" />
     <ClInclude Include="Framework\System\Utility.h" />
+    <ClInclude Include="Framework\System\Utility\Includes.h" />
     <ClInclude Include="Framework\System\Utility\Stopwatch.h" />
     <ClInclude Include="Tool\Archiver\Archiver\Archiver.h" />
     <ClInclude Include="Tool\Archiver\Includes.h" />

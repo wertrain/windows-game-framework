@@ -1,8 +1,7 @@
 #ifndef RENDER2D_H_
 #define RENDER2D_H_
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 class Texture;
 
@@ -29,7 +28,6 @@ private:
     ID3D11InputLayout* mVertexLayout;
 };
 
-} // namespace Graphics 
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // RENDER2D_H_

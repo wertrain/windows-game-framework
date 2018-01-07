@@ -9,8 +9,7 @@
 #include "Texture.h"
 #include "Render2D.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 // シェーダ定数バッファ
 struct ConstBuffer
@@ -92,13 +91,13 @@ void Render2D::Destroy()
 HRESULT Render2D::CreateShader(ID3D11Device* device)
 {
     // コンパイル済みバーテックスシェーダーファイルの読み込み
-    Framework::System::File::Binary vsFile;
+    NS_FW_SYS::Binary vsFile;
     if (!vsFile.Read(L"vs_2d.cso"))
     {
         return E_FAIL;
     }
     // コンパイル済みピクセルシェーダーファイルの読み込み
-    Framework::System::File::Binary psFile;
+    NS_FW_SYS::Binary psFile;
     if (!psFile.Read(L"ps_2d.cso"))
     {
         return E_FAIL;
@@ -198,8 +197,8 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, co
 
 void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, const f32 width, const f32 height, Texture* texture)
 {
-    const f32 wh = Constants::WIDTH * 0.5f;
-    const f32 hh = Constants::HEIGHT * 0.5f;
+    const f32 wh = NS_FW_CONST::WIDTH * 0.5f;
+    const f32 hh = NS_FW_CONST::HEIGHT * 0.5f;
     const f32 x1 = -1.0f + (x / wh);
     const f32 x2 = x1 + (width / wh);
     const f32 y1 =  1.0f - (y / hh);
@@ -259,5 +258,4 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, co
     context->DrawIndexed(sVertexNum, 0, 0);
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

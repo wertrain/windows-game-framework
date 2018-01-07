@@ -2,12 +2,11 @@
 #include <iostream>
 #include <cstdint>
 #include <memory>
+#include "../Common/Defines.h"
 
 #include "File.h"
 
-namespace Framework {
-namespace System {
-namespace File {
+NS_FW_SYS_BEGIN
 
 Binary::Binary()
     : mSize(0)
@@ -48,6 +47,4 @@ size_t Binary::Size() const
     return mSize;
 }
 
-} // namespace File
-} // namespace System
-} // namespace Framework
+NS_FW_SYS_END

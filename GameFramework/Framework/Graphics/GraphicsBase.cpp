@@ -1,7 +1,6 @@
 #include "GraphicsBase.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 GraphicsBase::GraphicsBase()
 {
@@ -13,5 +12,4 @@ GraphicsBase::~GraphicsBase()
 
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

@@ -1,8 +1,7 @@
 #ifndef DIRECTX_H_
 #define DIRECTX_H_
 
-namespace Framework {
-namespace System {
+NS_FW_SYS_BEGIN
 
 class DirectX
 {
@@ -28,7 +27,6 @@ private:
     ID3D11RenderTargetView* mRenderTargetView;
 };
 
-} // namespace System 
-} // namespace Framework
+NS_FW_SYS_END
 
 #endif // DIRECTX_H_

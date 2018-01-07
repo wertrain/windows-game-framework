@@ -1,8 +1,7 @@
 #include "Bitmap.h"
 #pragma comment (lib, "msimg32.lib")
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 Bitmap::Bitmap()
     : mHBitmap(NULL)
@@ -67,5 +66,4 @@ void Bitmap::SetTransparentColor(const int color)
     mTransparentColor = color;
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

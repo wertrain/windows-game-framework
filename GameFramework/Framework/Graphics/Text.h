@@ -3,8 +3,7 @@
 
 #include "GraphicsBase.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 class Texture;
 
@@ -27,7 +26,6 @@ private:
     DESIGNVECTOR mDesign;
 };
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // TEXT_H_

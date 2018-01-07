@@ -1,9 +1,7 @@
 #ifndef STOPWATCH_H_
 #define STOPWATCH_H_
 
-namespace Framework {
-namespace System {
-namespace Utility {
+NS_FW_UTIL_BEGIN
 
 /// <summary>
 /// 時間計測用ユーティリティ
@@ -20,8 +18,6 @@ private:
     std::chrono::system_clock::time_point mStart;
 };
 
-} // namespace Utility
-} // namespace System
-} // namespace Framework
+NS_FW_UTIL_END
 
 #endif // STOPWATCH_H_

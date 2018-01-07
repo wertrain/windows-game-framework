@@ -5,11 +5,11 @@
 #include "../../System/Includes.h"
 #include "../../Constants.h"
 #include "../../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
+#include "FontImage.h"
 
 #include "DefaultFont.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 // テクスチャの文字数定義
 static const s32 TEXTURE_CHAR_X_NUM = 36;
@@ -17,8 +17,8 @@ static const s32 TEXTURE_CHAR_Y_NUM = 3;
 static const s32 TEXTURE_FONT_WIDTH = 16;
 static const s32 TEXTURE_FONT_HEIGHT = 16;
 // スクリーン中の一行・一列あたり文字数定義
-static const s32 FONT_X_NUM = Constants::WIDTH / TEXTURE_FONT_WIDTH;
-static const s32 FONT_Y_NUM = Constants::HEIGHT / TEXTURE_FONT_HEIGHT;
+static const s32 FONT_X_NUM = NS_FW_CONST::WIDTH / TEXTURE_FONT_WIDTH;
+static const s32 FONT_Y_NUM = NS_FW_CONST::HEIGHT / TEXTURE_FONT_HEIGHT;
 static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
 // インスタンス一枚あたりのサイズ
 static const f32 PLANE_WIDTH = 2.0f / FONT_X_NUM;
@@ -78,8 +78,8 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     mVertexDataSize = sizeof(VertexData);
     mVertexNum = 4;
 
-    Framework::System::File::Binary vsFile;
-    Framework::System::File::Binary psFile;
+    NS_FW_SYS::Binary vsFile;
+    NS_FW_SYS::Binary psFile;
 
     // コンパイル済みバーテックスシェーダーファイルの読み込み
     if (!vsFile.Read(L"vs_2d_instancing.cso"))
@@ -172,7 +172,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 
     {
         // テクスチャ作成
-        hr = DirectX::CreateWICTextureFromFile(device, TEXT("gfont.dds"), &mTexture, &mShaderResView);
+        hr = DirectX::CreateWICTextureFromMemory(device, gfont_DDS, gfont_DDS_len, &mTexture, &mShaderResView);
         if (FAILED(hr)) {
             return hr;
         }
@@ -203,15 +203,19 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         return hr;
     }
 
-    // デプスステンシルステート
-    CD3D11_DEPTH_STENCIL_DESC dsdesc(default_state);
-    hr = device->CreateDepthStencilState(&dsdesc, &mDsState);
-    if (FAILED(hr)) {
-        return hr;
-    }
-
     // ブレンドステート
     CD3D11_BLEND_DESC bddesc(default_state);
+    ZeroMemory(&bddesc, sizeof(D3D11_BLEND_DESC));
+    bddesc.AlphaToCoverageEnable = FALSE;
+    bddesc.IndependentBlendEnable = FALSE;
+    bddesc.RenderTarget[0].BlendEnable = TRUE;
+    bddesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    bddesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    bddesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    bddesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    bddesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    bddesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    bddesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
     hr = device->CreateBlendState(&bddesc, &mBdState);
     if (FAILED(hr)) {
         return hr;
@@ -342,15 +346,11 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     // ラスタライザステート
     context->RSSetState(mRsState);
 
-    // デプスステンシルステート
-    //context->OMSetDepthStencilState(mDsState, 0);
-
     // ブレンドステート
-    //context->OMSetBlendState(mBdState, NULL, 0xfffffff);
+    context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
     // ポリゴン描画
     context->DrawIndexedInstanced(mVertexNum, INSTANCE_NUM, 0, 0, 0);
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

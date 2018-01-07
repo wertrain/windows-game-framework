@@ -4,8 +4,7 @@
 #include "Primitive/Primitive.h"
 #include <Windows.h>
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 class Bitmap : public Primitive
 {
@@ -25,7 +24,6 @@ protected:
     int mTransparentColor;
 };
 
-} // namespace Graphics 
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // BITMAP_H_

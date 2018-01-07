@@ -16,8 +16,7 @@ struct ID3D11Resource;
 struct ID3D11ShaderResourceView;
 struct ID3D11SamplerState;
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 class Primitive : public GraphicsBase
 {
@@ -55,7 +54,6 @@ protected:
     ID3D11SamplerState* mSampler;
 };
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END
 
 #endif // PRIMITIVE_H_

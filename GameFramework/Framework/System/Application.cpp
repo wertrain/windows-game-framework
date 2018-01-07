@@ -14,8 +14,7 @@
 
 #include "Application.h"
 
-namespace Framework {
-namespace System {
+NS_FW_SYS_BEGIN
 
 Application& Application::GetInstance()
 {
@@ -78,11 +77,11 @@ bool Application::Create(HINSTANCE hInstance, WNDPROC wndproc)
 
     // DirectXの初期化
     mDirectX = new DirectX();
-    mDirectX->Initialize(mHWnd, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
+    mDirectX->Initialize(mHWnd, NS_FW_CONST::WIDTH, NS_FW_CONST::HEIGHT);
 
     // ウィンドウのサイズ調整
     RECT window_rect;
-    SetRect(&window_rect, 0, 0, Framework::Constants::WIDTH, Framework::Constants::HEIGHT);
+    SetRect(&window_rect, 0, 0, NS_FW_CONST::WIDTH, NS_FW_CONST::HEIGHT);
     AdjustWindowRectEx(&window_rect, GetWindowLong(mHWnd, GWL_STYLE), GetMenu(mHWnd) != NULL, GetWindowLong(mHWnd, GWL_EXSTYLE));
     const int nWidth = window_rect.right - window_rect.left;
     const int nHeight = window_rect.bottom - window_rect.top;
@@ -121,5 +120,4 @@ void Application::ShowWindow(const int nCmdShow)
 #endif // _WIN64
 }
 
-} // namespace System
-} // namespace Framework
+NS_FW_SYS_END

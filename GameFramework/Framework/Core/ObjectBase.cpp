@@ -1,7 +1,6 @@
 #include "ObjectBase.h"
 
-namespace Framework {
-namespace System {
+NS_FW_SYS_BEGIN
 
 ObjectBase::ObjectBase()
 {
@@ -13,5 +12,4 @@ ObjectBase::~ObjectBase()
 
 }
 
-} // namespace System 
-} // namespace Framework
+NS_FW_SYS_END

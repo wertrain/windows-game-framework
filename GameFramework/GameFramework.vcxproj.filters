@@ -102,9 +102,6 @@
     <ClInclude Include="Framework\Graphics\Render2D.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\System\Utility.h">
-      <Filter>Framework\System</Filter>
-    </ClInclude>
     <ClInclude Include="Tool\Archiver\Includes.h">
       <Filter>Framework\Tool\Archiver</Filter>
     </ClInclude>
@@ -129,13 +126,16 @@
     <ClInclude Include="Framework\Graphics\Font\FontImage.h">
       <Filter>Framework\Graphics\Font</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\System\Utility\Includes.h">
+      <Filter>Framework\System\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\System\Utility.h">
+      <Filter>Framework\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
       <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\System\File.cpp">
-      <Filter>Framework\System</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Bitmap.cpp">
       <Filter>Framework\Graphics</Filter>
@@ -177,9 +177,6 @@
     <ClCompile Include="Framework\Graphics\Render2D.cpp">
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\System\Utility.cpp">
-      <Filter>Framework\System</Filter>
-    </ClCompile>
     <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp">
       <Filter>Framework\Tool\Archiver\Archiver</Filter>
     </ClCompile>
@@ -194,6 +191,12 @@
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Font\DefaultFont.cpp">
       <Filter>Framework\Graphics\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Utility.cpp">
+      <Filter>Framework\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\File.cpp">
+      <Filter>Framework\System</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

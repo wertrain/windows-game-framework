@@ -7,8 +7,7 @@
 
 #include "Triangle.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 Triangle::Triangle()
     : Primitive()
@@ -42,5 +41,4 @@ bool Triangle::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     return Primitive::Create(device, context, reinterpret_cast<float*>(vertices), sizeof(VertexData), 3, nullptr);
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

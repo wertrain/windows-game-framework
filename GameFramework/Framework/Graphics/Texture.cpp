@@ -5,15 +5,14 @@
 #include "../System/Utility.h"
 #include "Texture.h"
 
-namespace Framework {
-namespace Graphics {
+NS_FW_GFX_BEGIN
 
 Texture::Texture()
     : mTexture(nullptr)
     , mShaderResView(nullptr)
     , mSampler(nullptr)
 {
-    Framework::System::Utility::memset_zero(&mTexDesc, sizeof(D3D11_TEXTURE2D_DESC));
+    NS_FW_UTIL::memset_zero(&mTexDesc, sizeof(D3D11_TEXTURE2D_DESC));
 }
 
 Texture::~Texture()
@@ -160,5 +159,4 @@ const u32 Texture::GetHeight()
     return mTexDesc.Height;
 }
 
-} // namespace Graphics
-} // namespace Framework
+NS_FW_GFX_END

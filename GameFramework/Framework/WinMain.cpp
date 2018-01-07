@@ -40,9 +40,9 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     // 初期時間の取得
     DWORD beforeTime = timeGetTime();
 
-    Framework::System::Application& application = Framework::System::Application::GetInstance();
+    NS_FW_SYS::Application& application = NS_FW_SYS::Application::GetInstance();
     HWND hwnd = application.GetWindowHandle();
-    Framework::System::DirectX* directX = application.GetDirectX();
+    NS_FW_SYS::DirectX* directX = application.GetDirectX();
 
     // ゲームループ
     while (IsWindow(hwnd))
@@ -72,7 +72,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         directX->Present();
 
         // 理想時間の算出
-        DWORD idealTime = (DWORD)(frames * (1000.0 / Framework::Constants::FPS));
+        DWORD idealTime = (DWORD)(frames * (1000.0 / NS_FW_CONST::FPS));
         if (idealTime > progress)
         {
             Sleep(idealTime - progress);
@@ -120,12 +120,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     // メモリリークチェック
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    Framework::System::Application& application = Framework::System::Application::GetInstance();
+    NS_FW_SYS::Application& application = NS_FW_SYS::Application::GetInstance();
     if (!application.Create(hInstance, WndProc))
     {
         return 0;
     }
-    Framework::System::DirectX* directX = application.GetDirectX();
+    NS_FW_SYS::DirectX* directX = application.GetDirectX();
 
     // ゲームオブジェクトの作成
     if (!Create(directX->GetDevice(), directX->GetDeviceContext()))

@@ -1,11 +1,9 @@
 #include <memory>
 #include <chrono>
-
+#include "../../Common/Defines.h"
 #include "Stopwatch.h"
 
-namespace Framework {
-namespace System {
-namespace Utility {
+NS_FW_UTIL_BEGIN
 
 Stopwatch::Stopwatch()
     : mStart()
@@ -24,6 +22,4 @@ __int64 Stopwatch::GetElapsed()
     return std::chrono::duration_cast<std::chrono::milliseconds>(end - mStart).count();
 }
 
-} // namespace Utility
-} // namespace System
-} // namespace Framework
+NS_FW_UTIL_END
