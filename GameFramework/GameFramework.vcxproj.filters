@@ -132,6 +132,9 @@
     <ClInclude Include="Framework\System\Utility\Memory.h">
       <Filter>Framework\System\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\System\Utility\Singleton.h">
+      <Filter>Framework\System\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -196,6 +199,9 @@
       <Filter>Framework\System</Filter>
     </ClCompile>
     <ClCompile Include="Framework\System\Utility\Memory.cpp">
+      <Filter>Framework\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Utility\Singleton.cpp">
       <Filter>Framework\System\Utility</Filter>
     </ClCompile>
   </ItemGroup>

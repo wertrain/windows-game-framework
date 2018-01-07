@@ -90,6 +90,7 @@
     <ClInclude Include="Framework\System\Includes.h" />
     <ClInclude Include="Framework\System\Utility\Includes.h" />
     <ClInclude Include="Framework\System\Utility\Memory.h" />
+    <ClInclude Include="Framework\System\Utility\Singleton.h" />
     <ClInclude Include="Framework\System\Utility\Stopwatch.h" />
     <ClInclude Include="Tool\Archiver\Archiver\Archiver.h" />
     <ClInclude Include="Tool\Archiver\Includes.h" />
@@ -113,6 +114,7 @@
     <ClCompile Include="Framework\System\Application.cpp" />
     <ClCompile Include="Framework\System\File.cpp" />
     <ClCompile Include="Framework\System\Utility\Memory.cpp" />
+    <ClCompile Include="Framework\System\Utility\Singleton.cpp" />
     <ClCompile Include="Framework\System\Utility\Stopwatch.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
     <ClCompile Include="GameMain.cpp" />
