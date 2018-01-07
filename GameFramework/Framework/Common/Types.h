@@ -25,6 +25,10 @@ static_assert(sizeof(u16) == 2, "sizeof u16 == 2");
 static_assert(sizeof(f16) == 2, "sizeof f16 == 2");
 static_assert(sizeof( s8) == 1, "sizeof  s8 == 1");
 
+#else
+
+#include <cstdint>
+
 #endif // FRAMEWORK_COMMON_TYPES_
 
 #ifdef FRAMEWORK_USE_DIRECT_X_

@@ -12,14 +12,19 @@ namespace Framework {
 namespace Graphics {
 
 // テクスチャの文字数定義
-static const s32 TEXTURE_CHAR_X_NUM = 16;
-static const s32 TEXTURE_CHAR_Y_NUM = 7;
-static const s32 TEXTURE_FONT_WIDTH = 30;
-static const s32 TEXTURE_FONT_HEIGHT = 36;
+static const s32 TEXTURE_CHAR_X_NUM = 36;
+static const s32 TEXTURE_CHAR_Y_NUM = 3;
+static const s32 TEXTURE_FONT_WIDTH = 16;
+static const s32 TEXTURE_FONT_HEIGHT = 16;
 // スクリーン中の一行・一列あたり文字数定義
 static const s32 FONT_X_NUM = Constants::WIDTH / TEXTURE_FONT_WIDTH;
 static const s32 FONT_Y_NUM = Constants::HEIGHT / TEXTURE_FONT_HEIGHT;
 static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
+// インスタンス一枚あたりのサイズ
+static const f32 PLANE_WIDTH = 2.0f / FONT_X_NUM;
+static const f32 PLANE_HEIGHT = 2.0f / FONT_Y_NUM;
+static const f32 UV_WIDTH = 1.0f / TEXTURE_CHAR_X_NUM;
+static const f32 UV_HEIGHT = 1.0f / TEXTURE_CHAR_Y_NUM;
 
 struct InstancingPos 
 {
@@ -56,22 +61,18 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     // 頂点データ構造体
     struct VertexData
     {
-        Vector4 pos;
-        Vector4 color;
-        Vector4 uv;
+        float pos[3];
+        float uv[2];
     };
-    static_assert(sizeof(VertexData) == (4 * 4 * 3), "sizeof VertexData == (4 * 4 * 3)");
+    static_assert(sizeof(VertexData) == (4 * 3 + 4 * 2), "sizeof VertexData == (4 * 3 + 4 * 2)");
 
-    const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
-    //const f32 pw = 1.0f, ph = 1.0f;
-    const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM;
-    //const f32 tu = 1.0f, tv = 1.0f;
     VertexData vertices[] =
     {
-        { Vector4( pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu, 0.0f, 0.0f, 0.0f) },
-        { Vector4(-pw,  ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 0.0f) },
-        { Vector4( pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(  tu,   tv, 0.0f, 0.0f) },
-        { Vector4(-pw, -ph, 0.0f, 1.0f), Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(0.0f,   tv, 0.0f, 0.0f) }
+        // UV は上下左右反転
+        { {        0.0f,         0.0f, 0.0f}, {     0.0f, UV_HEIGHT } },
+        { { PLANE_WIDTH,         0.0f, 0.0f}, { UV_WIDTH, UV_HEIGHT } },
+        { {        0.0f, PLANE_HEIGHT, 0.0f}, {     0.0f,      0.0f } },
+        { { PLANE_WIDTH, PLANE_HEIGHT, 0.0f}, { UV_WIDTH,      0.0f } }
     };
 
     mVertexDataSize = sizeof(VertexData);
@@ -105,14 +106,13 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 
     // 入力レイアウト定義
     D3D11_INPUT_ELEMENT_DESC layout[] = {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0,    DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
-        { "INSTANCEPOS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "INSTANCEPOS", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "INSTANCEPOS", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "INSTANCEPOS", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "IPOSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "IPOSITION", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "IPOSITION", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "IPOSITION", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
     const UINT elem_num = ARRAYSIZE(layout);
 
@@ -172,7 +172,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 
     {
         // テクスチャ作成
-        hr = DirectX::CreateWICTextureFromFile(device, TEXT("font2.png"), &mTexture, &mShaderResView);
+        hr = DirectX::CreateWICTextureFromFile(device, TEXT("gfont.dds"), &mTexture, &mShaderResView);
         if (FAILED(hr)) {
             return hr;
         }
@@ -309,14 +309,15 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     {
         u32 smp_slot = 0;
         ID3D11SamplerState* smp[1] = { mSampler };
-        context->PSSetSamplers(smp_slot, 1, smp);
+        context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
 
         // シェーダーリソースビュー（テクスチャ）
         u32 srv_slot = 0;
         ID3D11ShaderResourceView* srv[1] = { mShaderResView };
-        context->PSSetShaderResources(srv_slot, 1, srv);
+        context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
     }
 
+    // インスタンシング描画位置
     {
         D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -324,18 +325,15 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
         
-        const f32 pw = 2.0f / FONT_X_NUM, ph = 2.0f / FONT_Y_NUM;
-        const f32 tu = 1.0f / TEXTURE_CHAR_X_NUM, tv = 1.0f / TEXTURE_CHAR_Y_NUM; 
         for (s32 y = 0; y < FONT_Y_NUM; ++y)
         {
             for (s32 x = 0; x < FONT_X_NUM; ++x)
             {
                 s32 index = y * FONT_X_NUM + x;
-                instancing[index].pos.x = -1.0f + static_cast<f32>(x * pw);
-                instancing[index].pos.y = -1.0f + static_cast<f32>(y * ph);
-                //instancing[index].pos.z = instancing[index].pos.w = 0.0f;
-                //instancing[index].pos.z = tu * x;
-                //instancing[index].pos.w = tv * y;
+                instancing[index].pos.x = -1.0f + static_cast<f32>(x * PLANE_WIDTH);
+                instancing[index].pos.y = -1.0f + static_cast<f32>(y * PLANE_HEIGHT);
+                instancing[index].pos.z = UV_WIDTH * x;
+                instancing[index].pos.w = UV_HEIGHT * y;
             }
         }
         context->Unmap(mInstancingVertexBuffer, 0);
