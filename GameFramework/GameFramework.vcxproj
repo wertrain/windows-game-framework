@@ -75,6 +75,7 @@
     <ClInclude Include="Framework\GameMain.h" />
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
     <ClInclude Include="Framework\Graphics\Font\DefaultFont.h" />
+    <ClInclude Include="Framework\Graphics\Font\FontImage.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Includes.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Primitive.h" />

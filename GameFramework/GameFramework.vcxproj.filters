@@ -126,6 +126,9 @@
     <ClInclude Include="Framework\Graphics\Font\DefaultFont.h">
       <Filter>Framework\Graphics\Font</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\Font\FontImage.h">
+      <Filter>Framework\Graphics\Font</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
