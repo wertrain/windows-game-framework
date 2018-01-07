@@ -2,7 +2,7 @@
 
 #include "../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
 #include "../Common/Includes.h"
-#include "../System/Utility.h"
+#include "../System/Utility/Memory.h"
 #include "Texture.h"
 
 NS_FW_GFX_BEGIN

@@ -1,7 +1,8 @@
 #ifndef UTILITY_H_
 #define UTILITY_H_
 
-#include "../Common/Defines.h"
+#include <memory>
+#include "../../Common/Defines.h"
 
 NS_FW_UTIL_BEGIN
 

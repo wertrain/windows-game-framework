@@ -129,8 +129,8 @@
     <ClInclude Include="Framework\System\Utility\Includes.h">
       <Filter>Framework\System\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\System\Utility.h">
-      <Filter>Framework\System</Filter>
+    <ClInclude Include="Framework\System\Utility\Memory.h">
+      <Filter>Framework\System\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -192,11 +192,11 @@
     <ClCompile Include="Framework\Graphics\Font\DefaultFont.cpp">
       <Filter>Framework\Graphics\Font</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\System\Utility.cpp">
-      <Filter>Framework\System</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\System\File.cpp">
       <Filter>Framework\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\System\Utility\Memory.cpp">
+      <Filter>Framework\System\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

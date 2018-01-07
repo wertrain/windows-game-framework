@@ -4,7 +4,7 @@
 #include <memory>
 #include <chrono>
 #include "../../Common/Defines.h"
-#include "../Utility.h"
+#include "Memory.h"
 #include "Stopwatch.h"
 
 #endif // SYSTEM_UTILITY_INCLUDES_H_

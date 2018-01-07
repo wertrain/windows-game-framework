@@ -105,7 +105,7 @@ int wmain(const int argc, const wchar_t*argv[])
         return 1;
     }
 
-    Framework::Tool::Archiver archiver;
+    NS_FW_TOOL::Archiver archiver;
 
     if (mode == Archive)
     {
