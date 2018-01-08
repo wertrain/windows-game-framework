@@ -23,8 +23,6 @@ protected:
     ID3D11Buffer* mInstancingVertexBuffer;
     ID3D11Buffer* mIndexBuffer;
 
-    ID3D11RasterizerState* mRsState;
-    ID3D11DepthStencilState* mDsState;
     ID3D11BlendState* mBdState;
 
     ID3D11VertexShader* mVertexShader;
@@ -35,6 +33,7 @@ protected:
     ID3D11Resource* mTexture;
     ID3D11ShaderResourceView* mShaderResView;
     ID3D11SamplerState* mSampler;
+    wchar_t* mPrintText;
 };
 
 NS_FW_GFX_END

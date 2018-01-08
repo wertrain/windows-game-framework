@@ -3,6 +3,7 @@
 #include <memory>
 #include "../../Common/Includes.h"
 #include "../../System/Includes.h"
+#include "../../System/Utility/Memory.h"
 #include "../../Constants.h"
 #include "../../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
 #include "FontImage.h"
@@ -12,13 +13,14 @@
 NS_FW_GFX_BEGIN
 
 // テクスチャの文字数定義
-static const s32 TEXTURE_CHAR_X_NUM = 36;
-static const s32 TEXTURE_CHAR_Y_NUM = 3;
-static const s32 TEXTURE_FONT_WIDTH = 16;
-static const s32 TEXTURE_FONT_HEIGHT = 16;
+static const s32 TEXTURE_CHAR_X_NUM = gfont_DDS_x_num;
+static const s32 TEXTURE_CHAR_Y_NUM = gfont_DDS_y_num;
+static const s32 TEXTURE_FONT_WIDTH = gfont_DDS_width;
+static const s32 TEXTURE_FONT_HEIGHT = gfont_DDS_height;
 // スクリーン中の一行・一列あたり文字数定義
-static const s32 FONT_X_NUM = NS_FW_CONST::WIDTH / TEXTURE_FONT_WIDTH;
-static const s32 FONT_Y_NUM = NS_FW_CONST::HEIGHT / TEXTURE_FONT_HEIGHT;
+static const f32 FONT_SCALE = 0.65f;
+static const s32 FONT_X_NUM = NS_FW_CONST::WIDTH / static_cast<s32>(TEXTURE_FONT_WIDTH * FONT_SCALE);
+static const s32 FONT_Y_NUM = NS_FW_CONST::HEIGHT / static_cast<s32>(TEXTURE_FONT_HEIGHT * FONT_SCALE);
 static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
 // インスタンス一枚あたりのサイズ
 static const f32 PLANE_WIDTH = 2.0f / FONT_X_NUM;
@@ -37,8 +39,6 @@ DefaultFont::DefaultFont()
     , mVertexBuffer(nullptr)
     , mInstancingVertexBuffer(nullptr)
     , mIndexBuffer(nullptr)
-    , mRsState(nullptr)
-    , mDsState(nullptr)
     , mBdState(nullptr)
     , mVertexShader(nullptr)
     , mPixelShader(nullptr)
@@ -47,6 +47,7 @@ DefaultFont::DefaultFont()
     , mTexture(nullptr)
     , mShaderResView(nullptr)
     , mSampler(nullptr)
+    , mPrintText(nullptr)
 {
 
 }
@@ -153,7 +154,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     }
 
     // インデックスバッファ
-    UINT indices[] = { 0, 1, 2, 3 };
+    UINT indices[] = { 1, 0, 3, 2 };
     {
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
@@ -193,17 +194,8 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         }
     }
 
-    // ラスタライザステート
-    CD3D11_DEFAULT default_state;
-    CD3D11_RASTERIZER_DESC rsdesc(default_state);
-    rsdesc.CullMode = D3D11_CULL_NONE;
-    hr = device->CreateRasterizerState(&rsdesc, &mRsState);
-    if (FAILED(hr))
-    {
-        return hr;
-    }
-
     // ブレンドステート
+    CD3D11_DEFAULT default_state;
     CD3D11_BLEND_DESC bddesc(default_state);
     ZeroMemory(&bddesc, sizeof(D3D11_BLEND_DESC));
     bddesc.AlphaToCoverageEnable = FALSE;
@@ -221,11 +213,20 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
         return hr;
     }
 
+    mPrintText = new wchar_t[INSTANCE_NUM];
+    NS_FW_UTIL::memset_zero(mPrintText, sizeof(wchar_t) * INSTANCE_NUM);
+
     return true;
 }
 
 void DefaultFont::Destroy()
 {
+    if (mPrintText)
+    {
+        delete[] mPrintText;
+        mPrintText = nullptr;
+    }
+
     if (mSampler)
     {
         mSampler->Release();
@@ -258,16 +259,6 @@ void DefaultFont::Destroy()
     {
         mBdState->Release();
         mBdState = nullptr;
-    }
-    if (mDsState)
-    {
-        mDsState->Release();
-        mDsState = nullptr;
-    }
-    if (mRsState)
-    {
-        mRsState->Release();
-        mRsState = nullptr;
     }
     if (mIndexBuffer)
     {
@@ -328,7 +319,38 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         HRESULT hr = context->Map(mInstancingVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
-        
+
+        int index = 0;
+        mPrintText[index++] = L'!'; index++;
+        mPrintText[index++] = L'"'; index++;
+        mPrintText[index++] = L'#'; index++;
+        mPrintText[index++] = L'$'; index++;
+        mPrintText[index++] = L'%'; index++;
+        mPrintText[index++] = L'&'; index++;
+        mPrintText[index++] = L'\''; index++;
+        mPrintText[index++] = L'('; index++;
+        mPrintText[index++] = L')'; index++;
+        mPrintText[index++] = L'*'; index++;
+        mPrintText[index++] = L'+'; index++;
+        mPrintText[index++] = L','; index++;
+        mPrintText[index++] = L'-'; index++;
+        mPrintText[index++] = L'.'; index++;
+        mPrintText[index++] = L'/'; index++;
+        mPrintText[index++] = L'?'; index++;
+        mPrintText[index++] = L'@'; index++;
+        mPrintText[index++] = L'A'; index++;
+        mPrintText[index++] = L'B'; index++;
+        mPrintText[index++] = L'T'; index++;
+        mPrintText[index++] = L'e'; index++;
+        mPrintText[index++] = L's'; index++;
+        mPrintText[index++] = L't'; index++;
+        mPrintText[index++] = L'A'; index++;
+        mPrintText[index++] = L'B'; index++;
+        mPrintText[index++] = L'T'; index++;
+        mPrintText[index++] = L'e'; index++;
+        mPrintText[index++] = L's'; index++;
+        mPrintText[index++] = L't'; index++;
+
         for (s32 y = 0; y < FONT_Y_NUM; ++y)
         {
             for (s32 x = 0; x < FONT_X_NUM; ++x)
@@ -336,15 +358,18 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
                 s32 index = y * FONT_X_NUM + x;
                 instancing[index].pos.x = -1.0f + static_cast<f32>(x * PLANE_WIDTH);
                 instancing[index].pos.y = -1.0f + static_cast<f32>(y * PLANE_HEIGHT);
-                instancing[index].pos.z = UV_WIDTH * x;
-                instancing[index].pos.w = UV_HEIGHT * y;
+
+                if (mPrintText[index])
+                {
+                    // UV は zw 要素に設定
+                    int base = (mPrintText[index] - L' ');
+                    instancing[index].pos.z = UV_WIDTH * (base % TEXTURE_CHAR_X_NUM);
+                    instancing[index].pos.w = UV_HEIGHT * (base / TEXTURE_CHAR_X_NUM);
+                }
             }
         }
         context->Unmap(mInstancingVertexBuffer, 0);
     }
-
-    // ラスタライザステート
-    context->RSSetState(mRsState);
 
     // ブレンドステート
     context->OMSetBlendState(mBdState, NULL, 0xfffffff);

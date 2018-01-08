@@ -2771,6 +2771,11 @@ unsigned char gfont_DDS[] =
     0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00
 };
 unsigned int gfont_DDS_len = 33168;
+// Žè“®“ü—Í
+unsigned int gfont_DDS_width = 16;
+unsigned int gfont_DDS_height = 16;
+unsigned int gfont_DDS_x_num = 32;
+unsigned int gfont_DDS_y_num = 3;
 
 NS_FW_GFX_END
 
