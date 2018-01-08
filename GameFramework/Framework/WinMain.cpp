@@ -36,22 +36,31 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     // 乱数ジェネレータ初期化
     srand(static_cast<unsigned>(time(NULL)));
     
-    // 初期時間の取得
-    DWORD beforeTime = timeGetTime();
-
     NS_FW_SYS::Application& application = NS_FW_SYS::Application::GetInstance();
     HWND hwnd = application.GetWindowHandle();
     NS_FW_SYS::DirectX* directX = application.GetDirectX();
 
+    // FPS 計算方法
+    // http://javaappletgame.blog34.fc2.com/blog-entry-265.html
+    long idleTime = (1000 << 16) / NS_FW_CONST::FPS;
+    long beforeTime = timeGetTime();
+    long errorTime = 0;
+    long progressTime = 0;
+
     // ゲームループ
     while (IsWindow(hwnd))
     {
-        DWORD nowTime, progress;
-        // 現在の時間を取得
-        nowTime = timeGetTime();
         // 経過時間を算出
-        progress = nowTime - beforeTime;
-        
+        long nowTime = timeGetTime() << 16;
+        long elapsedTime = (nowTime - beforeTime);
+        beforeTime = nowTime;
+
+        // スリープ時間の計算
+        long sleepTime = idleTime - (nowTime - beforeTime) - errorTime;
+        if (sleepTime < (2 << 16)) sleepTime = (2 << 16); // 最低でも2msは休止
+        Sleep(sleepTime >> 16);
+        errorTime = (timeGetTime() << 16) - beforeTime - sleepTime;
+
         // --- ゲーム処理 ---
 
         // キー情報の更新
@@ -61,7 +70,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         //    return false;
         //}
 
-        Update(nowTime);
+        Update((elapsedTime >> 16), (nowTime >> 16));
 
         // --- 描画処理 ---
         directX->ClearRenderView();
@@ -73,23 +82,19 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         directX->Present();
 
-        // 理想時間の算出
-        DWORD idealTime = (DWORD)(frames * (1000.0 / NS_FW_CONST::FPS));
-        if (idealTime > progress)
-        {
-            Sleep(idealTime - progress);
-        }
-
-        if (progress >= 1000)
+        progressTime += elapsedTime >> 16;
+        if (progressTime >= 1000)
         {
             pframes = frames;
-            beforeTime = nowTime;
             frames = 0;
+            progressTime = 0;
         }
         else
         {
             ++frames;
         }
+       
+
         if (param->exit) break;
     }
     return TRUE;

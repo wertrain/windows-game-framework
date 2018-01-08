@@ -68,7 +68,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 /**
  * update frame
  */
-void Update(const DWORD /*nowTime*/)
+void Update(const DWORD /*elapsedTime*/, const DWORD /*nowTime*/)
 {
 
 }
