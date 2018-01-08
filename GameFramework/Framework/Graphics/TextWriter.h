@@ -1,5 +1,5 @@
-#ifndef TEXT_H_
-#define TEXT_H_
+#ifndef TEXTWRITER_H_
+#define TEXTWRITER_H_
 
 #include "GraphicsBase.h"
 
@@ -7,11 +7,11 @@ NS_FW_GFX_BEGIN
 
 class Texture;
 
-class Text : public GraphicsBase
+class TextWriter : public GraphicsBase
 {
 public:
-    Text() ;
-    virtual ~Text();
+    TextWriter() ;
+    virtual ~TextWriter();
 
     bool Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const s32 font_size);
     void Destroy();
@@ -28,4 +28,4 @@ private:
 
 NS_FW_GFX_END
 
-#endif // TEXT_H_
+#endif // TEXTWRITER_H_

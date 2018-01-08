@@ -8,7 +8,7 @@
 #include "../System/Includes.h"
 #include "Texture.h"
 
-#include "Text.h"
+#include "TextWriter.h"
 
 NS_FW_GFX_BEGIN
 
@@ -84,7 +84,7 @@ VOID funcSaveFile(HDC hDC, LPCTSTR lpFname)
     funcSaveRect(lpFname, hDC, 0, 0, 256, 256);
 }
 
-Text::Text()
+TextWriter::TextWriter()
     : GraphicsBase()
     , mFontFileName(std::wstring())
     , mFontHandle(nullptr)
@@ -92,12 +92,12 @@ Text::Text()
 
 }
 
-Text::~Text()
+TextWriter::~TextWriter()
 {
 
 }
 
-bool Text::Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const s32 font_size)
+bool TextWriter::Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const s32 font_size)
 {
     // フォントを使えるようにする
     if (0 == AddFontResourceEx(
@@ -128,7 +128,7 @@ bool Text::Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const 
     return mFontHandle != NULL;
 }
 
-void Text::Destroy()
+void TextWriter::Destroy()
 {
     // リソース削除
     RemoveFontResourceEx(
@@ -144,7 +144,7 @@ void Text::Destroy()
     }
 }
 
-bool Text::WriteChar(const wchar_t c, ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)
+bool TextWriter::WriteChar(const wchar_t c, ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)
 {
     HDC hdc = GetDC(NULL);
     HFONT oldFont = (HFONT)SelectObject(hdc, mFontHandle);
@@ -232,7 +232,7 @@ bool Text::WriteChar(const wchar_t c, ID3D11Device* device, ID3D11DeviceContext*
     return SUCCEEDED(hr);
 }
 
-bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)
+bool TextWriter::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceContext* context, Texture* texture)
 {
     HDC hdc = GetDC(NULL);
     HFONT oldFont = (HFONT)SelectObject(hdc, mFontHandle);
@@ -343,12 +343,12 @@ bool Text::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11DeviceCont
     return SUCCEEDED(hr);
 }
 
-bool Text::WriteText(ID3D11Device* device, ID3D11DeviceContext* context)
+bool TextWriter::WriteText(ID3D11Device* device, ID3D11DeviceContext* context)
 {
     return false;
 }
 
-void Text::Render(ID3D11DeviceContext* context)
+void TextWriter::Render(ID3D11DeviceContext* context)
 {
 
 }

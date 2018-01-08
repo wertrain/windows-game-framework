@@ -87,9 +87,6 @@
     <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h">
       <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Graphics\Text.h">
-      <Filter>Framework\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Graphics\Primitive\Primitive.h">
       <Filter>Framework\Graphics\Primitive</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
     <ClInclude Include="Framework\System\Utility\Singleton.h">
       <Filter>Framework\System\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\TextWriter.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -164,9 +164,6 @@
     </ClCompile>
     <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp">
       <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Graphics\Text.cpp">
-      <Filter>Framework\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Primitive\Primitive.cpp">
       <Filter>Framework\Graphics\Primitive</Filter>
@@ -203,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="Framework\System\Utility\Singleton.cpp">
       <Filter>Framework\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\TextWriter.cpp">
+      <Filter>Framework\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

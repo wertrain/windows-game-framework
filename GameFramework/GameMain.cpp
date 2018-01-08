@@ -3,7 +3,7 @@
 #include "Framework/Graphics/Includes.h"
 #include "Tool/Archiver/Includes.h"
 
-fw::gfx::Text s_Text;
+fw::gfx::TextWriter s_Text;
 fw::gfx::Texture s_Texure;
 fw::gfx::Render2D s_Render2D;
 fw::gfx::DefaultFont s_DefaultFont;
