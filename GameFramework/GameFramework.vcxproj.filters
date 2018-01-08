@@ -135,6 +135,9 @@
     <ClInclude Include="Framework\Graphics\TextWriter.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\Text.h">
+      <Filter>Framework\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -202,6 +205,9 @@
       <Filter>Framework\System\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\TextWriter.cpp">
+      <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Text.cpp">
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,6 +12,7 @@
 #include "Common/Includes.h"
 #include "Core/DirectX.h"
 #include "System/Application.h"
+#include "Graphics/Text.h"
 #include "GameMain.h"
 #include "Constants.h"
 
@@ -28,9 +29,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     ThreadParam* param = reinterpret_cast<ThreadParam*>(vdParam);
 
     // フレーム数と以前の時間
-    DWORD frames = 0;
-    // FPSの表示用
-    //TCHAR str[16] = {0};
+    DWORD frames = 0, pframes = 0;
     // キーボードの状態を格納
     //BYTE keyTable[256];
 
@@ -69,6 +68,9 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         Draw(directX->GetDeviceContext());
 
+        NS_FW_GFX::DefaultFontManager::GetInstance().Render(directX->GetDeviceContext());
+        NS_FW_GFX::DefaultFontManager::GetInstance().SetTextFormat(NS_FW_GFX::DefaultFontManager::eID_System, 1, 1, L"FPS:%ld", pframes);
+
         directX->Present();
 
         // 理想時間の算出
@@ -80,6 +82,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         if (progress >= 1000)
         {
+            pframes = frames;
             beforeTime = nowTime;
             frames = 0;
         }
@@ -127,6 +130,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     }
     NS_FW_SYS::DirectX* directX = application.GetDirectX();
 
+    // システム関連初期化
+    NS_FW_GFX::DefaultFontManager& fontMngr = NS_FW_GFX::DefaultFontManager::GetInstance();
+    for (int i = 0; i < NS_FW_GFX::DefaultFontManager::eID_Num; ++i)
+    {
+        fontMngr.CreateLayer(directX->GetDevice(), directX->GetDeviceContext(), i, i);
+    }
+
     // ゲームオブジェクトの作成
     if (!Create(directX->GetDevice(), directX->GetDeviceContext()))
     {
@@ -153,6 +163,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     }
 
     Destroy();
+
+    NS_FW_GFX::DefaultFontManager::GetInstance().Destroy();
 
     application.Destroy();
 

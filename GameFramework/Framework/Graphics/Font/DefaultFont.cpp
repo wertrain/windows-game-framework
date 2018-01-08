@@ -18,7 +18,7 @@ static const s32 TEXTURE_CHAR_Y_NUM = gfont_DDS_y_num;
 static const s32 TEXTURE_FONT_WIDTH = gfont_DDS_width;
 static const s32 TEXTURE_FONT_HEIGHT = gfont_DDS_height;
 // スクリーン中の一行・一列あたり文字数定義
-static const f32 FONT_SCALE = 0.65f;
+static const f32 FONT_SCALE = 0.75f;
 static const s32 FONT_X_NUM = NS_FW_CONST::WIDTH / static_cast<s32>(TEXTURE_FONT_WIDTH * FONT_SCALE);
 static const s32 FONT_Y_NUM = NS_FW_CONST::HEIGHT / static_cast<s32>(TEXTURE_FONT_HEIGHT * FONT_SCALE);
 static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
@@ -277,6 +277,30 @@ void DefaultFont::Destroy()
     }
 }
 
+void DefaultFont::ClearText()
+{
+    NS_FW_UTIL::memset_zero(mPrintText, sizeof(wchar_t) * INSTANCE_NUM);
+}
+
+void DefaultFont::SetText(const int x, const int y, const wchar_t* text)
+{
+    if (x >= FONT_X_NUM || y >= FONT_Y_NUM) return;
+
+    int gx = x, gy = y;
+    const wchar_t* p = text;
+    while (*p)
+    {
+        s32 index = ((FONT_Y_NUM - 1) - gy) * FONT_X_NUM + gx;
+        mPrintText[index] = *p;
+        ++p;
+        if (++gx >= FONT_X_NUM)
+        {
+            gx = 0;
+            ++gy;
+        }
+    }
+}
+
 void DefaultFont::Render(ID3D11DeviceContext* context)
 {
     // 頂点バッファ
@@ -319,37 +343,6 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         HRESULT hr = context->Map(mInstancingVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
-
-        int index = 0;
-        mPrintText[index++] = L'!'; index++;
-        mPrintText[index++] = L'"'; index++;
-        mPrintText[index++] = L'#'; index++;
-        mPrintText[index++] = L'$'; index++;
-        mPrintText[index++] = L'%'; index++;
-        mPrintText[index++] = L'&'; index++;
-        mPrintText[index++] = L'\''; index++;
-        mPrintText[index++] = L'('; index++;
-        mPrintText[index++] = L')'; index++;
-        mPrintText[index++] = L'*'; index++;
-        mPrintText[index++] = L'+'; index++;
-        mPrintText[index++] = L','; index++;
-        mPrintText[index++] = L'-'; index++;
-        mPrintText[index++] = L'.'; index++;
-        mPrintText[index++] = L'/'; index++;
-        mPrintText[index++] = L'?'; index++;
-        mPrintText[index++] = L'@'; index++;
-        mPrintText[index++] = L'A'; index++;
-        mPrintText[index++] = L'B'; index++;
-        mPrintText[index++] = L'T'; index++;
-        mPrintText[index++] = L'e'; index++;
-        mPrintText[index++] = L's'; index++;
-        mPrintText[index++] = L't'; index++;
-        mPrintText[index++] = L'A'; index++;
-        mPrintText[index++] = L'B'; index++;
-        mPrintText[index++] = L'T'; index++;
-        mPrintText[index++] = L'e'; index++;
-        mPrintText[index++] = L's'; index++;
-        mPrintText[index++] = L't'; index++;
 
         for (s32 y = 0; y < FONT_Y_NUM; ++y)
         {

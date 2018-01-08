@@ -12,9 +12,9 @@ public:
     virtual ~DefaultFont();
 
     bool Create(ID3D11Device* device, ID3D11DeviceContext* context);
-
-public:
     void Destroy();
+    void ClearText();
+    void SetText(const int x, const int y, const wchar_t* text);
     void Render(ID3D11DeviceContext* context);
 
 protected:
