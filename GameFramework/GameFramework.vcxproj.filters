@@ -37,11 +37,11 @@
     <Filter Include="Framework\Tool\Archiver\Archiver">
       <UniqueIdentifier>{0dd249e4-6e5e-46b0-a402-33e955fa8027}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\System\Utility">
-      <UniqueIdentifier>{25f31d81-e122-40a0-9864-76ebff0a484d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Graphics\Font">
       <UniqueIdentifier>{ea43b31b-d624-4856-890c-38651c13950b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Utility">
+      <UniqueIdentifier>{fb770c18-f928-4bc8-9275-8f4b0e6acf29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,9 +111,6 @@
     <ClInclude Include="Framework\Graphics\Includes.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\System\Utility\Stopwatch.h">
-      <Filter>Framework\System\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Common\Debug.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
@@ -123,20 +120,23 @@
     <ClInclude Include="Framework\Graphics\Font\FontImage.h">
       <Filter>Framework\Graphics\Font</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\System\Utility\Includes.h">
-      <Filter>Framework\System\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\System\Utility\Memory.h">
-      <Filter>Framework\System\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\System\Utility\Singleton.h">
-      <Filter>Framework\System\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Graphics\TextWriter.h">
       <Filter>Framework\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Text.h">
       <Filter>Framework\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Utility\Includes.h">
+      <Filter>Framework\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Utility\Memory.h">
+      <Filter>Framework\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Utility\Singleton.h">
+      <Filter>Framework\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Utility\Stopwatch.h">
+      <Filter>Framework\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,9 +186,6 @@
     <ClCompile Include="Framework\System\Application.cpp">
       <Filter>Framework\System</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\System\Utility\Stopwatch.cpp">
-      <Filter>Framework\System\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Common\Debug.cpp">
       <Filter>Framework\Common</Filter>
     </ClCompile>
@@ -198,17 +195,20 @@
     <ClCompile Include="Framework\System\File.cpp">
       <Filter>Framework\System</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\System\Utility\Memory.cpp">
-      <Filter>Framework\System\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\System\Utility\Singleton.cpp">
-      <Filter>Framework\System\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Graphics\TextWriter.cpp">
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Text.cpp">
       <Filter>Framework\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Utility\Memory.cpp">
+      <Filter>Framework\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Utility\Singleton.cpp">
+      <Filter>Framework\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Utility\Stopwatch.cpp">
+      <Filter>Framework\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

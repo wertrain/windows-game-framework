@@ -3,7 +3,7 @@
 #include <memory>
 #include "../../Common/Includes.h"
 #include "../../System/Includes.h"
-#include "../../System/Utility/Memory.h"
+#include "../../Utility/Memory.h"
 #include "../../Constants.h"
 #include "../../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
 #include "FontImage.h"

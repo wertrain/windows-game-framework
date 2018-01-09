@@ -2,7 +2,7 @@
 #define UTILITY_H_
 
 #include <memory>
-#include "../../Common/Defines.h"
+#include "../Common/Defines.h"
 
 NS_FW_UTIL_BEGIN
 

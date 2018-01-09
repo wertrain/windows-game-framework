@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <chrono>
-#include "../../Common/Defines.h"
+#include "../Common/Defines.h"
 #include "Memory.h"
 #include "Stopwatch.h"
 

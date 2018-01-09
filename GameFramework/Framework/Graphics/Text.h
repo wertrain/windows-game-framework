@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "../Common/Defines.h"
-#include "../System/Utility/Singleton.h"
+#include "../Utility/Singleton.h"
 #include "Font/DefaultFont.h"
 
 struct ID3D11Device;
