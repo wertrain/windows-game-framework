@@ -43,9 +43,12 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     // FPS 計算方法
     // http://javaappletgame.blog34.fc2.com/blog-entry-265.html
     long idleTime = (1000 << 16) / NS_FW_CONST::FPS;
-    long beforeTime = timeGetTime();
+    long beforeTime = timeGetTime() << 16;
     long errorTime = 0;
     long progressTime = 0;
+    // timeBeginPeriod を使えば 60 ぴったりになるが、全プロセスに影響するらしい...
+    //timeBeginPeriod(1);
+    //timeEndPeriod(1);
 
     // ゲームループ
     while (IsWindow(hwnd))
@@ -54,12 +57,6 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         long nowTime = timeGetTime() << 16;
         long elapsedTime = (nowTime - beforeTime);
         beforeTime = nowTime;
-
-        // スリープ時間の計算
-        long sleepTime = idleTime - (nowTime - beforeTime) - errorTime;
-        if (sleepTime < (2 << 16)) sleepTime = (2 << 16); // 最低でも2msは休止
-        Sleep(sleepTime >> 16);
-        errorTime = (timeGetTime() << 16) - beforeTime - sleepTime;
 
         // --- ゲーム処理 ---
 
@@ -81,6 +78,19 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         NS_FW_GFX::DefaultFontManager::GetInstance().SetTextFormat(NS_FW_GFX::DefaultFontManager::eID_System, 1, 1, L"FPS:%ld", pframes);
 
         directX->Present();
+
+        // スリープ時間の計算
+        nowTime = (timeGetTime() << 16);
+        long sleepTime = idleTime - (nowTime - beforeTime) - errorTime;
+        if (sleepTime < (2 << 16)) sleepTime = (2 << 16); // 最低でも2msは休止
+        beforeTime = nowTime;
+
+        //timeBeginPeriod(1); 
+        Sleep(sleepTime >> 16);
+        //timeEndPeriod(1);
+        
+        nowTime = (timeGetTime() << 16); 
+        errorTime = (nowTime - beforeTime) - sleepTime;
 
         progressTime += elapsedTime >> 16;
         if (progressTime >= 1000)
