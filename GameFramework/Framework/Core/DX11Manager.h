@@ -1,14 +1,17 @@
-#ifndef DIRECTX_H_
-#define DIRECTX_H_
+#ifndef GRAPHICS_DIRECTX_H_
+#define GRAPHICS_DIRECTX_H_
+
+#include "../Utility/Singleton.h"
 
 NS_FW_SYS_BEGIN
 
-class DirectX
+class DX11Manager : public NS_FW_UTIL::Singleton<DX11Manager>
 {
-public:
-    DirectX() ;
-    virtual ~DirectX();
+protected:
+    friend class NS_FW_UTIL::Singleton<DX11Manager>;
+    DX11Manager();
 
+public:
     bool Initialize(const HWND hWnd, const u32 width, const u32 height);
     void Finalize();
 
@@ -29,4 +32,4 @@ private:
 
 NS_FW_SYS_END
 
-#endif // DIRECTX_H_
+#endif // GRAPHICS_DIRECTX_H_

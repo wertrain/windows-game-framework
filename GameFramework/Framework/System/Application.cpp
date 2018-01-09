@@ -8,7 +8,6 @@
 #include <atlbase.h>
 #include <cstdint>
 #include "../Common/Includes.h"
-#include "../Core/DirectX.h"
 #include "../GameMain.h"
 #include "../Constants.h"
 
@@ -16,22 +15,10 @@
 
 NS_FW_SYS_BEGIN
 
-Application& Application::GetInstance()
-{
-    static Application instance;
-    return instance;
-}
-
 Application::Application()
 #ifdef _WIN64
     : mHWnd(NULL)
-    , mDirectX(nullptr)
 #endif // _WIN64
-{
-
-}
-
-Application::~Application()
 {
 
 }
@@ -75,10 +62,6 @@ bool Application::Create(HINSTANCE hInstance, WNDPROC wndproc)
     HRESULT hr = ::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
     if (FAILED(hr)) return false;
 
-    // DirectXの初期化
-    mDirectX = new DirectX();
-    mDirectX->Initialize(mHWnd, NS_FW_CONST::WIDTH, NS_FW_CONST::HEIGHT);
-
     // ウィンドウのサイズ調整
     RECT window_rect;
     SetRect(&window_rect, 0, 0, NS_FW_CONST::WIDTH, NS_FW_CONST::HEIGHT);
@@ -95,22 +78,11 @@ HWND Application::GetWindowHandle()
     return mHWnd;
 }
 
-DirectX* Application::GetDirectX()
-{
-    return mDirectX;
-}
-
 #endif // _WIN64
 
 void Application::Destroy()
 {
-#ifdef _WIN64
-    if (mDirectX)
-    {
-        delete mDirectX;
-        mDirectX = nullptr;
-    }
-#endif // _WIN64
+
 }
 
 void Application::ShowWindow(const int nCmdShow)

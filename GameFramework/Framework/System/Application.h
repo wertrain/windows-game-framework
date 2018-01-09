@@ -1,27 +1,23 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
-NS_FW_SYS_BEGIN
+#include "../Utility/Singleton.h"
 
-class DirectX;
+NS_FW_SYS_BEGIN
 
 /// <summary>
 /// アプリケーション管理クラス
 /// </summary>
-class Application
+class Application : public NS_FW_UTIL::Singleton<Application>
 {
-public:
-    static Application& GetInstance();
-
-private:
+protected:
+    friend class NS_FW_UTIL::Singleton<Application>;
     Application();
-    ~Application();
 
 public:
 #ifdef _WIN64
     bool Create(HINSTANCE hInstance, WNDPROC wndproc);
     HWND GetWindowHandle();
-    DirectX* GetDirectX();
 #endif // _WIN64
 
     void ShowWindow(const int nCmdShow);
@@ -30,7 +26,6 @@ public:
 private:
 #ifdef _WIN64
     HWND mHWnd;
-    DirectX* mDirectX;
 #endif // _WIN64
 };
 

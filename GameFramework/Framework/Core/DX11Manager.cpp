@@ -1,13 +1,13 @@
 #include <d3d11.h>
 #include <atlbase.h>
 #include "../Common/Includes.h"
-#include "DirectX.h"
+#include "DX11Manager.h"
 
 #pragma comment(lib, "d3d11.lib")
 
 NS_FW_SYS_BEGIN
 
-DirectX::DirectX()
+DX11Manager::DX11Manager()
     : mDevice(nullptr)
     , mDeviceContext(nullptr)
     , mDXGISwpChain(nullptr)
@@ -16,12 +16,7 @@ DirectX::DirectX()
 
 }
 
-DirectX::~DirectX()
-{
-
-}
-
-bool DirectX::Initialize(const HWND hWnd, const u32 width, const u32 height)
+bool DX11Manager::Initialize(const HWND hWnd, const u32 width, const u32 height)
 {
     // デバイスの生成
     HRESULT hr = D3D11CreateDevice(
@@ -121,7 +116,7 @@ bool DirectX::Initialize(const HWND hWnd, const u32 width, const u32 height)
     return true;
 }
 
-void DirectX::Finalize()
+void DX11Manager::Finalize()
 {
     if (mRenderTargetView)
     {
@@ -146,13 +141,13 @@ void DirectX::Finalize()
     }
 }
 
-void DirectX::ClearRenderView()
+void DX11Manager::ClearRenderView()
 {
     float ClearColor[] = { 0.0f, 0.0f, 1.0f, 1.0f };
     mDeviceContext->ClearRenderTargetView(mRenderTargetView, ClearColor);
 }
 
-void DirectX::Present()
+void DX11Manager::Present()
 {
     mDXGISwpChain->Present(0, 0);
 }

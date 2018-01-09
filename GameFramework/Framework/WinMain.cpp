@@ -10,7 +10,7 @@
 #include <d3d11.h>
 
 #include "Common/Includes.h"
-#include "Core/DirectX.h"
+#include "Core/DX11Manager.h"
 #include "System/Application.h"
 #include "Graphics/Text.h"
 #include "GameMain.h"
@@ -38,7 +38,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     
     NS_FW_SYS::Application& application = NS_FW_SYS::Application::GetInstance();
     HWND hwnd = application.GetWindowHandle();
-    NS_FW_SYS::DirectX* directX = application.GetDirectX();
+    NS_FW_SYS::DX11Manager& dxMgr = NS_FW_SYS::DX11Manager::GetInstance();
 
     // FPS 計算方法
     // http://javaappletgame.blog34.fc2.com/blog-entry-265.html
@@ -64,14 +64,14 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         // --- 描画処理 ---
 
-        directX->ClearRenderView();
+        dxMgr.ClearRenderView();
 
-        Draw(directX->GetDeviceContext());
+        Draw(dxMgr.GetDeviceContext());
 
-        NS_FW_GFX::DefaultFontManager::GetInstance().Render(directX->GetDeviceContext());
+        NS_FW_GFX::DefaultFontManager::GetInstance().Render(dxMgr.GetDeviceContext());
         NS_FW_GFX::DefaultFontManager::GetInstance().SetTextFormat(NS_FW_GFX::DefaultFontManager::eID_System, 1, 1, L"FPS:%ld", pframes);
 
-        directX->Present();
+        dxMgr.Present();
 
         // --- スリープ処理 ---
         
@@ -133,22 +133,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     // メモリリークチェック
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
+    // アプリケーションの初期化
     NS_FW_SYS::Application& application = NS_FW_SYS::Application::GetInstance();
     if (!application.Create(hInstance, WndProc))
     {
         return 0;
     }
-    NS_FW_SYS::DirectX* directX = application.GetDirectX();
+    // DirectX の初期化
+    NS_FW_SYS::DX11Manager& dxMgr = NS_FW_SYS::DX11Manager::GetInstance();
+    if (!NS_FW_SYS::DX11Manager::GetInstance().Initialize(application.GetWindowHandle(), NS_FW_CONST::WIDTH, NS_FW_CONST::HEIGHT))
+    {
+        return 0;
+    }
 
     // システム関連初期化
-    NS_FW_GFX::DefaultFontManager& fontMngr = NS_FW_GFX::DefaultFontManager::GetInstance();
+    NS_FW_GFX::DefaultFontManager& fontMgr = NS_FW_GFX::DefaultFontManager::GetInstance();
     for (int i = 0; i < NS_FW_GFX::DefaultFontManager::eID_Num; ++i)
     {
-        fontMngr.CreateLayer(directX->GetDevice(), directX->GetDeviceContext(), i, i);
+        fontMgr.CreateLayer(dxMgr.GetDevice(), dxMgr.GetDeviceContext(), i, i);
     }
 
     // ゲームオブジェクトの作成
-    if (!Create(directX->GetDevice(), directX->GetDeviceContext()))
+    if (!Create(dxMgr.GetDevice(), dxMgr.GetDeviceContext()))
     {
         //assert( !"ゲームオブジェクトの作成に失敗しました。" );
         return 0;
@@ -174,8 +180,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
 
     Destroy();
 
-    NS_FW_GFX::DefaultFontManager::GetInstance().Destroy();
-
+    fontMgr.Destroy();
+    
+    dxMgr.Finalize();
+    
     application.Destroy();
 
     return 0;

@@ -75,9 +75,6 @@
     <ClInclude Include="Framework\Common\Types.h">
       <Filter>Framework\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Core\DirectX.h">
-      <Filter>Framework\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Core\ObjectBase.h">
       <Filter>Framework\Core</Filter>
     </ClInclude>
@@ -138,6 +135,9 @@
     <ClInclude Include="Framework\Utility\Stopwatch.h">
       <Filter>Framework\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Core\DX11Manager.h">
+      <Filter>Framework\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -156,9 +156,6 @@
       <Filter>Framework\Common</Filter>
     </ClCompile>
     <ClCompile Include="GameMain.cpp" />
-    <ClCompile Include="Framework\Core\DirectX.cpp">
-      <Filter>Framework\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Core\ObjectBase.cpp">
       <Filter>Framework\Core</Filter>
     </ClCompile>
@@ -209,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Utility\Stopwatch.cpp">
       <Filter>Framework\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\DX11Manager.cpp">
+      <Filter>Framework\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
