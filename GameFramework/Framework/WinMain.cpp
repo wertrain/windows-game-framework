@@ -60,16 +60,10 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         // --- ゲーム処理 ---
 
-        // キー情報の更新
-        //if (!GetKeyboardState(keyTable))
-        //{
-        //    MessageBox( gameWindow->hWnd, "キー情報の取得に失敗", "ERROR", MB_OK);
-        //    return false;
-        //}
-
         Update((elapsedTime >> 16), (nowTime >> 16));
 
         // --- 描画処理 ---
+
         directX->ClearRenderView();
 
         Draw(directX->GetDeviceContext());
@@ -79,7 +73,8 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         directX->Present();
 
-        // スリープ時間の計算
+        // --- スリープ処理 ---
+        
         nowTime = (timeGetTime() << 16);
         long sleepTime = idleTime - (nowTime - beforeTime) - errorTime;
         if (sleepTime < (2 << 16)) sleepTime = (2 << 16); // 最低でも2msは休止
@@ -92,6 +87,8 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         nowTime = (timeGetTime() << 16); 
         errorTime = (nowTime - beforeTime) - sleepTime;
 
+        // --- FPSカウント処理 ---
+
         progressTime += elapsedTime >> 16;
         if (progressTime >= 1000)
         {
@@ -103,8 +100,6 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         {
             ++frames;
         }
-       
-
         if (param->exit) break;
     }
     return TRUE;
