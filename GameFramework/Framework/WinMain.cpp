@@ -28,17 +28,12 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 {
     ThreadParam* param = reinterpret_cast<ThreadParam*>(vdParam);
 
-    // フレーム数と以前の時間
-    DWORD frames = 0, pframes = 0;
-    // キーボードの状態を格納
-    //BYTE keyTable[256];
-
     // 乱数ジェネレータ初期化
     srand(static_cast<unsigned>(time(NULL)));
     
     NS_FW_SYS::Application& application = NS_FW_SYS::Application::GetInstance();
-    HWND hwnd = application.GetWindowHandle();
     NS_FW_SYS::DX11Manager& dxMgr = NS_FW_SYS::DX11Manager::GetInstance();
+    NS_FW_GFX::DefaultFontManager& fontMgr = NS_FW_GFX::DefaultFontManager::GetInstance();
 
     // FPS 計算方法
     // http://javaappletgame.blog34.fc2.com/blog-entry-265.html
@@ -46,11 +41,16 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
     long beforeTime = timeGetTime() << 16;
     long errorTime = 0;
     long progressTime = 0;
+    // フレーム数
+    long nFPS = 0, nFpsCount = 0;
+    //double dFPS = 0, dFpsCount = 0;
+
     // timeBeginPeriod を使えば 60 ぴったりになるが、全プロセスに影響するらしい...
     //timeBeginPeriod(1);
     //timeEndPeriod(1);
-
+    
     // ゲームループ
+    HWND hwnd = application.GetWindowHandle();
     while (IsWindow(hwnd))
     {
         // 経過時間を算出
@@ -68,8 +68,9 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         Draw(dxMgr.GetDeviceContext());
 
-        NS_FW_GFX::DefaultFontManager::GetInstance().Render(dxMgr.GetDeviceContext());
-        NS_FW_GFX::DefaultFontManager::GetInstance().SetTextFormat(NS_FW_GFX::DefaultFontManager::eID_System, 1, 1, L"FPS:%ld", pframes);
+        fontMgr.Render(dxMgr.GetDeviceContext());
+        fontMgr.SetTextFormat(NS_FW_GFX::DefaultFontManager::eID_System, 1, 1, L"FPS:%ld", nFPS);
+        //fontMgr.SetTextFormat(NS_FW_GFX::DefaultFontManager::eID_System, 1, 1, L"FPS:%.2f", dFPS);
 
         dxMgr.Present();
 
@@ -77,6 +78,7 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
         
         nowTime = (timeGetTime() << 16);
         long sleepTime = idleTime - (nowTime - beforeTime) - errorTime;
+       
         if (sleepTime < (2 << 16)) sleepTime = (2 << 16); // 最低でも2msは休止
         beforeTime = nowTime;
 
@@ -89,16 +91,19 @@ DWORD WINAPI GameMainFunc(LPVOID vdParam)
 
         // --- FPSカウント処理 ---
 
-        progressTime += elapsedTime >> 16;
-        if (progressTime >= 1000)
+        if ((progressTime += elapsedTime) >= 1000 << 16)
         {
-            pframes = frames;
-            frames = 0;
             progressTime = 0;
+
+            nFPS = nFpsCount;
+            nFpsCount = 0;
+            //dFPS = dFpsCount;
+            //dFpsCount = 0;
         }
         else
         {
-            ++frames;
+            //dFpsCount += static_cast<double>(nowTime - beforeTime) / static_cast<double>(idleTime);
+            nFpsCount += 1;
         }
         if (param->exit) break;
     }
@@ -137,12 +142,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     NS_FW_SYS::Application& application = NS_FW_SYS::Application::GetInstance();
     if (!application.Create(hInstance, WndProc))
     {
+        application.ShowMessageBox(L"エラー", L"アプリケーションの初期化に失敗しました。", NS_FW_SYS::Application::eMB_Error); 
         return 0;
     }
+
     // DirectX の初期化
     NS_FW_SYS::DX11Manager& dxMgr = NS_FW_SYS::DX11Manager::GetInstance();
     if (!NS_FW_SYS::DX11Manager::GetInstance().Initialize(application.GetWindowHandle(), NS_FW_CONST::WIDTH, NS_FW_CONST::HEIGHT))
     {
+        application.ShowMessageBox(L"エラー", L"DirectX の初期化に失敗しました。", NS_FW_SYS::Application::eMB_Error);
         return 0;
     }
 
@@ -150,13 +158,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     NS_FW_GFX::DefaultFontManager& fontMgr = NS_FW_GFX::DefaultFontManager::GetInstance();
     for (int i = 0; i < NS_FW_GFX::DefaultFontManager::eID_Num; ++i)
     {
-        fontMgr.CreateLayer(dxMgr.GetDevice(), dxMgr.GetDeviceContext(), i, i);
+        if (!fontMgr.CreateLayer(dxMgr.GetDevice(), dxMgr.GetDeviceContext(), i, i))
+        {
+            application.ShowMessageBox(L"エラー", L"システムフォントの初期化に失敗しました。", NS_FW_SYS::Application::eMB_Error);
+            return 0;
+        }
     }
 
     // ゲームオブジェクトの作成
     if (!Create(dxMgr.GetDevice(), dxMgr.GetDeviceContext()))
     {
-        //assert( !"ゲームオブジェクトの作成に失敗しました。" );
+        application.ShowMessageBox(L"エラー", L"ゲームオブジェクトの初期化に失敗しました。", NS_FW_SYS::Application::eMB_Error);
         return 0;
     }
 
@@ -168,9 +180,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         GameMainFunc,                      // スレッド関数名
         reinterpret_cast<LPVOID>(&s_ThreadParam), // スレッドに渡す構造体
         0,                                 // 0:作成と同時に実行
-        &s_ThreadParam.id);     // スレッドID
+        &s_ThreadParam.id);                // スレッドID
 
-    application.GetInstance().ShowWindow(nCmdShow); // ウィンドウ表示
+    application.ShowWindow(nCmdShow); // ウィンドウ表示
 
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0) > 0)

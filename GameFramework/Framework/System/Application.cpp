@@ -85,6 +85,15 @@ void Application::Destroy()
 
 }
 
+int Application::ShowMessageBox(const wchar_t* title, const wchar_t* message, const eMBStyle style)
+{
+#ifdef _WIN64
+    return MessageBox(
+        mHWnd, message, title, style
+    );
+#endif // _WIN64
+}
+
 void Application::ShowWindow(const int nCmdShow)
 {
 #ifdef _WIN64

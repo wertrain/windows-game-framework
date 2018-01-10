@@ -48,6 +48,7 @@ void DefaultFontManager::Render(ID3D11DeviceContext* context)
         if (!param->empty)
         {
             param->font.Render(context);
+            param->font.ClearText();
             param->empty = true;
         }
     }

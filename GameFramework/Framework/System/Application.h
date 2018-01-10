@@ -13,6 +13,12 @@ class Application : public NS_FW_UTIL::Singleton<Application>
 protected:
     friend class NS_FW_UTIL::Singleton<Application>;
     Application();
+public:
+    enum eMBStyle : u16
+    {
+        eMB_Info = MB_ICONINFORMATION,
+        eMB_Error = MB_ICONWARNING
+    };
 
 public:
 #ifdef _WIN64
@@ -20,6 +26,7 @@ public:
     HWND GetWindowHandle();
 #endif // _WIN64
 
+    int ShowMessageBox(const wchar_t* title, const wchar_t* message, const eMBStyle style);
     void ShowWindow(const int nCmdShow);
     void Destroy();
 
