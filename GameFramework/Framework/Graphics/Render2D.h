@@ -1,5 +1,5 @@
-#ifndef RENDER2D_H_
-#define RENDER2D_H_
+#ifndef GRAPHICS_RENDER2D_H_
+#define GRAPHICS_RENDER2D_H_
 
 NS_FW_GFX_BEGIN
 
@@ -30,4 +30,4 @@ private:
 
 NS_FW_GFX_END
 
-#endif // RENDER2D_H_
+#endif // GRAPHICS_RENDER2D_H_

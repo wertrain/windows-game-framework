@@ -1,5 +1,5 @@
-#ifndef GRAPHICSBASE_H_
-#define GRAPHICSBASE_H_
+#ifndef GRAPHICS_GRAPHICSBASE_H_
+#define GRAPHICS_GRAPHICSBASE_H_
 
 #include "../Core/ObjectBase.h"
 
@@ -14,4 +14,4 @@ public:
 
 NS_FW_GFX_END
 
-#endif // GRAPHICSBASE_H_
+#endif // GRAPHICS_GRAPHICSBASE_H_

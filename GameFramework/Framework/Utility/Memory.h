@@ -1,5 +1,5 @@
-#ifndef UTILITY_H_
-#define UTILITY_H_
+#ifndef UTILITY_MEMORY_H_
+#define UTILITY_MEMORY_H_
 
 #include <memory>
 #include "../Common/Defines.h"
@@ -16,4 +16,4 @@ __forceinline void memset_zero(void* p, const size_t size)
 
 NS_FW_UTIL_END
 
-#endif // UTILITY_H_
+#endif // UTILITY_MEMORY_H_

@@ -1,5 +1,5 @@
-#ifndef DEFINES_H_
-#define DEFINES_H_
+#ifndef COMMON_DEFINES_H_
+#define COMMON_DEFINES_H_
 
 /// <summary>
 /// Framework –¼‘O‹óŠÔ’è‹`
@@ -52,4 +52,4 @@
 #define FRAMEWORK_USE_DIRECT_X_
 #endif // _WIN64
 
-#endif // DEFINES_H_
+#endif // COMMON_DEFINES_H_

@@ -1,5 +1,5 @@
-#ifndef TYPES_H_
-#define TYPES_H_
+#ifndef COMMON_TYPES_H_
+#define COMMON_TYPES_H_
 
 #ifdef FRAMEWORK_COMMON_TYPES_
 
@@ -50,4 +50,4 @@ typedef DirectX::XMMATRIX Matrix44;
 
 #endif // FRAMEWORK_USE_DIRECT_X_
 
-#endif // TYPES_H_
+#endif // COMMON_TYPES_H_

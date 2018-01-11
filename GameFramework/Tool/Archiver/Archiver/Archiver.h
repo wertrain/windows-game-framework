@@ -1,5 +1,5 @@
-#ifndef ARCHIVER_H_
-#define ARCHIVER_H_
+#ifndef TOOL_ARCHIVER_H_
+#define TOOL_ARCHIVER_H_
 
 #include "../../../Framework/Common/Includes.h"
 #include <vector>
@@ -56,4 +56,4 @@ private:
 
 NS_FW_TOOL_END
 
-#endif // ARCHIVER_H_
+#endif // TOOL_ARCHIVER_H_

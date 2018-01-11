@@ -1,5 +1,5 @@
-#ifndef STOPWATCH_H_
-#define STOPWATCH_H_
+#ifndef UTILITY_STOPWATCH_H_
+#define UTILITY_STOPWATCH_H_
 
 NS_FW_UTIL_BEGIN
 
@@ -20,4 +20,4 @@ private:
 
 NS_FW_UTIL_END
 
-#endif // STOPWATCH_H_
+#endif // UTILITY_STOPWATCH_H_

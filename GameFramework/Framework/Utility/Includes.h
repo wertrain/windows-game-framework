@@ -1,5 +1,5 @@
-#ifndef SYSTEM_UTILITY_INCLUDES_H_
-#define SYSTEM_UTILITY_INCLUDES_H_
+#ifndef UTILITY_INCLUDES_H_
+#define UTILITY_INCLUDES_H_
 
 #include <memory>
 #include <chrono>
@@ -7,4 +7,4 @@
 #include "Memory.h"
 #include "Stopwatch.h"
 
-#endif // SYSTEM_UTILITY_INCLUDES_H_
+#endif // UTILITY_INCLUDES_H_

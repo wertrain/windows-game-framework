@@ -1,5 +1,5 @@
-#ifndef FILE_H_
-#define FILE_H_
+#ifndef SYSTEM_FILE_H_
+#define SYSTEM_FILE_H_
 
 NS_FW_SYS_BEGIN
 
@@ -21,4 +21,4 @@ private:
 
 NS_FW_SYS_END
 
-#endif // FILE_H_
+#endif // SYSTEM_FILE_H_

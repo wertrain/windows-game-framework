@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H_
-#define TEXTURE_H_
+#ifndef GRAPHICS_TEXTURE_H_
+#define GRAPHICS_TEXTURE_H_
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;
@@ -33,4 +33,4 @@ protected:
 
 NS_FW_GFX_END
 
-#endif // TEXTURE_H_
+#endif // GRAPHICS_TEXTURE_H_

@@ -1,5 +1,5 @@
-#ifndef APPLICATION_H_
-#define APPLICATION_H_
+#ifndef SYSTEM_APPLICATION_H_
+#define SYSTEM_APPLICATION_H_
 
 #include "../Utility/Singleton.h"
 
@@ -38,4 +38,4 @@ private:
 
 NS_FW_SYS_END
 
-#endif // APPLICATION_H_
+#endif // SYSTEM_APPLICATION_H_

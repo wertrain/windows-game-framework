@@ -1,5 +1,5 @@
-#ifndef TEXT_H_
-#define TEXT_H_
+#ifndef GRAPHICS_TEXT_H_
+#define GRAPHICS_TEXT_H_
 
 #include <vector>
 #include "../Common/Defines.h"
@@ -47,4 +47,4 @@ void Printf(const int x, const int y, const wchar_t* format, ...);
 
 NS_FW_GFX_END
 
-#endif // TEXT_H_
+#endif // GRAPHICS_TEXT_H_

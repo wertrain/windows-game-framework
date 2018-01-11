@@ -1,5 +1,5 @@
-#ifndef TEXTWRITER_H_
-#define TEXTWRITER_H_
+#ifndef GRAPHICS_TEXTWRITER_H_
+#define GRAPHICS_TEXTWRITER_H_
 
 #include "GraphicsBase.h"
 
@@ -28,4 +28,4 @@ private:
 
 NS_FW_GFX_END
 
-#endif // TEXTWRITER_H_
+#endif // GRAPHICS_TEXTWRITER_H_

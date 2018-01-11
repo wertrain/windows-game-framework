@@ -1,5 +1,5 @@
-#ifndef BITMAP_H_
-#define BITMAP_H_
+#ifndef GRAPHICS_BITMAP_H_
+#define GRAPHICS_BITMAP_H_
 
 #include "Primitive/Primitive.h"
 #include <Windows.h>
@@ -26,4 +26,4 @@ protected:
 
 NS_FW_GFX_END
 
-#endif // BITMAP_H_
+#endif // GRAPHICS_BITMAP_H_

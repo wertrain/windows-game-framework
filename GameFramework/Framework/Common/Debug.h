@@ -1,6 +1,6 @@
-#ifndef DEBUG_H_
-#define DEBUG_H_
+#ifndef COMMON_DEBUG_H_
+#define COMMON_DEBUG_H_
 
 void DebugPrintf(wchar_t* pszFormat, ...);
 
-#endif // DEBUG_H_
+#endif // COMMON_DEBUG_H_
