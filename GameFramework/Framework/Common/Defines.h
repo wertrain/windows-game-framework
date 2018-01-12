@@ -4,6 +4,7 @@
 /// <summary>
 /// Framework 名前空間定義
 /// </summary>
+#ifndef FW_UNUSE_NAMESPACE
 #define NS_DEF_FW fw
 #define NS_DEF_FW_GFX gfx
 #define NS_DEF_FW_SYS sys
@@ -34,6 +35,9 @@
 #define NS_FW_CONST_END } NS_FW_END
 #define NS_FW_TOOL_BEGIN NS_FW_BEGIN namespace NS_DEF_FW_TOOL {
 #define NS_FW_TOOL_END } NS_FW_END
+#else
+#error
+#endif // FW_UNUSE_NAMESPACE
 
 /// <summary>
 /// よくあるタイプを定義する
