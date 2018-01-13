@@ -2,6 +2,7 @@
 #define GRAPHICS_MODELBASE_H_
 
 #include "../../Common/Defines.h"
+#include "../../Common/Types.h"
 
 NS_FW_GFX_BEGIN
 
