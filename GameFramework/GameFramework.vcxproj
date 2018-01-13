@@ -78,6 +78,7 @@
     <ClInclude Include="Framework\Graphics\Font\FontImage.h" />
     <ClInclude Include="Framework\Graphics\GraphicsBase.h" />
     <ClInclude Include="Framework\Graphics\Includes.h" />
+    <ClInclude Include="Framework\Graphics\Model\ModelBase.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Primitive.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Quadrangle.h" />
     <ClInclude Include="Framework\Graphics\Primitive\Triangle.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
     <ClCompile Include="Framework\Graphics\Font\DefaultFont.cpp" />
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp" />
+    <ClCompile Include="Framework\Graphics\Model\ModelBase.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive\Primitive.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive\Quadrangle.cpp" />
     <ClCompile Include="Framework\Graphics\Primitive\Triangle.cpp" />

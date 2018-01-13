@@ -43,6 +43,9 @@
     <Filter Include="Framework\Utility">
       <UniqueIdentifier>{fb770c18-f928-4bc8-9275-8f4b0e6acf29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Graphics\Model">
+      <UniqueIdentifier>{470040ef-aa3a-41f9-9bb2-0a26622a758b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="Framework\Core\DX11Manager.h">
       <Filter>Framework\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics\Model\ModelBase.h">
+      <Filter>Framework\Graphics\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\WinMain.cpp">
@@ -209,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Core\DX11Manager.cpp">
       <Filter>Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Graphics\Model\ModelBase.cpp">
+      <Filter>Framework\Graphics\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

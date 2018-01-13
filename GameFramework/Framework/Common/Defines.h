@@ -4,7 +4,7 @@
 /// <summary>
 /// Framework –¼‘O‹óŠÔ’è‹`
 /// </summary>
-#ifndef FW_UNUSE_NAMESPACE
+#ifndef FW_UNUSED_NAMESPACE
 #define NS_DEF_FW fw
 #define NS_DEF_FW_GFX gfx
 #define NS_DEF_FW_SYS sys

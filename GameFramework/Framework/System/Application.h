@@ -16,8 +16,11 @@ protected:
 public:
     enum eMBStyle : u16
     {
+#ifdef _WIN64
         eMB_Info = MB_ICONINFORMATION,
-        eMB_Error = MB_ICONWARNING
+        eMB_Error = MB_ICONWARNING,
+#endif // _WIN64
+        eMB_Max
     };
 
 public:
