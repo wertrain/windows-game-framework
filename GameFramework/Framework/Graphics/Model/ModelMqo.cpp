@@ -218,7 +218,7 @@ bool MqoFile::ParseMaterial(FILE* fp, char* buffer, const int bufferSize)
 
 bool MqoFile::ParseObject(FILE* fp, char* buffer, const int bufferSize)
 {
-
+    return true;
 }
 
 #undef REGEX_GET_START
