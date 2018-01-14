@@ -104,14 +104,17 @@ bool MqoFile::Read(const wchar_t* file)
                 }                                                                       \
         }
 
+#define REGEX_GET_START std::string src = buffer
+
 #define REGEX_GET(r, member)                               \
         do                                                 \
         {                                                  \
             std::regex re(r);                              \
-            std::cmatch results;                           \
-            if (std::regex_search(buffer, results, re))    \
+            std::smatch results;                           \
+            if (std::regex_search(src, results, re))       \
             {                                              \
                 p->##member = results[1].str();            \
+                src = results.suffix();                    \
             }                                              \
         }                                                  \
         while(0)
@@ -120,10 +123,11 @@ bool MqoFile::Read(const wchar_t* file)
         do                                                    \
         {                                                     \
             std::regex re(r);                                 \
-            std::cmatch results;                              \
-            if (std::regex_search(buffer, results, re))       \
+            std::smatch results;                              \
+            if (std::regex_search(src, results, re))          \
             {                                                 \
                 p->##member = atoi(results[1].str().c_str()); \
+                src = results.suffix();                       \
             }                                                 \
         }                                                     \
         while(0)
@@ -132,27 +136,29 @@ bool MqoFile::Read(const wchar_t* file)
         do                                                                       \
         {                                                                        \
             std::regex re(r);                                                    \
-            std::cmatch results;                                                 \
-            if (std::regex_search(buffer, results, re))                          \
+            std::smatch results;                                                 \
+            if (std::regex_search(src, results, re))                             \
             {                                                                    \
                 p->##member = static_cast<f32>(atof(results[1].str().c_str()));  \
+                src = results.suffix();                                          \
             }                                                                    \
         }                                                                        \
         while(0)
 
-#define REGEX_GET_FLOAT_ARRAY(r, member)                                               \
-        do                                                                             \
-        {                                                                              \
-            std::regex re(r);                                                          \
-            std::cmatch results;                                                       \
-            if (std::regex_search(buffer, results, re))                                \
-            {                                                                          \
-                for (int i = 1; i < results.size(); ++i)                               \
-                {                                                                      \
-                    p->##member[i] = static_cast<f32>(atof(results[i].str().c_str())); \
-                }                                                                      \
-            }                                                                          \
-        }                                                                              \
+#define REGEX_GET_FLOAT_ARRAY(r, member)                                                   \
+        do                                                                                 \
+        {                                                                                  \
+            std::regex re(r);                                                              \
+            std::smatch results;                                                           \
+            if (std::regex_search(src, results, re))                                       \
+            {                                                                              \
+                for (int i = 0; i < results.size(); ++i)                                   \
+                {                                                                          \
+                    p->##member[i] = static_cast<f32>(atof(results[i + 1].str().c_str())); \
+                }                                                                          \
+                src = results.suffix();                                                    \
+            }                                                                              \
+        }                                                                                  \
         while(0)
 
 bool MqoFile::ParseScene(FILE* fp, char* buffer, const int bufferSize)
@@ -182,7 +188,6 @@ bool MqoFile::ParseScene(FILE* fp, char* buffer, const int bufferSize)
 
 bool MqoFile::ParseMaterial(FILE* fp, char* buffer, const int bufferSize)
 {
-
     // éüÇÃçsÇ©ÇÁäJén
     while (std::fgets(buffer, bufferSize - 1, fp) != NULL)
     {
@@ -195,6 +200,7 @@ bool MqoFile::ParseMaterial(FILE* fp, char* buffer, const int bufferSize)
             Material* p = new Material();
             mMaterials.push_back(p);
 
+            REGEX_GET_START;
             REGEX_GET("\"(\\w+)\"", name);
             REGEX_GET_INT("shader\\((\\d+)\\)", shader);
             REGEX_GET_FLOAT_ARRAY("col\\((\\d+\\.\\d+) (\\d+\\.\\d+) (\\d+\\.\\d+) (\\d+\\.\\d+)\\)", col);
@@ -203,12 +209,18 @@ bool MqoFile::ParseMaterial(FILE* fp, char* buffer, const int bufferSize)
             REGEX_GET_FLOAT("emi\\((\\d+\\.\\d+)\\)", emi);
             REGEX_GET_FLOAT("spc\\((\\d+\\.\\d+)\\)", spc);
             REGEX_GET_FLOAT("power\\((\\d+\\.\\d+)\\)", power);
-            REGEX_GET("tex\\((\\w+)\\)", tex);
+            REGEX_GET("tex\\(\"(.+)\"\\)", tex);
         }
     }
 
     return true;
 }
+
+#undef REGEX_GET_START
+#undef REGEX_GET
+#undef REGEX_GET_INT
+#undef REGEX_GET_FLOAT
+#undef REGEX_GET_FLOAT_ARRAY
 
 #undef PARAM_GET_START
 #undef PARAM_GET
