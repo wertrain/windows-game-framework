@@ -2,6 +2,7 @@
 
 #include "Framework/Graphics/Includes.h"
 #include "Tool/Archiver/Includes.h"
+#include "Framework/Graphics/Model/ModelMqo.h"
 
 fw::gfx::TextWriter s_Text;
 fw::gfx::Texture s_Texure;
@@ -50,6 +51,9 @@ void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+    fw::gfx::MqoFile mqo;
+    mqo.Read(TEXT("manto/manto.mqo"));
+
     s_Render2D.Create(device); 
 
 #if defined ARCHIVER_TEST

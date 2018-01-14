@@ -23,8 +23,9 @@ public:
 
     struct Material
     {
+        std::string name;
         s32 shader;
-        f32 color[4];
+        f32 col[4];
         f32 dif;
         f32 amb;
         f32 emi;
@@ -67,6 +68,12 @@ public:
 public:
     MqoFile();
     ~MqoFile();
+
+    bool Read(const wchar_t* file);
+
+private:
+    bool ParseScene(FILE* fp, char* buffer, const int bufferSize);
+    bool ParseMaterial(FILE* fp, char* buffer, const int bufferSize);
 
 private:
     Scene mScene;
