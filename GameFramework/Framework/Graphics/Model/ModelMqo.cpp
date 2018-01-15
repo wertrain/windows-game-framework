@@ -41,7 +41,7 @@ bool MqoFile::Read(const wchar_t* file)
         }
         else if (strncmp("Object ", buffer, 6) == 0)
         {
-
+            ParseObject(fp, buffer, bufferSize);
         }
     }
     fclose(fp);
@@ -52,56 +52,67 @@ bool MqoFile::Read(const wchar_t* file)
 
 #define PARAM_GET_START char* tp = strtok_s(buffer, " ", &buffer)
 
-#define PARAM_GET(var, elem)                                                            \
-        (strstr(tp, #elem) != NULL)                                                     \
-        {                                                                               \
-                while (tp != NULL)                                                      \
-                {                                                                       \
-                    tp = strtok_s(NULL, " ", &buffer);                                  \
-                    if (tp != NULL) ##var.##elem = tp;                                  \
-                }                                                                       \
+#define PARAM_GET(var, elem)                                                        \
+        (strstr(tp, #elem) != NULL)                                                 \
+        {                                                                           \
+            while (tp != NULL)                                                      \
+            {                                                                       \
+                tp = strtok_s(NULL, " ", &buffer);                                  \
+                if (tp != NULL) ##var.##elem = tp;                                  \
+            }                                                                       \
         }
 
-#define PARAM_GET_INT(var, elem)                                                        \
-        (strstr(tp, #elem) != NULL)                                                     \
-        {                                                                               \
-                while (tp != NULL)                                                      \
-                {                                                                       \
-                    tp = strtok_s(NULL, " ", &buffer);                                  \
-                    if (tp != NULL) ##var.##elem = atoi(tp);                            \
-                }                                                                       \
+#define PARAM_GET_INT(var, elem)                                                    \
+        (strstr(tp, #elem) != NULL)                                                 \
+        {                                                                           \
+            while (tp != NULL)                                                      \
+            {                                                                       \
+                tp = strtok_s(NULL, " ", &buffer);                                  \
+                if (tp != NULL) ##var.##elem = atoi(tp);                            \
+            }                                                                       \
         }
 
-#define PARAM_GET_INT_ARRAY(var, elem)                                                  \
-        (strstr(tp, #elem) != NULL)                                                     \
-        {                                                                               \
-                int index = 0;                                                          \
-                while (tp != NULL)                                                      \
-                {                                                                       \
-                    tp = strtok_s(NULL, " ", &buffer);                                  \
-                    if (tp != NULL) ##var.##elem[index++] = atoi(tp);                   \
-                }                                                                       \
+#define PARAM_GET_INT_ARRAY(var, elem)                                              \
+        (strstr(tp, #elem) != NULL)                                                 \
+        {                                                                           \
+            int index = 0;                                                          \
+            while (tp != NULL)                                                      \
+            {                                                                       \
+                tp = strtok_s(NULL, " ", &buffer);                                  \
+                if (tp != NULL) ##var.##elem[index++] = atoi(tp);                   \
+            }                                                                       \
         }
 
-#define PARAM_GET_FLOAT(var, elem)                                                      \
-        (strstr(tp, #elem) != NULL)                                                     \
-        {                                                                               \
-                while (tp != NULL)                                                      \
-                {                                                                       \
-                    tp = strtok_s(NULL, " ", &buffer);                                  \
-                    if (tp != NULL) ##var.##elem = static_cast<f32>(atof(tp));          \
-                }                                                                       \
+#define PARAM_GET_FLOAT(var, elem)                                                  \
+        (strstr(tp, #elem) != NULL)                                                 \
+        {                                                                           \
+            while (tp != NULL)                                                      \
+            {                                                                       \
+                tp = strtok_s(NULL, " ", &buffer);                                  \
+                if (tp != NULL) ##var.##elem = static_cast<f32>(atof(tp));          \
+            }                                                                       \
         }
 
-#define PARAM_GET_FLOAT_ARRAY(var, elem)                                                \
-        (strstr(tp, #elem) != NULL)                                                     \
-        {                                                                               \
-                int index = 0;                                                          \
-                while (tp != NULL)                                                      \
-                {                                                                       \
-                    tp = strtok_s(NULL, " ", &buffer);                                  \
-                    if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
-                }                                                                       \
+#define NOPARAM_GET_FLOAT_ARRAY(var, elem)                                          \
+        {                                                                           \
+            int index = 0;                                                          \
+            do                                                                      \
+            {                                                                       \
+                if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
+                tp = strtok_s(NULL, " ", &buffer);                                  \
+            }                                                                       \
+            while (tp != NULL);                                                     \
+        }
+
+#define PARAM_GET_FLOAT_ARRAY(var, elem)                                            \
+        (strstr(tp, #elem) != NULL)                                                 \
+        {                                                                           \
+            int index = 0;                                                          \
+            while (tp != NULL)                                                      \
+            {                                                                       \
+                tp = strtok_s(NULL, " ", &buffer);                                  \
+                if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
+            }                                                                       \
         }
 
 #define REGEX_GET_START std::string src = buffer
@@ -218,6 +229,66 @@ bool MqoFile::ParseMaterial(FILE* fp, char* buffer, const int bufferSize)
 
 bool MqoFile::ParseObject(FILE* fp, char* buffer, const int bufferSize)
 {
+    Object* p = new Object();
+    mObjects.push_back(p);
+
+    REGEX_GET_START;
+    REGEX_GET("Object \"(.+)\"", name);
+
+    // ŽŸ‚Ìs‚©‚çŠJŽn
+    while (std::fgets(buffer, bufferSize - 1, fp) != NULL)
+    {
+        if (strncmp("}", buffer, 1) == 0)
+        {
+            return true;
+        }
+        else
+        {
+            PARAM_GET_START;
+            if PARAM_GET_INT((*p), depth)
+            else if PARAM_GET_INT((*p), folding)
+            else if PARAM_GET_FLOAT_ARRAY((*p), scale)
+            else if PARAM_GET_FLOAT_ARRAY((*p), rotation)
+            else if PARAM_GET_FLOAT_ARRAY((*p), translation)
+            else if PARAM_GET_INT((*p), visible)
+            else if PARAM_GET_INT((*p), locking)
+            else if PARAM_GET_INT((*p), shading)
+            else if PARAM_GET_FLOAT((*p), facet)
+            else if PARAM_GET_FLOAT_ARRAY((*p), color)
+            else if PARAM_GET_INT((*p), color_type)
+            else if (strstr(tp, "vertex") != NULL)
+            {
+                ParseObjectVertex(p, fp, buffer, bufferSize);
+            }
+        }
+    }
+
+    return true;
+}
+
+bool MqoFile::ParseObjectVertex(Object* p, FILE* fp, char* buffer, const int bufferSize)
+{
+    REGEX_GET_START;
+    REGEX_GET_INT("(\\d+)", vertex_num);
+
+    p->vertices = new Object::Vertex[p->vertex_num];
+    memset(p->vertices, 0, sizeof(Object::Vertex) * p->vertex_num);
+
+    int vertex_index = 0;
+    while (std::fgets(buffer, bufferSize - 1, fp) != NULL)
+    {
+        if (strstr(buffer, "}") != 0)
+        {
+            return true;
+        }
+        else
+        {
+            PARAM_GET_START;
+            NOPARAM_GET_FLOAT_ARRAY((*p).vertices[vertex_index], pos)
+            ++vertex_index;
+        }
+    }
+
     return true;
 }
 

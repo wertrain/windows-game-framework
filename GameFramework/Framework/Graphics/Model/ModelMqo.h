@@ -75,6 +75,7 @@ private:
     bool ParseScene(FILE* fp, char* buffer, const int bufferSize);
     bool ParseMaterial(FILE* fp, char* buffer, const int bufferSize);
     bool ParseObject(FILE* fp, char* buffer, const int bufferSize);
+    bool ParseObjectVertex(Object* p, FILE* fp, char* buffer, const int bufferSize);
 
 private:
     Scene mScene;
