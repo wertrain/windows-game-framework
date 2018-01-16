@@ -48,18 +48,41 @@ bool MqoFile::Read(const wchar_t* file)
     return true;
 }
 
+void MqoFile::Destroy()
+{
+    memset(&mScene, 0, sizeof(Scene));
+    for each(auto m in mMaterials)
+    {
+        delete m;
+    }
+    mMaterials.clear();
+    for each(auto o in mObjects)
+    {
+        if (o->vertices) delete[] o->vertices;
+        for (int i = 0; i < o->face_num; ++i)
+        {
+            if (o->faces[i].V) delete[] o->faces[i].V;
+            if (o->faces[i].UV) delete[] o->faces[i].UV;
+        }
+        delete o;
+    }
+    mObjects.clear();
+}
+
 /// パラメータ取得マクロ
 
-#define PARAM_GET_START char* tp = strtok_s(buffer, " ", &buffer)
+#define PARAM_GET_START                                                          \
+    char* ctx;                                                                   \
+    char* tp = strtok_s(buffer, " ", &ctx)
 
-#define PARAM_GET(var, elem)                                                        \
-        (strstr(tp, #elem) != NULL)                                                 \
-        {                                                                           \
-            while (tp != NULL)                                                      \
-            {                                                                       \
-                tp = strtok_s(NULL, " ", &buffer);                                  \
-                if (tp != NULL) ##var.##elem = tp;                                  \
-            }                                                                       \
+#define PARAM_GET(var, elem)                                                     \
+        (strstr(tp, #elem) != NULL)                                              \
+        {                                                                        \
+            while (tp != NULL)                                                   \
+            {                                                                    \
+                tp = strtok_s(NULL, " ", &ctx);                                  \
+                if (tp != NULL) ##var.##elem = tp;                               \
+            }                                                                    \
         }
 
 #define PARAM_GET_INT(var, elem)                                                    \
@@ -67,7 +90,7 @@ bool MqoFile::Read(const wchar_t* file)
         {                                                                           \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &buffer);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                  \
                 if (tp != NULL) ##var.##elem = atoi(tp);                            \
             }                                                                       \
         }
@@ -78,7 +101,7 @@ bool MqoFile::Read(const wchar_t* file)
             int index = 0;                                                          \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &buffer);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                  \
                 if (tp != NULL) ##var.##elem[index++] = atoi(tp);                   \
             }                                                                       \
         }
@@ -88,7 +111,7 @@ bool MqoFile::Read(const wchar_t* file)
         {                                                                           \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &buffer);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                  \
                 if (tp != NULL) ##var.##elem = static_cast<f32>(atof(tp));          \
             }                                                                       \
         }
@@ -99,7 +122,7 @@ bool MqoFile::Read(const wchar_t* file)
             do                                                                      \
             {                                                                       \
                 if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
-                tp = strtok_s(NULL, " ", &buffer);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                  \
             }                                                                       \
             while (tp != NULL);                                                     \
         }
@@ -110,7 +133,7 @@ bool MqoFile::Read(const wchar_t* file)
             int index = 0;                                                          \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &buffer);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                  \
                 if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
             }                                                                       \
         }
@@ -141,6 +164,22 @@ bool MqoFile::Read(const wchar_t* file)
                 src = results.suffix();                       \
             }                                                 \
         }                                                     \
+        while(0)
+
+#define REGEX_GET_INT_ARRAY(r, member)                                   \
+        do                                                               \
+        {                                                                \
+            std::regex re(r);                                            \
+            std::smatch results;                                         \
+            if (std::regex_search(src, results, re))                     \
+            {                                                            \
+                for (int i = 0; i < results.size(); ++i)                 \
+                {                                                        \
+                    p->##member[i] = atoi(results[i + 1].str().c_str()); \
+                }                                                        \
+                src = results.suffix();                                  \
+            }                                                            \
+        }                                                                \
         while(0)
 
 #define REGEX_GET_FLOAT(r, member)                                               \
@@ -258,7 +297,11 @@ bool MqoFile::ParseObject(FILE* fp, char* buffer, const int bufferSize)
             else if PARAM_GET_INT((*p), color_type)
             else if (strstr(tp, "vertex") != NULL)
             {
-                ParseObjectVertex(p, fp, buffer, bufferSize);
+                //ParseObjectVertex(p, fp, buffer, bufferSize);
+            }
+            else if (strstr(tp, "face") != NULL)
+            {
+                //ParseObjectFace(p, fp, buffer, bufferSize);
             }
         }
     }
@@ -277,6 +320,7 @@ bool MqoFile::ParseObjectVertex(Object* p, FILE* fp, char* buffer, const int buf
     int vertex_index = 0;
     while (std::fgets(buffer, bufferSize - 1, fp) != NULL)
     {
+        DebugPrintf(L"%s\n", buffer);
         if (strstr(buffer, "}") != 0)
         {
             return true;
@@ -286,6 +330,68 @@ bool MqoFile::ParseObjectVertex(Object* p, FILE* fp, char* buffer, const int buf
             PARAM_GET_START;
             NOPARAM_GET_FLOAT_ARRAY((*p).vertices[vertex_index], pos)
             ++vertex_index;
+        }
+    }
+
+    return true;
+}
+
+bool MqoFile::ParseObjectFace(Object* p, FILE* fp, char* buffer, const int bufferSize)
+{
+    {
+        REGEX_GET_START;
+        REGEX_GET_INT("(\\d+)", face_num);
+    }
+
+    p->faces = new Object::Face[p->face_num];
+    memset(p->faces, 0, sizeof(Object::Face) * p->face_num);
+
+    int face_index = 0;
+    while (std::fgets(buffer, bufferSize - 1, fp) != NULL)
+    {
+        if (strstr(buffer, "}") != 0)
+        {
+            return true;
+        }
+        else
+        {
+            REGEX_GET_START;
+            REGEX_GET_INT("(\\d+)", faces[face_index].num);
+            _ASSERTE(p->faces[face_index].num > 0);
+            if (p->faces[face_index].num == 0) return false;
+
+            const size_t v_num = p->faces[face_index].num;
+            p->faces[face_index].V = new s32[v_num];
+            memset(p->faces[face_index].V, 0, sizeof(s32) * v_num);
+            p->faces[face_index].UV = new f32[v_num * 2];
+            memset(p->faces[face_index].UV, 0, sizeof(f32) * v_num * 2);
+
+            {
+                char regex_v[256] = { 0 };
+                strcat_s(regex_v, 256, "V\\(");
+                for (int i = 0; i < v_num; ++i)
+                {
+                    strcat_s(regex_v, 256, "(\\d+)");
+                    if (i < v_num - 1) strcat_s(regex_v, 256, " ");
+                }
+                strcat_s(regex_v, 256, "\\)");
+                REGEX_GET_INT_ARRAY(regex_v, faces[face_index].V);
+            }
+
+            REGEX_GET_INT("M\\((\\d+)\\)", faces[face_index].M);
+
+            {
+                char regex_uv[256] = { 0 };
+                strcat_s(regex_uv, 256, "UV\\(");
+                for (int i = 0; i < v_num * 2; ++i)
+                {
+                    strcat_s(regex_uv, 256, "(\\d+\\.\\d+)");
+                    if (i < v_num * 2 - 1) strcat_s(regex_uv, 256, " ");
+                }
+                strcat_s(regex_uv, 256, "\\)");
+                REGEX_GET_FLOAT_ARRAY(regex_uv, faces[face_index].UV);
+            }
+            ++face_index;
         }
     }
 
