@@ -90,7 +90,7 @@ void MqoFile::Destroy()
         {                                                                           \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &ctx);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                     \
                 if (tp != NULL) ##var.##elem = atoi(tp);                            \
             }                                                                       \
         }
@@ -101,7 +101,7 @@ void MqoFile::Destroy()
             int index = 0;                                                          \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &ctx);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                     \
                 if (tp != NULL) ##var.##elem[index++] = atoi(tp);                   \
             }                                                                       \
         }
@@ -111,7 +111,7 @@ void MqoFile::Destroy()
         {                                                                           \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &ctx);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                     \
                 if (tp != NULL) ##var.##elem = static_cast<f32>(atof(tp));          \
             }                                                                       \
         }
@@ -122,7 +122,7 @@ void MqoFile::Destroy()
             do                                                                      \
             {                                                                       \
                 if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
-                tp = strtok_s(NULL, " ", &ctx);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                     \
             }                                                                       \
             while (tp != NULL);                                                     \
         }
@@ -133,7 +133,7 @@ void MqoFile::Destroy()
             int index = 0;                                                          \
             while (tp != NULL)                                                      \
             {                                                                       \
-                tp = strtok_s(NULL, " ", &ctx);                                  \
+                tp = strtok_s(NULL, " ", &ctx);                                     \
                 if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
             }                                                                       \
         }
@@ -297,7 +297,7 @@ bool MqoFile::ParseObject(FILE* fp, char* buffer, const int bufferSize)
             else if PARAM_GET_INT((*p), color_type)
             else if (strstr(tp, "vertex") != NULL)
             {
-                //ParseObjectVertex(p, fp, buffer, bufferSize);
+                ParseObjectVertex(p, fp, buffer, bufferSize);
             }
             else if (strstr(tp, "face") != NULL)
             {
@@ -312,7 +312,8 @@ bool MqoFile::ParseObject(FILE* fp, char* buffer, const int bufferSize)
 bool MqoFile::ParseObjectVertex(Object* p, FILE* fp, char* buffer, const int bufferSize)
 {
     REGEX_GET_START;
-    REGEX_GET_INT("(\\d+)", vertex_num);
+    REGEX_GET_INT("vertex (\\d+)", vertex_num);
+    _ASSERT(p->vertex_num);
 
     p->vertices = new Object::Vertex[p->vertex_num];
     memset(p->vertices, 0, sizeof(Object::Vertex) * p->vertex_num);
@@ -320,7 +321,6 @@ bool MqoFile::ParseObjectVertex(Object* p, FILE* fp, char* buffer, const int buf
     int vertex_index = 0;
     while (std::fgets(buffer, bufferSize - 1, fp) != NULL)
     {
-        DebugPrintf(L"%s\n", buffer);
         if (strstr(buffer, "}") != 0)
         {
             return true;
@@ -328,7 +328,7 @@ bool MqoFile::ParseObjectVertex(Object* p, FILE* fp, char* buffer, const int buf
         else
         {
             PARAM_GET_START;
-            NOPARAM_GET_FLOAT_ARRAY((*p).vertices[vertex_index], pos)
+            NOPARAM_GET_FLOAT_ARRAY(p->vertices[vertex_index], pos)
             ++vertex_index;
         }
     }
