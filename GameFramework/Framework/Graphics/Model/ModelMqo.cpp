@@ -64,16 +64,20 @@ void MqoFile::Destroy()
             if (o->faces[i].V) delete[] o->faces[i].V;
             if (o->faces[i].UV) delete[] o->faces[i].UV;
         }
+        if (o->faces) delete o->faces;
         delete o;
     }
     mObjects.clear();
 }
 
 /// パラメータ取得マクロ
+/// よくない実装のお手本だよ
 
 #define PARAM_GET_START                                                          \
+    char tmpbuf[2048];                                                           \
+    strcpy_s(tmpbuf, 2047, buffer);                                              \
     char* ctx;                                                                   \
-    char* tp = strtok_s(buffer, " ", &ctx)
+    char* tp = strtok_s(tmpbuf, " ", &ctx)
 
 #define PARAM_GET(var, elem)                                                     \
         (strstr(tp, #elem) != NULL)                                              \
@@ -173,7 +177,7 @@ void MqoFile::Destroy()
             std::smatch results;                                         \
             if (std::regex_search(src, results, re))                     \
             {                                                            \
-                for (int i = 0; i < results.size(); ++i)                 \
+                for (int i = 0; i < results.size() - 1; ++i)             \
                 {                                                        \
                     p->##member[i] = atoi(results[i + 1].str().c_str()); \
                 }                                                        \
@@ -202,7 +206,7 @@ void MqoFile::Destroy()
             std::smatch results;                                                           \
             if (std::regex_search(src, results, re))                                       \
             {                                                                              \
-                for (int i = 0; i < results.size(); ++i)                                   \
+                for (int i = 0; i < results.size() - 1; ++i)                               \
                 {                                                                          \
                     p->##member[i] = static_cast<f32>(atof(results[i + 1].str().c_str())); \
                 }                                                                          \
@@ -295,13 +299,13 @@ bool MqoFile::ParseObject(FILE* fp, char* buffer, const int bufferSize)
             else if PARAM_GET_FLOAT((*p), facet)
             else if PARAM_GET_FLOAT_ARRAY((*p), color)
             else if PARAM_GET_INT((*p), color_type)
-            else if (strstr(tp, "vertex") != NULL)
+            else if (strstr(buffer, "vertex ") != NULL)
             {
                 ParseObjectVertex(p, fp, buffer, bufferSize);
             }
-            else if (strstr(tp, "face") != NULL)
+            else if (strstr(buffer, "face ") != NULL)
             {
-                //ParseObjectFace(p, fp, buffer, bufferSize);
+                ParseObjectFace(p, fp, buffer, bufferSize);
             }
         }
     }
@@ -340,7 +344,8 @@ bool MqoFile::ParseObjectFace(Object* p, FILE* fp, char* buffer, const int buffe
 {
     {
         REGEX_GET_START;
-        REGEX_GET_INT("(\\d+)", face_num);
+        REGEX_GET_INT("face (\\d+)", face_num);
+        _ASSERT(p->face_num);
     }
 
     p->faces = new Object::Face[p->face_num];
