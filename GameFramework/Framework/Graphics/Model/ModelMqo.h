@@ -90,6 +90,12 @@ class ModelMqo : public ModelBase
 public:
     ModelMqo() ;
     ~ModelMqo();
+
+    bool Create(const wchar_t* filename);
+    void Destroy();
+
+private:
+    MqoFile mFile;
 };
 
 NS_FW_GFX_END

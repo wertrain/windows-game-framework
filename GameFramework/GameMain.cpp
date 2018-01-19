@@ -51,8 +51,8 @@ void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    fw::gfx::MqoFile mqo;
-    mqo.Read(TEXT("manto/manto.mqo"));
+    fw::gfx::ModelMqo mqo;
+    mqo.Create(TEXT("manto/manto.mqo"));
     mqo.Destroy();
 
     s_Render2D.Create(device); 

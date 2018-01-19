@@ -426,4 +426,14 @@ ModelMqo::~ModelMqo()
 
 }
 
+bool ModelMqo::Create(const wchar_t* filename)
+{
+    return mFile.Read(filename);
+}
+
+void ModelMqo::Destroy()
+{
+    mFile.Destroy();
+}
+
 NS_FW_GFX_END
