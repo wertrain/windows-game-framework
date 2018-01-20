@@ -1,24 +1,36 @@
-#include <tchar.h>
+#include <stdio.h> 
+#include <stdarg.h>
 #include <stdlib.h>
-#include <windows.h>
+#ifdef _WIN64
+#include <Windows.h>
+#endif // _WIN64
 
 #include "Debug.h"
 
-void DebugPrintf(wchar_t* pszFormat, ...)
-{
 #ifdef _DEBUG
 #ifdef _WIN64
 
+void DebugPrintf(wchar_t* pszFormat, ...)
+{
     va_list argp;
-    TCHAR pszBuf[256];
+    wchar_t pszBuf[256];
     va_start(argp, pszFormat);
 
-    _vstprintf(pszBuf, sizeof(pszBuf), pszFormat, argp);
+    vswprintf(pszBuf, sizeof(pszBuf), pszFormat, argp);
     va_end(argp);
-    OutputDebugString(pszBuf);
+    OutputDebugStringW(pszBuf);
+}
+
+void DebugPrintf(char* pszFormat, ...)
+{
+    va_list argp;
+    char pszBuf[256];
+    va_start(argp, pszFormat);
+
+    vsprintf_s(pszBuf, sizeof(pszBuf), pszFormat, argp);
+    va_end(argp);
+    OutputDebugStringA(pszBuf);
+}
 
 #endif // _WIN64
 #endif // DEBUG 
-}
-
-
