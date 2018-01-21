@@ -28,6 +28,8 @@ private:
     ID3D11DeviceContext* mDeviceContext;
     IDXGISwapChain* mDXGISwpChain;
     ID3D11RenderTargetView* mRenderTargetView;
+    ID3D11Texture2D* mDepthStencil;
+    ID3D11DepthStencilView* mDepthStencilView;
 };
 
 NS_FW_SYS_END

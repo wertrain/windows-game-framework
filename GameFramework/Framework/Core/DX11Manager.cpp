@@ -12,6 +12,8 @@ DX11Manager::DX11Manager()
     , mDeviceContext(nullptr)
     , mDXGISwpChain(nullptr)
     , mRenderTargetView(nullptr)
+    , mDepthStencil(nullptr)
+    , mDepthStencilView(nullptr)
 {
 
 }
@@ -100,8 +102,40 @@ bool DX11Manager::Initialize(const HWND hWnd, const u32 width, const u32 height)
         return false;
     }
 
+    // Create depth stencil texture
+    D3D11_TEXTURE2D_DESC descDepth;
+    ZeroMemory(&descDepth, sizeof(descDepth));
+    descDepth.Width = width;
+    descDepth.Height = height;
+    descDepth.MipLevels = 1;
+    descDepth.ArraySize = 1;
+    descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    descDepth.SampleDesc.Count = 1;
+    descDepth.SampleDesc.Quality = 0;
+    descDepth.Usage = D3D11_USAGE_DEFAULT;
+    descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    descDepth.CPUAccessFlags = 0;
+    descDepth.MiscFlags = 0;
+    hr = mDevice->CreateTexture2D(&descDepth, NULL, &mDepthStencil);
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    // Create the depth stencil view
+    D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
+    ZeroMemory(&descDSV, sizeof(descDSV));
+    descDSV.Format = descDepth.Format;
+    descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    descDSV.Texture2D.MipSlice = 0;
+    hr = mDevice->CreateDepthStencilView(mDepthStencil, &descDSV, &mDepthStencilView);
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
     // 更にその描画ターゲットをコンテキストに設定
-    mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, NULL);
+    mDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
 
     //ビューポート設定
     D3D11_VIEWPORT vp;
@@ -123,6 +157,16 @@ void DX11Manager::Finalize()
         mRenderTargetView->Release();
         mRenderTargetView = nullptr;
     }
+    if (mDepthStencilView)
+    {
+        mDepthStencilView->Release();
+        mDepthStencilView = nullptr;
+    }
+    if (mDepthStencil)
+    {
+        mDepthStencil->Release();
+        mDepthStencil = nullptr;
+    }
     if (mDXGISwpChain)
     {
         mDXGISwpChain->Release();
@@ -137,7 +181,6 @@ void DX11Manager::Finalize()
     {
         mDevice->Release();
         mDevice = nullptr;
-
     }
 }
 
@@ -145,6 +188,8 @@ void DX11Manager::ClearRenderView()
 {
     float ClearColor[] = { 0.0f, 0.0f, 1.0f, 1.0f };
     mDeviceContext->ClearRenderTargetView(mRenderTargetView, ClearColor);
+
+    mDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void DX11Manager::Present()
