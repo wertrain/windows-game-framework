@@ -132,6 +132,8 @@ private:
 
     std::vector<MeshData*> mMeshData;
     ID3D11InputLayout* mVertexLayout;
+    ID3D11RasterizerState* mRsState;
+    ID3D11DepthStencilState* mDsState;
     ID3D11BlendState* mBdState;
     ID3D11VertexShader* mVertexShader;
     ID3D11PixelShader* mPixelShader;

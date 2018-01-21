@@ -440,6 +440,8 @@ ModelMqo::ModelMqo()
     : mFile()
     , mMeshData()
     , mVertexLayout(nullptr)
+    , mRsState(nullptr)
+    , mDsState(nullptr)
     , mBdState(nullptr)
     , mVertexShader(nullptr)
     , mPixelShader(nullptr)
@@ -513,9 +515,8 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
         // 1メッシュ分のデータ
         MeshData *mesh = new MeshData();
-        mesh->vertices = new VertexData[obj->face_num];
-        mesh->indices = new u32[obj->face_num * 4]; // 多めに確保
-        mesh->vertex_num = obj->face_num;
+        mesh->vertices = new VertexData[obj->face_num * 4]; // 多めに確保
+        mesh->indices = new u32[obj->face_num * 4];         // 同上
 
         int idx_idx = 0;
         for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
@@ -524,18 +525,19 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             _ASSERT(face.num > 0);
             for (int v_idx = 0; v_idx < face.num; ++v_idx)
             {
-                mesh->vertices[v_idx].pos[0] = obj->vertices[face.V[v_idx]].pos[0];
-                mesh->vertices[v_idx].pos[1] = obj->vertices[face.V[v_idx]].pos[1];
-                mesh->vertices[v_idx].pos[2] = obj->vertices[face.V[v_idx]].pos[2];
+                mesh->vertices[idx_idx].pos[0] = obj->vertices[face.V[v_idx]].pos[0];
+                mesh->vertices[idx_idx].pos[1] = obj->vertices[face.V[v_idx]].pos[1];
+                mesh->vertices[idx_idx].pos[2] = obj->vertices[face.V[v_idx]].pos[2];
 
                 const int uv_idx = v_idx * 2;
-                mesh->vertices[v_idx].uv[0] = face.UV[uv_idx];
-                mesh->vertices[v_idx].uv[1] = face.UV[uv_idx + 1];
+                mesh->vertices[idx_idx].uv[0] = face.UV[uv_idx];
+                mesh->vertices[idx_idx].uv[1] = face.UV[uv_idx + 1];
 
                 mesh->indices[idx_idx] = face.V[v_idx];
                 idx_idx++;
             }
         }
+        mesh->vertex_num = idx_idx;
 
         // バーテックスバッファ
         {
@@ -575,11 +577,27 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
     }
 
     CD3D11_DEFAULT default_state;
+    // ラスタライザステート
+    CD3D11_RASTERIZER_DESC rsdesc(default_state);
+    rsdesc.CullMode = D3D11_CULL_NONE;
+    hr = device->CreateRasterizerState(&rsdesc, &mRsState);
+    if (FAILED(hr))
+    {
+        return hr;
+    }
+
+    // デプスステンシルステート
+    CD3D11_DEPTH_STENCIL_DESC dsdesc(default_state);
+    hr = device->CreateDepthStencilState(&dsdesc, &mDsState);
+    if (FAILED(hr)) {
+        return hr;
+    }
+
     // ブレンドステート
     CD3D11_BLEND_DESC bddesc(default_state);
     hr = device->CreateBlendState(&bddesc, &mBdState);
     if (FAILED(hr)) {
-        return false;
+        return hr;
     }
 
     return true;
@@ -614,6 +632,16 @@ void ModelMqo::Destroy()
     {
         mVertexShader->Release();
         mVertexShader = nullptr;
+    }
+    if (mRsState)
+    {
+        mRsState->Release();
+        mRsState = nullptr;
+    }
+    if (mDsState)
+    {
+        mDsState->Release();
+        mDsState = nullptr;
     }
     if (mBdState)
     {
@@ -684,16 +712,18 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
             context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
         }
 
+        // ラスタライザステート
+        context->RSSetState(mRsState);
+
+        // デプスステンシルステート
+        context->OMSetDepthStencilState(mDsState, 0);
+
         // ブレンドステート
         context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
         // ポリゴン描画
         context->DrawIndexed(mesh->vertex_num, 0, 0);
     }
-
-
-
-
 }
 
 NS_FW_GFX_END
