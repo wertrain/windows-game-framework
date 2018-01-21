@@ -30,5 +30,11 @@
     <FxCompile Include="Shaders\vs_2d_instancing.vsh">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\vs_model_inner.vsh">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\ps_model_inner.psh">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

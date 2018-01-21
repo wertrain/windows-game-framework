@@ -8,10 +8,12 @@ fw::gfx::TextWriter s_Text;
 fw::gfx::Texture s_Texure;
 fw::gfx::Render2D s_Render2D;
 fw::gfx::DefaultFont s_DefaultFont;
+fw::gfx::ModelMqo s_Mqo;
 
 //#define ARCHIVER_TEST
 //#define TEXTWRITE_TEST
-#define DEFAULTFONT_TEST
+//#define DEFAULTFONT_TEST
+#define MODEL_TEST
 
 #ifdef ARCHIVER_TEST
 void ArchiverTest(ID3D11Device* device)
@@ -51,19 +53,17 @@ void DefaultFontTest(ID3D11Device* device, ID3D11DeviceContext* context)
  */
 bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
-    fw::gfx::ModelMqo mqo;
-    mqo.Create(TEXT("manto/manto.mqo"));
-    mqo.Destroy();
-
-    s_Render2D.Create(device); 
-
 #if defined ARCHIVER_TEST
     ArchiverTest(device);
 #elif defined TEXTWRITE_TEST
+    s_Render2D.Create(device);
     TextWriteTest(device, context);
 #elif defined DEFAULTFONT_TEST
     DefaultFontTest(device, context);
+#elif defined MODEL_TEST
+    s_Mqo.Create(device, context, L"manto/manto.mqo");
 #else
+    s_Render2D.Create(device);
     s_Texure.CreateFromFile(device, TEXT("usa.png"));
 #endif
 
@@ -88,7 +88,10 @@ void Draw(ID3D11DeviceContext* context)
     s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 #elif defined DEFAULTFONT_TEST
     s_DefaultFont.Render(context); 
+#elif defined MODEL_TEST
+    s_Mqo.Render(context);
 #else
+    s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 #endif
 }
 
@@ -97,10 +100,16 @@ void Draw(ID3D11DeviceContext* context)
  */
 void Destroy()
 {
-#ifdef DEFAULTFONT_TEST
-    s_DefaultFont.Destroy();
-#endif // DEFAULTFONT_TEST
-
-    s_Render2D.Destroy();
+#if defined ARCHIVER_TEST
+#elif defined TEXTWRITE_TEST
     s_Text.Destroy();
+    s_Render2D.Destroy();
+#elif DEFAULTFONT_TEST
+    s_DefaultFont.Destroy();
+#elif defined MODEL_TEST
+    s_Mqo.Destroy();
+#else
+    s_Text.Destroy();
+    s_Render2D.Destroy();
+#endif
 }

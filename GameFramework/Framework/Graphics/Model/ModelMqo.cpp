@@ -1,4 +1,9 @@
+#include <d3d11.h>
+#include <DirectXMath.h>
+
 #include "../../Common/Debug.h"
+#include "../../Common/Includes.h"
+#include "../../System/Includes.h"
 
 #include "ModelMqo.h"
 #include <regex>
@@ -68,6 +73,21 @@ void MqoFile::Destroy()
         delete o;
     }
     mObjects.clear();
+}
+
+const MqoFile::Scene* MqoFile::GetScene()
+{
+    return &mScene;
+}
+
+const std::vector<MqoFile::Material*>* MqoFile::GetMaterials()
+{
+    return &mMaterials;
+}
+
+const std::vector<MqoFile::Object*>* MqoFile::GetObjects()
+{
+    return &mObjects;
 }
 
 /// パラメータ取得マクロ
@@ -417,6 +437,15 @@ bool MqoFile::ParseObjectFace(Object* p, FILE* fp, char* buffer, const int buffe
 #undef PARAM_GET_FLOAT_ARRAY
 
 ModelMqo::ModelMqo()
+    : mFile()
+    , mMeshData()
+    , mVertexLayout(nullptr)
+    , mBdState(nullptr)
+    , mVertexShader(nullptr)
+    , mPixelShader(nullptr)
+    , mTexture(nullptr)
+    , mShaderResView(nullptr)
+    , mSampler(nullptr)
 {
 
 }
@@ -426,14 +455,245 @@ ModelMqo::~ModelMqo()
 
 }
 
-bool ModelMqo::Create(const wchar_t* filename)
+bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t* filename)
 {
-    return mFile.Read(filename);
+    Destroy();
+    
+    if (!mFile.Read(filename))
+    {
+        return false;
+    }
+
+    NS_FW_SYS::Binary vsFile;
+    NS_FW_SYS::Binary psFile;
+
+    // コンパイル済みバーテックスシェーダーファイルの読み込み
+    if (!vsFile.Read(L"vs_model_inner.cso"))
+    {
+        return false;
+    }
+    // コンパイル済みピクセルシェーダーファイルの読み込み
+    if (!psFile.Read(L"ps_model_inner.cso"))
+    {
+        return false;
+    }
+
+    // 頂点シェーダー生成
+    if (FAILED(device->CreateVertexShader(vsFile.Get(), vsFile.Size(), NULL, &mVertexShader)))
+    {
+        return false;
+    }
+
+    // ピクセルシェーダー生成
+    if (FAILED(device->CreatePixelShader(psFile.Get(), psFile.Size(), NULL, &mPixelShader)))
+    {
+        return false;
+    }
+
+    // 入力レイアウト定義
+    D3D11_INPUT_ELEMENT_DESC layout[] = {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0,    DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+    const UINT elem_num = ARRAYSIZE(layout);
+
+    // 入力レイアウト作成
+    HRESULT hr = device->CreateInputLayout(layout, elem_num, vsFile.Get(), vsFile.Size(), &mVertexLayout);
+    if (FAILED(hr)) {
+        return false;
+    }
+
+    // 頂点座標の展開
+    auto objects = mFile.GetObjects();
+    _ASSERT(objects->size() > 0);
+    for (int obj_idx = 0; obj_idx < objects->size(); ++obj_idx)
+    {
+        auto obj = objects->at(obj_idx);
+        _ASSERT(obj->face_num > 0);
+
+        // 1メッシュ分のデータ
+        MeshData *mesh = new MeshData();
+        mesh->vertices = new VertexData[obj->face_num];
+        mesh->indices = new u32[obj->face_num * 4]; // 多めに確保
+        mesh->vertex_num = obj->face_num;
+
+        int idx_idx = 0;
+        for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
+        {
+            auto face = obj->faces[face_idx];
+            _ASSERT(face.num > 0);
+            for (int v_idx = 0; v_idx < face.num; ++v_idx)
+            {
+                mesh->vertices[v_idx].pos[0] = obj->vertices[face.V[v_idx]].pos[0];
+                mesh->vertices[v_idx].pos[1] = obj->vertices[face.V[v_idx]].pos[1];
+                mesh->vertices[v_idx].pos[2] = obj->vertices[face.V[v_idx]].pos[2];
+
+                const int uv_idx = v_idx * 2;
+                mesh->vertices[v_idx].uv[0] = face.UV[uv_idx];
+                mesh->vertices[v_idx].uv[1] = face.UV[uv_idx + 1];
+
+                mesh->indices[idx_idx] = face.V[v_idx];
+                idx_idx++;
+            }
+        }
+
+        // バーテックスバッファ
+        {
+            D3D11_BUFFER_DESC bd;
+            ZeroMemory(&bd, sizeof(bd));
+            bd.Usage = D3D11_USAGE_DEFAULT;
+            bd.ByteWidth = sizeof(VertexData) * obj->face_num;
+            bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+            bd.CPUAccessFlags = 0;
+            D3D11_SUBRESOURCE_DATA InitData;
+            ZeroMemory(&InitData, sizeof(InitData));
+            InitData.pSysMem = mesh->vertices;
+            hr = device->CreateBuffer(&bd, &InitData, &mesh->vertexBuffer);
+            if (FAILED(hr)) {
+                return hr;
+            }
+        }
+
+        // インデックスバッファ
+        {
+            D3D11_BUFFER_DESC bd;
+            ZeroMemory(&bd, sizeof(bd));
+            bd.Usage = D3D11_USAGE_DEFAULT;
+            bd.ByteWidth = sizeof(u32) * idx_idx;
+            bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+            bd.CPUAccessFlags = 0;
+            D3D11_SUBRESOURCE_DATA InitData;
+            ZeroMemory(&InitData, sizeof(InitData));
+            InitData.pSysMem = mesh->indices;
+            hr = device->CreateBuffer(&bd, &InitData, &mesh->indexBuffer);
+            if (FAILED(hr)) {
+                return hr;
+            }
+        }
+
+        mMeshData.push_back(mesh);
+    }
+
+    CD3D11_DEFAULT default_state;
+    // ブレンドステート
+    CD3D11_BLEND_DESC bddesc(default_state);
+    hr = device->CreateBlendState(&bddesc, &mBdState);
+    if (FAILED(hr)) {
+        return false;
+    }
+
+    return true;
 }
 
 void ModelMqo::Destroy()
 {
+    if (mSampler)
+    {
+        mSampler->Release();
+        mSampler = nullptr;
+    }
+
+    if (mShaderResView)
+    {
+        mShaderResView->Release();
+        mShaderResView = nullptr;
+    }
+
+    if (mTexture)
+    {
+        mTexture->Release();
+        mTexture = nullptr;
+    }
+
+    if (mPixelShader)
+    {
+        mPixelShader->Release();
+        mPixelShader = nullptr;
+    }
+    if (mVertexShader)
+    {
+        mVertexShader->Release();
+        mVertexShader = nullptr;
+    }
+    if (mBdState)
+    {
+        mBdState->Release();
+        mBdState = nullptr;
+    }
+    if (mVertexLayout)
+    {
+        mVertexLayout->Release();
+        mVertexLayout = nullptr;
+    }
+
+    for each (auto mesh in mMeshData)
+    {
+        if (mesh->vertexBuffer)
+        {
+            mesh->vertexBuffer->Release();
+            mesh->vertexBuffer = nullptr;
+        }
+        if (mesh->indexBuffer)
+        {
+            mesh->indexBuffer->Release();
+            mesh->indexBuffer = nullptr;
+        }
+        delete[] mesh->vertices;
+        delete[] mesh->indices;
+        delete mesh;
+    }
+    mMeshData.clear();
+
     mFile.Destroy();
+}
+
+void ModelMqo::Render(ID3D11DeviceContext* context)
+{
+    for each(auto mesh in mMeshData)
+    {
+        // 頂点バッファ
+        u32 vb_slot = 0;
+        ID3D11Buffer* vb[] = { mesh->vertexBuffer };
+        u32 stride[] = { sizeof(VertexData) };
+        u32 offset[] = { 0 };
+        context->IASetVertexBuffers(vb_slot, ARRAYSIZE(vb), vb, stride, offset);
+
+        // 入力レイアウト
+        context->IASetInputLayout(mVertexLayout);
+
+        // インデックスバッファ
+        context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+        // プリミティブ形状
+        context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+        // シェーダ
+        context->VSSetShader(mVertexShader, nullptr, 0);
+        context->PSSetShader(mPixelShader, nullptr, 0);
+
+        // サンプラー
+        if (mTexture)
+        {
+            u32 smp_slot = 0;
+            ID3D11SamplerState* smp[1] = { mSampler };
+            context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
+
+            // シェーダーリソースビュー（テクスチャ）
+            u32 srv_slot = 0;
+            ID3D11ShaderResourceView* srv[1] = { mShaderResView };
+            context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
+        }
+
+        // ブレンドステート
+        context->OMSetBlendState(mBdState, NULL, 0xfffffff);
+
+        // ポリゴン描画
+        context->DrawIndexed(mesh->vertex_num, 0, 0);
+    }
+
+
+
+
 }
 
 NS_FW_GFX_END

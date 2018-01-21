@@ -71,6 +71,9 @@ public:
 
     bool Read(const wchar_t* file);
     void Destroy();
+    const Scene* GetScene();
+    const std::vector<Material*>* GetMaterials();
+    const std::vector<Object*>* GetObjects();
 
 private:
     bool ParseScene(FILE* fp, char* buffer, const int bufferSize);
@@ -91,11 +94,51 @@ public:
     ModelMqo() ;
     ~ModelMqo();
 
-    bool Create(const wchar_t* filename);
+    bool Create(ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t* filename);
     void Destroy();
+    void Render(ID3D11DeviceContext* context);
+
+private:
+    // 頂点データ構造体
+    struct VertexData
+    {
+        float pos[3]; // Vector3 のほうが高速なはず
+        float uv[2];
+    };
+    static_assert(sizeof(VertexData) == (4 * 3 + 4 * 2), "sizeof VertexData == (4 * 3 + 4 * 2)");
+
+    // 1オブジェクト描画分
+    struct MeshData
+    {
+        VertexData* vertices;
+        u32* indices;
+        ID3D11Buffer* vertexBuffer;
+        ID3D11Buffer* indexBuffer;
+        u32 vertex_num;
+
+        MeshData()
+            : vertices(nullptr)
+            , indices(nullptr)
+            , vertexBuffer(nullptr)
+            , indexBuffer(nullptr)
+            , vertex_num(0)
+        {
+
+        }
+    };
 
 private:
     MqoFile mFile;
+
+    std::vector<MeshData*> mMeshData;
+    ID3D11InputLayout* mVertexLayout;
+    ID3D11BlendState* mBdState;
+    ID3D11VertexShader* mVertexShader;
+    ID3D11PixelShader* mPixelShader;
+
+    ID3D11Resource* mTexture;
+    ID3D11ShaderResourceView* mShaderResView;
+    ID3D11SamplerState* mSampler;
 };
 
 NS_FW_GFX_END
