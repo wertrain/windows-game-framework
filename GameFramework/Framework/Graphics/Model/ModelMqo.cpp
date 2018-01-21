@@ -4,11 +4,23 @@
 #include "../../Common/Debug.h"
 #include "../../Common/Includes.h"
 #include "../../System/Includes.h"
+#include "../../Constants.h"
+#include "../../External/DirectXTex/WICTextureLoader/WICTextureLoader.h"
 
 #include "ModelMqo.h"
+#include <codecvt> 
 #include <regex>
 
 NS_FW_GFX_BEGIN
+
+// シェーダ定数バッファ
+struct ConstBuffer
+{
+    Matrix44 mtxProj;
+    Matrix44 mtxView;
+    Matrix44 mtxWorld;
+    Vector4 Diffuse;
+};
 
 MqoFile::MqoFile()
     : mScene()
@@ -439,15 +451,14 @@ bool MqoFile::ParseObjectFace(Object* p, FILE* fp, char* buffer, const int buffe
 ModelMqo::ModelMqo()
     : mFile()
     , mMeshData()
+    , mMaterials()
+    , mConstBuffer(nullptr)
     , mVertexLayout(nullptr)
     , mRsState(nullptr)
     , mDsState(nullptr)
     , mBdState(nullptr)
     , mVertexShader(nullptr)
     , mPixelShader(nullptr)
-    , mTexture(nullptr)
-    , mShaderResView(nullptr)
-    , mSampler(nullptr)
 {
 
 }
@@ -517,23 +528,29 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
         MeshData *mesh = new MeshData();
         mesh->vertices = new VertexData[obj->face_num * 4]; // 多めに確保
         mesh->indices = new u32[obj->face_num * 4];         // 同上
+        mesh->material_id = obj->faces[0].M;
+        mesh->visible = obj->visible;
 
         int idx_idx = 0;
         for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
         {
+            // この範囲は同じマテリアルである想定
+            //_ASSERT(mesh->material_id == obj->faces[face_idx].M);
+
             auto face = obj->faces[face_idx];
             _ASSERT(face.num > 0);
             for (int v_idx = 0; v_idx < face.num; ++v_idx)
             {
-                mesh->vertices[idx_idx].pos[0] = obj->vertices[face.V[v_idx]].pos[0];
-                mesh->vertices[idx_idx].pos[1] = obj->vertices[face.V[v_idx]].pos[1];
-                mesh->vertices[idx_idx].pos[2] = obj->vertices[face.V[v_idx]].pos[2];
+                auto index = face.V[v_idx];
+                mesh->vertices[idx_idx].pos[0] = obj->vertices[index].pos[0];
+                mesh->vertices[idx_idx].pos[1] = obj->vertices[index].pos[1];
+                mesh->vertices[idx_idx].pos[2] = obj->vertices[index].pos[2];
 
                 const int uv_idx = v_idx * 2;
                 mesh->vertices[idx_idx].uv[0] = face.UV[uv_idx];
                 mesh->vertices[idx_idx].uv[1] = face.UV[uv_idx + 1];
 
-                mesh->indices[idx_idx] = face.V[v_idx];
+                mesh->indices[idx_idx] = index;
                 idx_idx++;
             }
         }
@@ -544,7 +561,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             D3D11_BUFFER_DESC bd;
             ZeroMemory(&bd, sizeof(bd));
             bd.Usage = D3D11_USAGE_DEFAULT;
-            bd.ByteWidth = sizeof(VertexData) * obj->face_num;
+            bd.ByteWidth = sizeof(VertexData) * mesh->vertex_num;
             bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
             bd.CPUAccessFlags = 0;
             D3D11_SUBRESOURCE_DATA InitData;
@@ -561,7 +578,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             D3D11_BUFFER_DESC bd;
             ZeroMemory(&bd, sizeof(bd));
             bd.Usage = D3D11_USAGE_DEFAULT;
-            bd.ByteWidth = sizeof(u32) * idx_idx;
+            bd.ByteWidth = sizeof(u32) * mesh->vertex_num;
             bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
             bd.CPUAccessFlags = 0;
             D3D11_SUBRESOURCE_DATA InitData;
@@ -576,6 +593,56 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
         mMeshData.push_back(mesh);
     }
 
+    // マテリアル
+    auto materials = mFile.GetMaterials();
+    _ASSERT(materials->size() > 0);
+    for (int mat_idx = 0; mat_idx < materials->size(); ++mat_idx)
+    {
+        auto mat = materials->at(mat_idx);
+        
+        MaterialData* data = new MaterialData();
+        if (!mat->tex.empty())
+        {
+            // テクスチャ作成
+            std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> cv;
+            std::wstring wpath = cv.from_bytes(mat->tex);
+            hr = DirectX::CreateWICTextureFromFile(device, context, wpath.c_str(), &data->texture, &data->shaderResView);
+            if (FAILED(hr)) {
+                return false;
+            }
+
+            // サンプラー作成
+            D3D11_SAMPLER_DESC sampDesc;
+            ZeroMemory(&sampDesc, sizeof(sampDesc));
+            sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+            sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+            sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+            sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+            sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+            sampDesc.MinLOD = 0;
+            sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+            hr = device->CreateSamplerState(&sampDesc, &data->sampler);
+            if (FAILED(hr)) {
+                return false;
+            }
+        }
+        mMaterials.push_back(data);
+    }
+
+    // 定数バッファ
+    {
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(bd));
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.ByteWidth = sizeof(ConstBuffer);
+        bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        bd.CPUAccessFlags = 0;
+        hr = device->CreateBuffer(&bd, nullptr, &mConstBuffer);
+        if (FAILED(hr)) {
+            return false;
+        }
+    }
+
     CD3D11_DEFAULT default_state;
     // ラスタライザステート
     CD3D11_RASTERIZER_DESC rsdesc(default_state);
@@ -588,6 +655,9 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
     // デプスステンシルステート
     CD3D11_DEPTH_STENCIL_DESC dsdesc(default_state);
+    dsdesc.DepthEnable = true;
+    dsdesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    dsdesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
     hr = device->CreateDepthStencilState(&dsdesc, &mDsState);
     if (FAILED(hr)) {
         return hr;
@@ -595,6 +665,10 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
     // ブレンドステート
     CD3D11_BLEND_DESC bddesc(default_state);
+    ZeroMemory(&bddesc, sizeof(D3D11_BLEND_DESC));
+    bddesc.AlphaToCoverageEnable = TRUE;
+    bddesc.IndependentBlendEnable = TRUE;
+    bddesc.RenderTarget[0].BlendEnable = TRUE;
     hr = device->CreateBlendState(&bddesc, &mBdState);
     if (FAILED(hr)) {
         return hr;
@@ -605,24 +679,6 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
 void ModelMqo::Destroy()
 {
-    if (mSampler)
-    {
-        mSampler->Release();
-        mSampler = nullptr;
-    }
-
-    if (mShaderResView)
-    {
-        mShaderResView->Release();
-        mShaderResView = nullptr;
-    }
-
-    if (mTexture)
-    {
-        mTexture->Release();
-        mTexture = nullptr;
-    }
-
     if (mPixelShader)
     {
         mPixelShader->Release();
@@ -653,6 +709,32 @@ void ModelMqo::Destroy()
         mVertexLayout->Release();
         mVertexLayout = nullptr;
     }
+    if (mConstBuffer)
+    {
+        mConstBuffer->Release();
+        mConstBuffer = nullptr;
+    }
+
+    for each (auto mat in mMaterials)
+    {
+        if (mat->sampler)
+        {
+            mat->sampler->Release();
+            mat->sampler = nullptr;
+        }
+        if (mat->shaderResView)
+        {
+            mat->shaderResView->Release();
+            mat->shaderResView = nullptr;
+        }
+        if (mat->texture)
+        {
+            mat->texture->Release();
+            mat->texture = nullptr;
+        }
+        delete mat;
+    }
+    mMaterials.clear();
 
     for each (auto mesh in mMeshData)
     {
@@ -677,8 +759,36 @@ void ModelMqo::Destroy()
 
 void ModelMqo::Render(ID3D11DeviceContext* context)
 {
+    //定数バッファ
+    ConstBuffer cbuff;
+
+    // プロジェクション行列
+    f32 aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
+    f32 min_z = 0.01f;
+    f32 max_z = 10000.0f;
+    f32 fov = DirectX::XM_PIDIV4;//画角
+    cbuff.mtxProj = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(fov, aspect, min_z, max_z));
+
+    auto scene = mFile.GetScene();
+    // カメラ行列
+    DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
+    DirectX::XMVECTOR At = DirectX::XMVectorSet(scene->lookat[0], scene->lookat[1], scene->lookat[2], 0.0f);
+    DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+    cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
+    static float rotY = 0;
+    Matrix44 matRot = DirectX::XMMatrixRotationY(rotY); rotY += 0.01f;
+    Matrix44 matTrans = DirectX::XMMatrixTranslation(scene->pos[0], scene->pos[1], scene->pos[2]);
+    cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixMultiply(matRot, matTrans));
+    cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
+    // シェーダーでは行列を転置してから渡す
+
+    // 定数バッファ内容更新
+    context->UpdateSubresource(mConstBuffer, 0, NULL, &cbuff, 0, 0);
+
     for each(auto mesh in mMeshData)
     {
+        if (mesh->visible == 0) continue;
+
         // 頂点バッファ
         u32 vb_slot = 0;
         ID3D11Buffer* vb[] = { mesh->vertexBuffer };
@@ -693,22 +803,30 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
         // プリミティブ形状
-        context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
         // シェーダ
         context->VSSetShader(mVertexShader, nullptr, 0);
         context->PSSetShader(mPixelShader, nullptr, 0);
 
+        // 定数バッファ
+        u32 cb_slot = 0;
+        ID3D11Buffer* cb[1] = { mConstBuffer };
+        context->VSSetConstantBuffers(cb_slot, 1, cb);
+        context->PSSetConstantBuffers(cb_slot, 1, cb);
+
+        // マテリアル
+        auto material = mMaterials.at(mesh->material_id);
         // サンプラー
-        if (mTexture)
+        if (material->texture)
         {
             u32 smp_slot = 0;
-            ID3D11SamplerState* smp[1] = { mSampler };
+            ID3D11SamplerState* smp[1] = { material->sampler };
             context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
 
             // シェーダーリソースビュー（テクスチャ）
             u32 srv_slot = 0;
-            ID3D11ShaderResourceView* srv[1] = { mShaderResView };
+            ID3D11ShaderResourceView* srv[1] = { material->shaderResView };
             context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
         }
 
@@ -722,7 +840,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
         // ポリゴン描画
-        context->DrawIndexed(mesh->vertex_num, 0, 0);
+        context->Draw(mesh->vertex_num, 0);
     }
 }
 

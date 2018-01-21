@@ -2,6 +2,14 @@
 // Pixel Shader
 //--------------------------------------------------------------------------------------
 
+cbuffer ConstBuff : register(b0)
+{
+    matrix mtxProj;
+    matrix mtxView;
+    matrix mtxWorld;
+    float4 Diffuse;
+};
+
 Texture2D texDiffuse : register(t0);
 SamplerState samLinear : register(s0);
 

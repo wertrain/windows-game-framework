@@ -115,6 +115,8 @@ private:
         ID3D11Buffer* vertexBuffer;
         ID3D11Buffer* indexBuffer;
         u32 vertex_num;
+        s32 material_id;
+        s32 visible;
 
         MeshData()
             : vertices(nullptr)
@@ -122,6 +124,23 @@ private:
             , vertexBuffer(nullptr)
             , indexBuffer(nullptr)
             , vertex_num(0)
+            , material_id(0)
+            , visible(0)
+        {
+
+        }
+    };
+
+    struct MaterialData
+    {
+        ID3D11Resource* texture;
+        ID3D11ShaderResourceView* shaderResView;
+        ID3D11SamplerState* sampler;
+
+        MaterialData()
+            : texture(nullptr)
+            , shaderResView(nullptr)
+            , sampler(nullptr)
         {
 
         }
@@ -131,16 +150,14 @@ private:
     MqoFile mFile;
 
     std::vector<MeshData*> mMeshData;
+    std::vector<MaterialData*> mMaterials;
+    ID3D11Buffer* mConstBuffer;
     ID3D11InputLayout* mVertexLayout;
     ID3D11RasterizerState* mRsState;
     ID3D11DepthStencilState* mDsState;
     ID3D11BlendState* mBdState;
     ID3D11VertexShader* mVertexShader;
     ID3D11PixelShader* mPixelShader;
-
-    ID3D11Resource* mTexture;
-    ID3D11ShaderResourceView* mShaderResView;
-    ID3D11SamplerState* mSampler;
 };
 
 NS_FW_GFX_END

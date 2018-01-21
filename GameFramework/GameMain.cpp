@@ -62,6 +62,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
     DefaultFontTest(device, context);
 #elif defined MODEL_TEST
     s_Mqo.Create(device, context, L"manto/manto.mqo");
+    //s_Mqo.Create(device, context, L"miku/miltukumiku.mqo");
 #else
     s_Render2D.Create(device);
     s_Texure.CreateFromFile(device, TEXT("usa.png"));
