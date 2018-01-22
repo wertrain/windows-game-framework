@@ -648,9 +648,8 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
     CD3D11_RASTERIZER_DESC rsdesc(default_state);
     rsdesc.CullMode = D3D11_CULL_NONE;
     hr = device->CreateRasterizerState(&rsdesc, &mRsState);
-    if (FAILED(hr))
-    {
-        return hr;
+    if (FAILED(hr)) {
+        return false;
     }
 
     // デプスステンシルステート
@@ -660,7 +659,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
     dsdesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
     hr = device->CreateDepthStencilState(&dsdesc, &mDsState);
     if (FAILED(hr)) {
-        return hr;
+        return false;
     }
 
     // ブレンドステート
@@ -671,7 +670,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
     bddesc.RenderTarget[0].BlendEnable = TRUE;
     hr = device->CreateBlendState(&bddesc, &mBdState);
     if (FAILED(hr)) {
-        return hr;
+        return false;
     }
 
     return true;
