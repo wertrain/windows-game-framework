@@ -541,6 +541,8 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             _ASSERT(face.num > 0);
             for (int v_idx = 0; v_idx < face.num; ++v_idx)
             {
+                // 頂点を展開して入れているのに
+                // インデックスがおかしいのであとで直す
                 auto index = face.V[v_idx];
                 mesh->vertices[idx_idx].pos[0] = obj->vertices[index].pos[0];
                 mesh->vertices[idx_idx].pos[1] = obj->vertices[index].pos[1];
@@ -555,6 +557,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             }
         }
         mesh->vertex_num = idx_idx;
+        mesh->index_num = idx_idx;
 
         // バーテックスバッファ
         {

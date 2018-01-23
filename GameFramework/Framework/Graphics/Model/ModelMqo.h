@@ -115,6 +115,7 @@ private:
         ID3D11Buffer* vertexBuffer;
         ID3D11Buffer* indexBuffer;
         u32 vertex_num;
+        u32 index_num;
         s32 material_id;
         s32 visible;
 
@@ -124,6 +125,7 @@ private:
             , vertexBuffer(nullptr)
             , indexBuffer(nullptr)
             , vertex_num(0)
+            , index_num(0)
             , material_id(0)
             , visible(0)
         {
