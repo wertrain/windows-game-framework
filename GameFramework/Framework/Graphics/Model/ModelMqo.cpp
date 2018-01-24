@@ -572,7 +572,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             InitData.pSysMem = mesh->vertices;
             hr = device->CreateBuffer(&bd, &InitData, &mesh->vertexBuffer);
             if (FAILED(hr)) {
-                return hr;
+                return false;
             }
         }
 
@@ -589,7 +589,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             InitData.pSysMem = mesh->indices;
             hr = device->CreateBuffer(&bd, &InitData, &mesh->indexBuffer);
             if (FAILED(hr)) {
-                return hr;
+                return false;
             }
         }
 
