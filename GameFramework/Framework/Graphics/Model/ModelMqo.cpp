@@ -802,7 +802,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->IASetInputLayout(mVertexLayout);
 
         // インデックスバッファ
-        context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+        //context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
         // プリミティブ形状
         context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
