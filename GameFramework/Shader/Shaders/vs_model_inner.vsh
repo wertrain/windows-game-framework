@@ -26,7 +26,6 @@ struct PS_INPUT
 PS_INPUT vsMain(VS_INPUT input)
 {
     PS_INPUT output = (PS_INPUT)0;
-    //output.Pos = float4(input.Pos, 1.0f);
     output.Pos = mul(float4(input.Pos, 1.0f), mtxWorld);
     output.Pos = mul(output.Pos, mtxView);
     output.Pos = mul(output.Pos, mtxProj);
