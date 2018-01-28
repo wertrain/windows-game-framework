@@ -781,7 +781,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     Matrix44 matRot = DirectX::XMMatrixRotationY(rotY); rotY += 0.01f;
     Matrix44 matTrans = DirectX::XMMatrixTranslation(scene->pos[0], scene->pos[1], scene->pos[2]);
     cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixMultiply(matRot, matTrans));
-    cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
+    cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
     // シェーダーでは行列を転置してから渡す
 
     // 定数バッファ内容更新
