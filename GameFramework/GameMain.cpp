@@ -63,7 +63,6 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 #elif defined MODEL_TEST
     if (!s_Mqo.Create(device, context, L"manto/manto.mqo"))
         return false;
-    //s_Mqo.Create(device, context, L"miku/miltukumiku.mqo");
 #else
     s_Render2D.Create(device);
     s_Texure.CreateFromFile(device, TEXT("usa.png"));
