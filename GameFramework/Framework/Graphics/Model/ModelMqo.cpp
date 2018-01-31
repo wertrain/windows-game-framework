@@ -669,7 +669,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
     CD3D11_BLEND_DESC bddesc(default_state);
     ZeroMemory(&bddesc, sizeof(D3D11_BLEND_DESC));
     bddesc.AlphaToCoverageEnable = TRUE;
-    bddesc.IndependentBlendEnable = TRUE;
+    bddesc.IndependentBlendEnable = FALSE;
     //bddesc.RenderTarget[0].BlendEnable = TRUE;
     hr = device->CreateBlendState(&bddesc, &mBdState);
     if (FAILED(hr)) {
@@ -839,7 +839,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->OMSetDepthStencilState(mDsState, 0);
 
         // ブレンドステート
-        //context->OMSetBlendState(mBdState, NULL, 0xfffffff);
+        context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
         // ポリゴン描画
         context->Draw(mesh->vertex_num, 0);
