@@ -667,9 +667,9 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
     // ブレンドステート
     CD3D11_BLEND_DESC bddesc(default_state);
-    ZeroMemory(&bddesc, sizeof(D3D11_BLEND_DESC));
-    bddesc.AlphaToCoverageEnable = TRUE;
-    bddesc.IndependentBlendEnable = FALSE;
+    //ZeroMemory(&bddesc, sizeof(D3D11_BLEND_DESC));
+    //bddesc.AlphaToCoverageEnable = TRUE;
+    //bddesc.IndependentBlendEnable = TRUE;
     //bddesc.RenderTarget[0].BlendEnable = TRUE;
     hr = device->CreateBlendState(&bddesc, &mBdState);
     if (FAILED(hr)) {
