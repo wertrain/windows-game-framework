@@ -7,6 +7,9 @@ NS_FW_GFX_BEGIN
 
 class Texture;
 
+/// <summary>
+/// テクスチャに任意のフォントの文字列を描画するクラス
+/// </summary>
 class TextWriter : public GraphicsBase
 {
 public:

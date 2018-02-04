@@ -10,6 +10,9 @@ struct D3D11_TEXTURE2D_DESC;
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// テクスチャクラス
+/// </summary>
 class Texture
 {
 public:

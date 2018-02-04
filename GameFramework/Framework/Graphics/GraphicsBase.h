@@ -5,6 +5,9 @@
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// 描画関連オブジェクトの基底クラス
+/// </summary>
 class GraphicsBase : public NS_FW_SYS::ObjectBase
 {
 public:
