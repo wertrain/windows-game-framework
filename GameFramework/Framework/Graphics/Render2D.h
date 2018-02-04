@@ -5,6 +5,9 @@ NS_FW_GFX_BEGIN
 
 class Texture;
 
+/// <summary>
+/// 2D テクスチャ描画
+/// </summary>
 class Render2D
 {
 public:

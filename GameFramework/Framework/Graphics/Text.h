@@ -11,6 +11,10 @@ struct ID3D11DeviceContext;
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// 画面に簡易的に文字列を表示するためのマネージャークラス
+/// 実際のフォント描画は DefaultFont が行う
+/// </summary>
 class DefaultFontManager : public NS_FW_UTIL::Singleton<DefaultFontManager>
 {
 public:
