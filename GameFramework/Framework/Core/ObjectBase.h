@@ -6,6 +6,9 @@
 
 NS_FW_SYS_BEGIN
 
+/// <summary>
+/// フレームワークに関するオブジェクトすべての基底クラス
+/// </summary>
 class ObjectBase
 {
 public:

@@ -6,6 +6,9 @@
 
 NS_FW_SYS_BEGIN
 
+/// <summary>
+/// 参照されるオブジェクトの基底クラス
+/// </summary>
 class ReferenceObject
 {
 public:

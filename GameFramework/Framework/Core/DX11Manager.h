@@ -5,6 +5,9 @@
 
 NS_FW_SYS_BEGIN
 
+/// <summary>
+/// DirectX 11 ŠÇ—ƒNƒ‰ƒX
+/// </summary>
 class DX11Manager : public NS_FW_UTIL::Singleton<DX11Manager>
 {
 protected:
