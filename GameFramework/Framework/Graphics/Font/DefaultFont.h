@@ -5,6 +5,9 @@
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// システムフォント描画クラス
+/// </summary>
 class DefaultFont : public GraphicsBase
 {
 public:
