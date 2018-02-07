@@ -5,6 +5,9 @@
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// 四角形を扱うクラス
+/// </summary>
 class Quadrangle : public Primitive
 {
 public:

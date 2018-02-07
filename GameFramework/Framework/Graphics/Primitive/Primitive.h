@@ -18,6 +18,9 @@ struct ID3D11SamplerState;
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// 単純なポリゴンを表す基底クラス
+/// </summary>
 class Primitive : public GraphicsBase
 {
 protected:

@@ -5,6 +5,9 @@
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// 三角形を扱うクラス
+/// </summary>
 class Triangle : public Primitive
 {
 public:
