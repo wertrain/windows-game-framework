@@ -6,6 +6,9 @@
 
 NS_FW_UTIL_BEGIN
 
+/// <summary>
+/// シングルトンテンプレートクラス
+/// </summary>
 template <class T>
 class Singleton
 {
