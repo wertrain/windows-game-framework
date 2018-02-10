@@ -6,6 +6,9 @@
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// 3D ƒ‚ƒfƒ‹Šî’êƒNƒ‰ƒX
+/// </summary>
 class ModelBase
 {
 public:
