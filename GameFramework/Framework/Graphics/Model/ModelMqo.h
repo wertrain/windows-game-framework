@@ -7,6 +7,9 @@
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// メタセコイアモデルを扱うクラス
+/// </summary>
 class MqoFile
 {
 public:
