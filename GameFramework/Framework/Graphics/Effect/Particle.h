@@ -5,6 +5,9 @@
 
 NS_FW_GFX_BEGIN
 
+/// <summary>
+/// パーティクルを表すクラス
+/// </summary>
 class Particle
 {
 public:
