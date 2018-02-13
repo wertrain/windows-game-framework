@@ -1,5 +1,6 @@
 /**
  * @file Application.h
+ * @brief アプリケーション管理クラス
  */
 #ifndef SYSTEM_APPLICATION_H_
 #define SYSTEM_APPLICATION_H_
