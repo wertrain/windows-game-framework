@@ -1,3 +1,7 @@
+/**
+ * @file ObjectBase.h
+ * @brief フレームワークに関するオブジェクトすべての基底クラス
+ */
 #ifndef CORE_OBJECTBASE_H_
 #define CORE_OBJECTBASE_H_
 
