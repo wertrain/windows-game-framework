@@ -1,3 +1,7 @@
+/**
+ * @file ObjectBase.h
+ * @brief DirectX 11 ŠÇ—ƒNƒ‰ƒX
+ */
 #ifndef GRAPHICS_DIRECTX_H_
 #define GRAPHICS_DIRECTX_H_
 

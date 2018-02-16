@@ -1,3 +1,7 @@
+/**
+ * @file ReferenceObject.h
+ * @brief 参照されるオブジェクトの基底クラス
+ */
 #ifndef CORE_REFERENCEOBJECT_H_
 #define CORE_REFERENCEOBJECT_H_
 
