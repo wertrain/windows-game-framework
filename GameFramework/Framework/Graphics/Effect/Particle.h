@@ -1,3 +1,7 @@
+/**
+ * @file ReferenceObject.h
+ * @brief パーティクルを表すクラス
+ */
 #ifndef GRAPHICS_EFFECT_PARTICLE_H_
 #define GRAPHICS_EFFECT_PARTICLE_H_
 
