@@ -1,3 +1,7 @@
+/**
+ * @file FontImage.h
+ * @brief システム用フォントの画像イメージ
+ */
 #ifndef FONTIMAGE_H_
 #define FONTIMAGE_H_
 
