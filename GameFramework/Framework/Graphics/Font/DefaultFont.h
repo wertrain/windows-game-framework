@@ -1,3 +1,7 @@
+/**
+ * @file DefaultFont.h
+ * @brief システム用のフォント描画クラス
+ */
 #ifndef DEFAULTFONT_H_
 #define DEFAULTFONT_H_
 
