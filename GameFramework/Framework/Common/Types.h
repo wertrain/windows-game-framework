@@ -1,3 +1,7 @@
+/**
+ * @file Types.h
+ * @brief Šî–{“I‚ÈŒ^’è‹`
+ */
 #ifndef COMMON_TYPES_H_
 #define COMMON_TYPES_H_
 
