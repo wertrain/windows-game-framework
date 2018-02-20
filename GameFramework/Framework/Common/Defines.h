@@ -1,3 +1,7 @@
+/**
+ * @file Defines.h
+ * @brief ‹¤’Ê’è‹`
+ */
 #ifndef COMMON_DEFINES_H_
 #define COMMON_DEFINES_H_
 
