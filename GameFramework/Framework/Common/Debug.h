@@ -1,3 +1,7 @@
+/**
+ * @file Debug.h
+ * @brief デバッグ関連定義
+ */
 #ifndef COMMON_DEBUG_H_
 #define COMMON_DEBUG_H_
 
