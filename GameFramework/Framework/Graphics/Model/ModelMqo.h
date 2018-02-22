@@ -1,3 +1,7 @@
+/**
+ * @file ModelMqo.h
+ * @brief メタセコイアモデルを扱うクラス
+ */
 #ifndef GRAPHICS_MODEL_MODELMQO_H_
 #define GRAPHICS_MODEL_MODELMQO_H_
 
