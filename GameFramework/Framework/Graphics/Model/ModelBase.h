@@ -1,6 +1,6 @@
 /**
  * @file ModelBase.h
- * @brief  3D モデル基底クラス
+ * @brief 3D モデル基底クラス
  */
 #ifndef GRAPHICS_MODELBASE_H_
 #define GRAPHICS_MODELBASE_H_
