@@ -1,3 +1,7 @@
+/**
+ * @file Primitive.h
+ * @brief 単純なポリゴンを表す基底クラス
+ */
 #ifndef PRIMITIVE_H_
 #define PRIMITIVE_H_
 

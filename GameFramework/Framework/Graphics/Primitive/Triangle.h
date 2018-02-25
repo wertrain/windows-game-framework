@@ -1,3 +1,7 @@
+/**
+ * @file Triangle.h
+ * @brief 三角形を扱うクラス
+ */
 #ifndef TRIANGLE_H_
 #define TRIANGLE_H_
 

@@ -1,3 +1,7 @@
+/**
+ * @file Triangle.cpp
+ * @brief 三角形を扱うクラス
+ */
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>

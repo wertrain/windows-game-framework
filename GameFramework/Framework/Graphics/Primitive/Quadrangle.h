@@ -1,3 +1,7 @@
+/**
+ * @file Quadrangle.h
+ * @brief 四角形を扱うクラス
+ */
 #ifndef QUADRANGLE_H_
 #define QUADRANGLE_H_
 
