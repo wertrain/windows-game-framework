@@ -1,5 +1,5 @@
 /**
- * @file ModelBase.h
+ * @file ModelBase.cpp
  * @brief 3D ƒ‚ƒfƒ‹Šî’êƒNƒ‰ƒX
  */
 #include "ModelBase.h"
