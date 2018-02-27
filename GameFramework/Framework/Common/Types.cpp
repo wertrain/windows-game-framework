@@ -1,3 +1,7 @@
+/**
+ * @file Types.cpp
+ * @brief Šî–{“I‚ÈŒ^’è‹`
+ */
 #include "Defines.h"
 #include "Types.h"
 

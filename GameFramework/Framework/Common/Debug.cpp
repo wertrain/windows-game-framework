@@ -1,3 +1,7 @@
+/**
+ * @file Debug.cpp
+ * @brief デバッグ関連定義
+ */
 #include <stdio.h> 
 #include <stdarg.h>
 #include <stdlib.h>
