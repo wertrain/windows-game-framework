@@ -1,3 +1,7 @@
+/**
+ * @file Texture.h
+ * @brief テクスチャクラス
+ */
 #ifndef GRAPHICS_TEXTURE_H_
 #define GRAPHICS_TEXTURE_H_
 
