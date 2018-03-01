@@ -1,3 +1,7 @@
+/**
+ * @file File.h
+ * @brief ファイルユーティリティ
+ */
 #ifndef SYSTEM_FILE_H_
 #define SYSTEM_FILE_H_
 

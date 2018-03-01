@@ -1,3 +1,7 @@
+/**
+ * @file File.cpp
+ * @brief ファイルユーティリティ
+ */
 #include <fstream>
 #include <iostream>
 #include <cstdint>
