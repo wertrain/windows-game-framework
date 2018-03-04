@@ -1,3 +1,7 @@
+/**
+ * @file Stopwatch.h
+ * @brief 時間計測用ユーティリティ
+ */
 #ifndef UTILITY_STOPWATCH_H_
 #define UTILITY_STOPWATCH_H_
 

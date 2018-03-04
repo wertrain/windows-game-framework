@@ -1,3 +1,7 @@
+/**
+ * @file Stopwatch.cpp
+ * @brief 時間計測用ユーティリティ
+ */
 #include <memory>
 #include <chrono>
 #include "../Common/Defines.h"
