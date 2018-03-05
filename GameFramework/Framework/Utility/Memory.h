@@ -1,3 +1,7 @@
+/**
+ * @file Memory.h
+ * @brief メモリ関連ユーティリティ
+ */
 #ifndef UTILITY_MEMORY_H_
 #define UTILITY_MEMORY_H_
 
