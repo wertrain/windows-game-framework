@@ -1,3 +1,7 @@
+/**
+ * @file GameMain.cpp
+ * @brief ƒQ[ƒ€ƒƒCƒ“ˆ—
+ */
 #include "Framework/Includes.h"
 
 #include "Framework/Graphics/Includes.h"
