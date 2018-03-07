@@ -1,3 +1,7 @@
+/**
+ * @file WinMain.cpp
+ * @brief Windows メイン関数
+ */
 #ifdef _WIN64
 
 // メモリリーク検出の有効化
