@@ -1,3 +1,7 @@
+/**
+ * @file Text.h
+ * @brief 画面に簡易的に文字列を表示するためのマネージャークラス
+ */
 #ifndef GRAPHICS_TEXT_H_
 #define GRAPHICS_TEXT_H_
 
