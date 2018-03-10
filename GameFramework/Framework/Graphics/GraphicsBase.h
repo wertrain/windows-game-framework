@@ -1,3 +1,7 @@
+/**
+ * @file GraphicsBase.h
+ * @brief 描画関連オブジェクトの基底クラス
+ */
 #ifndef GRAPHICS_GRAPHICSBASE_H_
 #define GRAPHICS_GRAPHICSBASE_H_
 
