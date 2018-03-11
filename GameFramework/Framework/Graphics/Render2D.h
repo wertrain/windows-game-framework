@@ -1,3 +1,7 @@
+/**
+ * @file Render2D.h
+ * @brief 2D テクスチャ描画
+ */
 #ifndef GRAPHICS_RENDER2D_H_
 #define GRAPHICS_RENDER2D_H_
 
