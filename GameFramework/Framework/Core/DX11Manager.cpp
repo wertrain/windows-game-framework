@@ -1,5 +1,5 @@
 /**
- * @file ObjectBase.cpp
+ * @file DX11Manager.cpp
  * @brief DirectX 11 ŠÇ—ƒNƒ‰ƒX
  */
 #include <d3d11.h>

@@ -1,5 +1,5 @@
 /**
- * @file ObjectBase.h
+ * @file DX11Manager.h
  * @brief DirectX 11 ŠÇ—ƒNƒ‰ƒX
  */
 #ifndef GRAPHICS_DIRECTX_H_
