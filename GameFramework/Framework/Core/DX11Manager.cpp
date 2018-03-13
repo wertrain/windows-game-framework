@@ -1,3 +1,7 @@
+/**
+ * @file ObjectBase.cpp
+ * @brief DirectX 11 ŠÇ—ƒNƒ‰ƒX
+ */
 #include <d3d11.h>
 #include <atlbase.h>
 #include "../Common/Includes.h"
