@@ -1,3 +1,7 @@
+/**
+ * @file ObjectBase.cpp
+ * @brief フレームワークに関するオブジェクトすべての基底クラス
+ */
 #include "ObjectBase.h"
 
 NS_FW_SYS_BEGIN
