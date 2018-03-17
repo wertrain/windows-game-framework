@@ -1,3 +1,7 @@
+/**
+ * @file Bitmap.cpp
+ * @brief
+ */
 #include "Bitmap.h"
 #pragma comment (lib, "msimg32.lib")
 

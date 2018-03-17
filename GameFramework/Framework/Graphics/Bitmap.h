@@ -1,3 +1,7 @@
+/**
+ * @file Bitmap.h
+ * @brief 
+ */
 #ifndef GRAPHICS_BITMAP_H_
 #define GRAPHICS_BITMAP_H_
 
