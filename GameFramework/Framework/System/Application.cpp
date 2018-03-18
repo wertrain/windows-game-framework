@@ -1,3 +1,7 @@
+/**
+ * @file Application.cpp
+ * @brief アプリケーション管理クラス
+ */
 #include <windows.h>
 #include <time.h>
 #include <tchar.h>
