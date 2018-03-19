@@ -1,3 +1,7 @@
+/**
+ * @file GameMain.h
+ * @brief ゲームのメイン処理を記述する
+ */
 #ifndef GAMEMAIN_H_
 #define GAMEMAIN_H_
 
