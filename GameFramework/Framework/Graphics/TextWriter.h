@@ -1,3 +1,7 @@
+/**
+ * @file TextWriter.h
+ * @brief テクスチャに任意のフォントの文字列を描画するクラス
+ */
 #ifndef GRAPHICS_TEXTWRITER_H_
 #define GRAPHICS_TEXTWRITER_H_
 
