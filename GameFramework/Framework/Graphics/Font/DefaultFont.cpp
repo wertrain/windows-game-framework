@@ -1,3 +1,7 @@
+/**
+ * @file DefaultFont.cpp
+ * @brief システム用のフォント描画クラス
+ */
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
