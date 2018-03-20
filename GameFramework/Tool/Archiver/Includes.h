@@ -1,3 +1,7 @@
+/**
+ * @file Includes.h
+ * @brief アーカイバーツールインクルード
+ */
 #ifndef TOOL_ARCHIVER_INCLUDES_H_
 #define TOOL_ARCHIVER_INCLUDES_H_
 
