@@ -1,3 +1,7 @@
+/**
+ * @file Includes.h
+ * @brief ユーティリティ関連インクルード
+ */
 #ifndef UTILITY_INCLUDES_H_
 #define UTILITY_INCLUDES_H_
 
