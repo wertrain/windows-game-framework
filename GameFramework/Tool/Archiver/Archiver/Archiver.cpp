@@ -1,3 +1,7 @@
+/**
+ * @file Archiver.cpp
+ * @brief アーカイバクラス
+ */
 #include "../../../Framework/Common/Defines.h"
 
 #include "Archiver.h"
