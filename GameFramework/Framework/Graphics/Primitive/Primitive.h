@@ -2,8 +2,8 @@
  * @file Primitive.h
  * @brief 単純なポリゴンを表す基底クラス
  */
-#ifndef PRIMITIVE_H_
-#define PRIMITIVE_H_
+#ifndef GRAPHICS_PRIMITIVE_PRIMITIVE_H_
+#define GRAPHICS_PRIMITIVE_PRIMITIVE_H_
 
 #include "../GraphicsBase.h"
 
@@ -63,4 +63,4 @@ protected:
 
 NS_FW_GFX_END
 
-#endif // PRIMITIVE_H_
+#endif // GRAPHICS_PRIMITIVE_PRIMITIVE_H_

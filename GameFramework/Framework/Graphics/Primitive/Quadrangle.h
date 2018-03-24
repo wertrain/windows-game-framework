@@ -2,8 +2,8 @@
  * @file Quadrangle.h
  * @brief 四角形を扱うクラス
  */
-#ifndef QUADRANGLE_H_
-#define QUADRANGLE_H_
+#ifndef GRAPHICS_PRIMITIVE_QUADRANGLE_H_
+#define GRAPHICS_PRIMITIVE_QUADRANGLE_H_
 
 #include "Primitive.h"
 
@@ -23,4 +23,4 @@ public:
 
 NS_FW_GFX_END
 
-#endif // QUADRANGLE_H_
+#endif // GRAPHICS_PRIMITIVE_QUADRANGLE_H_

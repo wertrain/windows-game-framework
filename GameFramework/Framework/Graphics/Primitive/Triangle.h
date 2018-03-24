@@ -2,8 +2,8 @@
  * @file Triangle.h
  * @brief 三角形を扱うクラス
  */
-#ifndef TRIANGLE_H_
-#define TRIANGLE_H_
+#ifndef GRAPHICS_PRIMITIVE_TRIANGLE_H_
+#define GRAPHICS_PRIMITIVE_TRIANGLE_H_
 
 #include "Primitive.h"
 
@@ -23,4 +23,4 @@ public:
 
 NS_FW_GFX_END
 
-#endif // TRIANGLE_H_
+#endif // GRAPHICS_PRIMITIVE_TRIANGLE_H_
