@@ -1,3 +1,7 @@
+/**
+ * @file Archiver.h
+ * @brief アーカイバクラス
+ */
 #ifndef TOOL_ARCHIVER_H_
 #define TOOL_ARCHIVER_H_
 
