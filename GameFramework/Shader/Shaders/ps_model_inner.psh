@@ -10,6 +10,8 @@ cbuffer ConstBuff : register(b0)
     float4 Diffuse;
 };
 
+//--------------------------------------------------------------------------------------
+
 Texture2D texDiffuse : register(t0);
 SamplerState samLinear : register(s0);
 

@@ -10,6 +10,8 @@ cbuffer ConstBuff : register(b0)
     matrix mtxWorld;
 };
 
+//--------------------------------------------------------------------------------------
+
 struct PS_INPUT
 {
     float4 Pos : SV_POSITION;

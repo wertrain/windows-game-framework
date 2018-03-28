@@ -11,6 +11,7 @@ cbuffer ConstBuff : register(b0)
 };
 
 //--------------------------------------------------------------------------------------
+
 struct VS_INPUT
 {
     float3 Pos : POSITION;
