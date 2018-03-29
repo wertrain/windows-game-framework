@@ -13,6 +13,7 @@ cbuffer ConstBuff : register(b0)
     float4 Diffuse;
 };
 
+//--------------------------------------------------------------------------------------
 
 struct PS_INPUT
 {
