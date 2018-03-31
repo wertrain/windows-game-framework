@@ -2,8 +2,8 @@
  * @file FontImage.h
  * @brief システム用フォントの画像イメージ
  */
-#ifndef FONTIMAGE_H_
-#define FONTIMAGE_H_
+#ifndef GRAPHICS_EFFECT_FONTIMAGE_H_
+#define GRAPHICS_EFFECT_FONTIMAGE_H_
 
 NS_FW_GFX_BEGIN
 
@@ -2783,4 +2783,4 @@ unsigned int gfont_DDS_y_num = 3;
 
 NS_FW_GFX_END
 
-#endif // FONTIMAGE_H_
+#endif // GRAPHICS_EFFECT_FONTIMAGE_H_
