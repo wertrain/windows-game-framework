@@ -1,25 +1,29 @@
-#include "ReferenceObject.h"
+/**
+ * @file ReferencedObject.cpp
+ * @brief 参照されるオブジェクトの基底クラス
+ */
+#include "ReferencedObject.h"
 
 NS_FW_SYS_BEGIN
 
-ReferenceObject::ReferenceObject()
+ReferencedObject::ReferencedObject()
     : mRefCounter(nullptr)
 {
     mRefCounter = new ReferenceCounter();
 }
 
-ReferenceObject::ReferenceObject(const ReferenceObject& r)
+ReferencedObject::ReferencedObject(const ReferencedObject& r)
     : mRefCounter(r.mRefCounter)
 {
     if (mRefCounter) mRefCounter->Inc();
 }
 
-ReferenceObject::~ReferenceObject()
+ReferencedObject::~ReferencedObject()
 {
     Release();
 }
 
-ReferenceObject &ReferenceObject::operator=(const ReferenceObject &r)
+ReferencedObject &ReferencedObject::operator=(const ReferencedObject &r)
 {
     ReferenceCounter* rc = r.mRefCounter;
     if (rc)
@@ -30,21 +34,21 @@ ReferenceObject &ReferenceObject::operator=(const ReferenceObject &r)
     return (*this);
 }
 
-int ReferenceObject::AddRef()
+int ReferencedObject::AddRef()
 {
     if (mRefCounter)
         return mRefCounter->Inc();
     return 0;
 }
 
-int ReferenceObject::GetRef()
+int ReferencedObject::GetRef()
 {
     if (mRefCounter)
         return mRefCounter->Get();
     return 0;
 }
 
-int ReferenceObject::Release()
+int ReferencedObject::Release()
 {
     if (mRefCounter)
     {

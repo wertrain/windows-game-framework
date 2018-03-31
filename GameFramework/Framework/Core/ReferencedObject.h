@@ -1,5 +1,5 @@
 /**
- * @file ReferenceObject.h
+ * @file ReferencedObject.h
  * @brief 参照されるオブジェクトの基底クラス
  */
 #ifndef CORE_REFERENCEOBJECT_H_
@@ -13,13 +13,13 @@ NS_FW_SYS_BEGIN
 /// <summary>
 /// 参照されるオブジェクトの基底クラス
 /// </summary>
-class ReferenceObject
+class ReferencedObject
 {
 public:
-    ReferenceObject();
-    ReferenceObject(const ReferenceObject& r);
-    virtual ~ReferenceObject();
-    ReferenceObject &operator=(const ReferenceObject &r);
+    ReferencedObject();
+    ReferencedObject(const ReferencedObject& r);
+    virtual ~ReferencedObject();
+    ReferencedObject &operator=(const ReferencedObject &r);
 
 public:
     virtual s32 AddRef();
