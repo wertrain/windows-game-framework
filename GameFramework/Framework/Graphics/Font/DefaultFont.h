@@ -2,8 +2,8 @@
  * @file DefaultFont.h
  * @brief システム用のフォント描画クラス
  */
-#ifndef DEFAULTFONT_H_
-#define DEFAULTFONT_H_
+#ifndef GRAPHICS_FONT_DEFAULTFONT_H_
+#define GRAPHICS_FONT_DEFAULTFONT_H_
 
 #include "../GraphicsBase.h"
 
@@ -45,4 +45,4 @@ protected:
 
 NS_FW_GFX_END
 
-#endif // DEFAULTFONT_H_
+#endif // GRAPHICS_FONT_DEFAULTFONT_H_
