@@ -2,8 +2,8 @@
  * @file DX11Manager.h
  * @brief DirectX 11 ä«óùÉNÉâÉX
  */
-#ifndef GRAPHICS_DIRECTX_H_
-#define GRAPHICS_DIRECTX_H_
+#ifndef CORE_DIRECTX_H_
+#define CORE_DIRECTX_H_
 
 #include "../Utility/Singleton.h"
 
@@ -41,4 +41,4 @@ private:
 
 NS_FW_SYS_END
 
-#endif // GRAPHICS_DIRECTX_H_
+#endif // CORE_DIRECTX_H_
