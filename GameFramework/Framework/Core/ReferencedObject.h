@@ -2,8 +2,8 @@
  * @file ReferencedObject.h
  * @brief 参照されるオブジェクトの基底クラス
  */
-#ifndef CORE_REFERENCEOBJECT_H_
-#define CORE_REFERENCEOBJECT_H_
+#ifndef CORE_REFERENCEDOBJECT_H_
+#define CORE_REFERENCEDOBJECT_H_
 
 #include "../Common/Defines.h"
 #include "../Common/Types.h"
@@ -40,4 +40,4 @@ private:
 
 NS_FW_SYS_END
 
-#endif // CORE_REFERENCEOBJECT_H_
+#endif // CORE_REFERENCEDOBJECT_H_
