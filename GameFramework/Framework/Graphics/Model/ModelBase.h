@@ -2,8 +2,8 @@
  * @file ModelBase.h
  * @brief 3D ƒ‚ƒfƒ‹Šî’êƒNƒ‰ƒX
  */
-#ifndef GRAPHICS_MODELBASE_H_
-#define GRAPHICS_MODELBASE_H_
+#ifndef GRAPHICS_MODEL_MODELBASE_H_
+#define GRAPHICS_MODEL_MODELBASE_H_
 
 #include "../../Common/Defines.h"
 #include "../../Common/Types.h"
@@ -22,4 +22,4 @@ public:
 
 NS_FW_GFX_END
 
-#endif // GRAPHICS_MODELBASE_H_
+#endif // GRAPHICS_MODEL_MODELBASE_H_
