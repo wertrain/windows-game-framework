@@ -147,14 +147,14 @@
     <ClInclude Include="Framework\Graphics\Model\ModelBase.h">
       <Filter>Framework\Graphics\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Core\ReferenceObject.h">
-      <Filter>Framework\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Graphics\Effect\Particle.h">
       <Filter>Framework\Graphics\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Model\ModelMqo.h">
       <Filter>Framework\Graphics\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Core\ReferencedObject.h">
+      <Filter>Framework\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -231,14 +231,14 @@
     <ClCompile Include="Framework\Graphics\Model\ModelBase.cpp">
       <Filter>Framework\Graphics\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Core\ReferenceObject.cpp">
-      <Filter>Framework\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Graphics\Effect\Particle.cpp">
       <Filter>Framework\Graphics\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Model\ModelMqo.cpp">
       <Filter>Framework\Graphics\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Core\ReferencedObject.cpp">
+      <Filter>Framework\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

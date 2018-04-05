@@ -71,7 +71,7 @@
     <ClInclude Include="Framework\Constants.h" />
     <ClInclude Include="Framework\Core\DX11Manager.h" />
     <ClInclude Include="Framework\Core\ObjectBase.h" />
-    <ClInclude Include="Framework\Core\ReferenceObject.h" />
+    <ClInclude Include="Framework\Core\ReferencedObject.h" />
     <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
     <ClInclude Include="Framework\GameMain.h" />
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
@@ -106,7 +106,7 @@
     <ClCompile Include="Framework\Common\Types.cpp" />
     <ClCompile Include="Framework\Core\DX11Manager.cpp" />
     <ClCompile Include="Framework\Core\ObjectBase.cpp" />
-    <ClCompile Include="Framework\Core\ReferenceObject.cpp" />
+    <ClCompile Include="Framework\Core\ReferencedObject.cpp" />
     <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="Framework\Graphics\Bitmap.cpp" />
     <ClCompile Include="Framework\Graphics\Effect\Particle.cpp" />
