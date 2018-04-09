@@ -18,13 +18,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -126,7 +126,6 @@
     <ClCompile Include="Framework\Utility\Memory.cpp" />
     <ClCompile Include="Framework\Utility\Singleton.cpp" />
     <ClCompile Include="Framework\Utility\Stopwatch.cpp" />
-    <ClCompile Include="Framework\WinMain.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp" />
   </ItemGroup>

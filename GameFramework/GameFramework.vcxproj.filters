@@ -158,9 +158,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Framework\WinMain.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Graphics\Bitmap.cpp">
       <Filter>Framework\Graphics</Filter>
     </ClCompile>
