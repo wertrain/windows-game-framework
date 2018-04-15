@@ -170,7 +170,6 @@
     <ClCompile Include="Framework\Common\Types.cpp">
       <Filter>Framework\Common</Filter>
     </ClCompile>
-    <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Framework\Core\ObjectBase.cpp">
       <Filter>Framework\Core</Filter>
     </ClCompile>

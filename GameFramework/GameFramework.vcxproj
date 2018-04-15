@@ -126,7 +126,6 @@
     <ClCompile Include="Framework\Utility\Memory.cpp" />
     <ClCompile Include="Framework\Utility\Singleton.cpp" />
     <ClCompile Include="Framework\Utility\Stopwatch.cpp" />
-    <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
