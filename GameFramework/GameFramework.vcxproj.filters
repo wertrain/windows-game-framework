@@ -1,240 +1,240 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Framework">
+    <Filter Include="nnfw">
       <UniqueIdentifier>{14cfab91-0df5-43f2-b091-25b3776f2dfe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\System">
+    <Filter Include="nnfw\System">
       <UniqueIdentifier>{edf65613-bc43-4049-8a4e-7a50ecd22712}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Common">
+    <Filter Include="nnfw\Common">
       <UniqueIdentifier>{ef8d7d87-8f6a-4286-b39e-f5214830d32b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Graphics">
+    <Filter Include="nnfw\Graphics">
       <UniqueIdentifier>{0ae075a8-fd7f-4716-a4ce-9b8661cc23f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Core">
-      <UniqueIdentifier>{7c3a7714-77ef-445d-8d8f-55b150684eb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\External">
-      <UniqueIdentifier>{fdbcd92d-af80-4176-90bd-4ccbba8c4de8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\External\DirectXTex">
-      <UniqueIdentifier>{ca7a58b4-12c5-4fba-b6c4-aed70fda0e3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\External\DirectXTex\WICTextureLoader">
-      <UniqueIdentifier>{c29ccbb0-a8b0-4fbc-bd5e-1a47d36c16aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Graphics\Primitive">
+    <Filter Include="nnfw\Graphics\Primitive">
       <UniqueIdentifier>{8d3d8d63-bfbe-406f-9fa7-420dbe2f28db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Tool">
-      <UniqueIdentifier>{3c6fef00-2268-43ae-a63d-c5c16f220206}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Tool\Archiver">
-      <UniqueIdentifier>{1679a594-a253-448b-a0cb-88ae509806f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Tool\Archiver\Archiver">
-      <UniqueIdentifier>{0dd249e4-6e5e-46b0-a402-33e955fa8027}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Graphics\Font">
+    <Filter Include="nnfw\Graphics\Font">
       <UniqueIdentifier>{ea43b31b-d624-4856-890c-38651c13950b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Utility">
-      <UniqueIdentifier>{fb770c18-f928-4bc8-9275-8f4b0e6acf29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Framework\Graphics\Model">
+    <Filter Include="nnfw\Graphics\Model">
       <UniqueIdentifier>{470040ef-aa3a-41f9-9bb2-0a26622a758b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Graphics\Effect">
+    <Filter Include="nnfw\Graphics\Effect">
       <UniqueIdentifier>{55906018-7f82-4b12-8946-33928a4e7caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\Core">
+      <UniqueIdentifier>{7c3a7714-77ef-445d-8d8f-55b150684eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\External">
+      <UniqueIdentifier>{fdbcd92d-af80-4176-90bd-4ccbba8c4de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\External\DirectXTex">
+      <UniqueIdentifier>{ca7a58b4-12c5-4fba-b6c4-aed70fda0e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\External\DirectXTex\WICTextureLoader">
+      <UniqueIdentifier>{c29ccbb0-a8b0-4fbc-bd5e-1a47d36c16aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\Tool">
+      <UniqueIdentifier>{3c6fef00-2268-43ae-a63d-c5c16f220206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\Tool\Archiver">
+      <UniqueIdentifier>{1679a594-a253-448b-a0cb-88ae509806f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\Tool\Archiver\Archiver">
+      <UniqueIdentifier>{0dd249e4-6e5e-46b0-a402-33e955fa8027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\Utility">
+      <UniqueIdentifier>{fb770c18-f928-4bc8-9275-8f4b0e6acf29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Constants.h">
-      <Filter>Framework</Filter>
+      <Filter>nnfw</Filter>
     </ClInclude>
     <ClInclude Include="Framework\GameMain.h">
-      <Filter>Framework</Filter>
+      <Filter>nnfw</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Includes.h">
-      <Filter>Framework</Filter>
+      <Filter>nnfw</Filter>
     </ClInclude>
     <ClInclude Include="Framework\System\File.h">
-      <Filter>Framework\System</Filter>
+      <Filter>nnfw\System</Filter>
     </ClInclude>
     <ClInclude Include="Framework\System\Includes.h">
-      <Filter>Framework\System</Filter>
+      <Filter>nnfw\System</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Bitmap.h">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\GraphicsBase.h">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Common\Defines.h">
-      <Filter>Framework\Common</Filter>
+      <Filter>nnfw\Common</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Common\Includes.h">
-      <Filter>Framework\Common</Filter>
+      <Filter>nnfw\Common</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Common\Types.h">
-      <Filter>Framework\Common</Filter>
+      <Filter>nnfw\Common</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\ObjectBase.h">
-      <Filter>Framework\Core</Filter>
+      <Filter>nnfw\Core</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Texture.h">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h">
-      <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
+      <Filter>nnfw\External\DirectXTex\WICTextureLoader</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Primitive\Primitive.h">
-      <Filter>Framework\Graphics\Primitive</Filter>
+      <Filter>nnfw\Graphics\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Primitive\Quadrangle.h">
-      <Filter>Framework\Graphics\Primitive</Filter>
+      <Filter>nnfw\Graphics\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Primitive\Triangle.h">
-      <Filter>Framework\Graphics\Primitive</Filter>
+      <Filter>nnfw\Graphics\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Render2D.h">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Tool\Archiver\Includes.h">
-      <Filter>Framework\Tool\Archiver</Filter>
+      <Filter>nnfw\Tool\Archiver</Filter>
     </ClInclude>
     <ClInclude Include="Tool\Archiver\Archiver\Archiver.h">
-      <Filter>Framework\Tool\Archiver\Archiver</Filter>
+      <Filter>nnfw\Tool\Archiver\Archiver</Filter>
     </ClInclude>
     <ClInclude Include="Framework\System\Application.h">
-      <Filter>Framework\System</Filter>
+      <Filter>nnfw\System</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Includes.h">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Common\Debug.h">
-      <Filter>Framework\Common</Filter>
+      <Filter>nnfw\Common</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Font\DefaultFont.h">
-      <Filter>Framework\Graphics\Font</Filter>
+      <Filter>nnfw\Graphics\Font</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Font\FontImage.h">
-      <Filter>Framework\Graphics\Font</Filter>
+      <Filter>nnfw\Graphics\Font</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\TextWriter.h">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Text.h">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Utility\Includes.h">
-      <Filter>Framework\Utility</Filter>
+      <Filter>nnfw\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Utility\Memory.h">
-      <Filter>Framework\Utility</Filter>
+      <Filter>nnfw\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Utility\Singleton.h">
-      <Filter>Framework\Utility</Filter>
+      <Filter>nnfw\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Utility\Stopwatch.h">
-      <Filter>Framework\Utility</Filter>
+      <Filter>nnfw\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\DX11Manager.h">
-      <Filter>Framework\Core</Filter>
+      <Filter>nnfw\Core</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Model\ModelBase.h">
-      <Filter>Framework\Graphics\Model</Filter>
+      <Filter>nnfw\Graphics\Model</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Effect\Particle.h">
-      <Filter>Framework\Graphics\Effect</Filter>
+      <Filter>nnfw\Graphics\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Graphics\Model\ModelMqo.h">
-      <Filter>Framework\Graphics\Model</Filter>
+      <Filter>nnfw\Graphics\Model</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Core\ReferencedObject.h">
-      <Filter>Framework\Core</Filter>
+      <Filter>nnfw\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Graphics\Bitmap.cpp">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\GraphicsBase.cpp">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Common\Defines.cpp">
-      <Filter>Framework\Common</Filter>
+      <Filter>nnfw\Common</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Common\Types.cpp">
-      <Filter>Framework\Common</Filter>
+      <Filter>nnfw\Common</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\ObjectBase.cpp">
-      <Filter>Framework\Core</Filter>
+      <Filter>nnfw\Core</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Texture.cpp">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.cpp">
-      <Filter>Framework\External\DirectXTex\WICTextureLoader</Filter>
+      <Filter>nnfw\External\DirectXTex\WICTextureLoader</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Primitive\Primitive.cpp">
-      <Filter>Framework\Graphics\Primitive</Filter>
+      <Filter>nnfw\Graphics\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Primitive\Quadrangle.cpp">
-      <Filter>Framework\Graphics\Primitive</Filter>
+      <Filter>nnfw\Graphics\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Primitive\Triangle.cpp">
-      <Filter>Framework\Graphics\Primitive</Filter>
+      <Filter>nnfw\Graphics\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Render2D.cpp">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Tool\Archiver\Archiver\Archiver.cpp">
-      <Filter>Framework\Tool\Archiver\Archiver</Filter>
+      <Filter>nnfw\Tool\Archiver\Archiver</Filter>
     </ClCompile>
     <ClCompile Include="Framework\System\Application.cpp">
-      <Filter>Framework\System</Filter>
+      <Filter>nnfw\System</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Common\Debug.cpp">
-      <Filter>Framework\Common</Filter>
+      <Filter>nnfw\Common</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Font\DefaultFont.cpp">
-      <Filter>Framework\Graphics\Font</Filter>
+      <Filter>nnfw\Graphics\Font</Filter>
     </ClCompile>
     <ClCompile Include="Framework\System\File.cpp">
-      <Filter>Framework\System</Filter>
+      <Filter>nnfw\System</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\TextWriter.cpp">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Text.cpp">
-      <Filter>Framework\Graphics</Filter>
+      <Filter>nnfw\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Utility\Memory.cpp">
-      <Filter>Framework\Utility</Filter>
+      <Filter>nnfw\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Utility\Singleton.cpp">
-      <Filter>Framework\Utility</Filter>
+      <Filter>nnfw\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Utility\Stopwatch.cpp">
-      <Filter>Framework\Utility</Filter>
+      <Filter>nnfw\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\DX11Manager.cpp">
-      <Filter>Framework\Core</Filter>
+      <Filter>nnfw\Core</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Model\ModelBase.cpp">
-      <Filter>Framework\Graphics\Model</Filter>
+      <Filter>nnfw\Graphics\Model</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Effect\Particle.cpp">
-      <Filter>Framework\Graphics\Effect</Filter>
+      <Filter>nnfw\Graphics\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Graphics\Model\ModelMqo.cpp">
-      <Filter>Framework\Graphics\Model</Filter>
+      <Filter>nnfw\Graphics\Model</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Core\ReferencedObject.cpp">
-      <Filter>Framework\Core</Filter>
+      <Filter>nnfw\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
