@@ -2,11 +2,11 @@
  * @file GameMain.cpp
  * @brief ƒQ[ƒ€ƒƒCƒ“ˆ—
  */
-#include "Framework/Includes.h"
+#include "Includes.h"
 
-#include "Framework/Graphics/Includes.h"
-#include "Tool/Archiver/Includes.h"
-#include "Framework/Graphics/Model/ModelMqo.h"
+#include "Graphics/Includes.h"
+#include "../Tool/Archiver/Includes.h"
+#include "Graphics/Model/ModelMqo.h"
 
 fw::gfx::TextWriter s_Text;
 fw::gfx::Texture s_Texure;

@@ -5,7 +5,7 @@
 #ifndef TOOL_ARCHIVER_H_
 #define TOOL_ARCHIVER_H_
 
-#include "../../../Framework/Common/Includes.h"
+#include "../../../nnfw/Common/Includes.h"
 #include <vector>
 
 NS_FW_TOOL_BEGIN

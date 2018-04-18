@@ -68,12 +68,10 @@
     <ClInclude Include="Framework\Common\Defines.h" />
     <ClInclude Include="Framework\Common\Includes.h" />
     <ClInclude Include="Framework\Common\Types.h" />
-    <ClInclude Include="Framework\Constants.h" />
     <ClInclude Include="Framework\Core\DX11Manager.h" />
     <ClInclude Include="Framework\Core\ObjectBase.h" />
     <ClInclude Include="Framework\Core\ReferencedObject.h" />
     <ClInclude Include="Framework\External\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
-    <ClInclude Include="Framework\GameMain.h" />
     <ClInclude Include="Framework\Graphics\Bitmap.h" />
     <ClInclude Include="Framework\Graphics\Effect\Particle.h" />
     <ClInclude Include="Framework\Graphics\Font\DefaultFont.h" />
@@ -89,7 +87,6 @@
     <ClInclude Include="Framework\Graphics\Text.h" />
     <ClInclude Include="Framework\Graphics\TextWriter.h" />
     <ClInclude Include="Framework\Graphics\Texture.h" />
-    <ClInclude Include="Framework\Includes.h" />
     <ClInclude Include="Framework\System\Application.h" />
     <ClInclude Include="Framework\System\File.h" />
     <ClInclude Include="Framework\System\Includes.h" />
@@ -97,6 +94,9 @@
     <ClInclude Include="Framework\Utility\Memory.h" />
     <ClInclude Include="Framework\Utility\Singleton.h" />
     <ClInclude Include="Framework\Utility\Stopwatch.h" />
+    <ClInclude Include="nnfw\Constants.h" />
+    <ClInclude Include="nnfw\GameMain.h" />
+    <ClInclude Include="nnfw\Includes.h" />
     <ClInclude Include="Tool\Archiver\Archiver\Archiver.h" />
     <ClInclude Include="Tool\Archiver\Includes.h" />
   </ItemGroup>
