@@ -7,9 +7,9 @@
 
 #include <d3d11.h>
 #include <Windows.h>
-#include "Common/Includes.h"
-#include "System/Includes.h"
-#include "Utility/Includes.h"
+#include "common/Includes.h"
+#include "sys/Includes.h"
+#include "ut/Includes.h"
 #include "GameMain.h"
 #include "Constants.h"
 
