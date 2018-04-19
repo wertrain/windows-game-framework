@@ -4,5 +4,20 @@
     <Filter Include="nnfw">
       <UniqueIdentifier>{14cfab91-0df5-43f2-b091-25b3776f2dfe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="nnfw\sys">
+      <UniqueIdentifier>{10f709c1-3935-44da-b372-d348380173de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\gfx">
+      <UniqueIdentifier>{06173698-faf7-48c4-83e5-9d06a5bb76a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\ut">
+      <UniqueIdentifier>{dcf58741-d190-4db5-8aee-eb6d21961582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\external">
+      <UniqueIdentifier>{4359ad6f-e417-4723-ada8-9b7c5a668c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nnfw\core">
+      <UniqueIdentifier>{0db4a871-8643-43d8-a8cb-b8c1221b0784}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
