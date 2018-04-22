@@ -10,6 +10,68 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\nnfw\common\Debug.cpp" />
+    <ClCompile Include="Source\nnfw\common\Defines.cpp" />
+    <ClCompile Include="Source\nnfw\common\Types.cpp" />
+    <ClCompile Include="Source\nnfw\core\DX11Manager.cpp" />
+    <ClCompile Include="Source\nnfw\core\ObjectBase.cpp" />
+    <ClCompile Include="Source\nnfw\core\ReferencedObject.cpp" />
+    <ClCompile Include="Source\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\Bitmap.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\font\DefaultFont.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\GraphicsBase.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\model\ModelBase.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\model\ModelMqo.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\primitive\Primitive.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\primitive\Quadrangle.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\primitive\Triangle.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\Render2D.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\Text.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\Texture.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\TextWriter.cpp" />
+    <ClCompile Include="Source\nnfw\sys\Application.cpp" />
+    <ClCompile Include="Source\nnfw\sys\File.cpp" />
+    <ClCompile Include="Source\nnfw\ut\Memory.cpp" />
+    <ClCompile Include="Source\nnfw\ut\Singleton.cpp" />
+    <ClCompile Include="Source\nnfw\ut\Stopwatch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\nnfw\common\Debug.h" />
+    <ClInclude Include="Include\nnfw\common\Defines.h" />
+    <ClInclude Include="Include\nnfw\common\Includes.h" />
+    <ClInclude Include="Include\nnfw\common\Types.h" />
+    <ClInclude Include="Include\nnfw\Constants.h" />
+    <ClInclude Include="Include\nnfw\core\DX11Manager.h" />
+    <ClInclude Include="Include\nnfw\core\ObjectBase.h" />
+    <ClInclude Include="Include\nnfw\core\ReferencedObject.h" />
+    <ClInclude Include="Include\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="Include\nnfw\GameMain.h" />
+    <ClInclude Include="Include\nnfw\gfx\Bitmap.h" />
+    <ClInclude Include="Include\nnfw\gfx\effect\Particle.h" />
+    <ClInclude Include="Include\nnfw\gfx\font\DefaultFont.h" />
+    <ClInclude Include="Include\nnfw\gfx\font\FontImage.h" />
+    <ClInclude Include="Include\nnfw\gfx\GraphicsBase.h" />
+    <ClInclude Include="Include\nnfw\gfx\Includes.h" />
+    <ClInclude Include="Include\nnfw\gfx\model\ModelBase.h" />
+    <ClInclude Include="Include\nnfw\gfx\model\ModelMqo.h" />
+    <ClInclude Include="Include\nnfw\gfx\primitive\Primitive.h" />
+    <ClInclude Include="Include\nnfw\gfx\primitive\Quadrangle.h" />
+    <ClInclude Include="Include\nnfw\gfx\primitive\Triangle.h" />
+    <ClInclude Include="Include\nnfw\gfx\Render2D.h" />
+    <ClInclude Include="Include\nnfw\gfx\Text.h" />
+    <ClInclude Include="Include\nnfw\gfx\Texture.h" />
+    <ClInclude Include="Include\nnfw\gfx\TextWriter.h" />
+    <ClInclude Include="Include\nnfw\Includes.h" />
+    <ClInclude Include="Include\nnfw\sys\Application.h" />
+    <ClInclude Include="Include\nnfw\sys\File.h" />
+    <ClInclude Include="Include\nnfw\sys\Includes.h" />
+    <ClInclude Include="Include\nnfw\ut\Includes.h" />
+    <ClInclude Include="Include\nnfw\ut\Memory.h" />
+    <ClInclude Include="Include\nnfw\ut\Singleton.h" />
+    <ClInclude Include="Include\nnfw\ut\Stopwatch.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{B74EFDE3-7B69-433D-925D-292870A90CC4}</ProjectGuid>
@@ -48,6 +110,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -57,6 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

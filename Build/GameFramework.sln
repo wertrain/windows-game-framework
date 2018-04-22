@@ -7,10 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameFramework", "GameFramew
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "GameFramework\Shader\Shader.vcxproj", "{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Archiver", "GameFramework\Tool\Archiver\Archiver.vcxproj", "{C9BB7089-270E-4612-8BD7-9A74BDFDEC56}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{FFB6A99B-D6EB-4165-B755-AC4E1427766F}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\Application.vcxproj", "{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}"
 EndProject
 Global
@@ -27,10 +23,6 @@ Global
 		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}.Debug|x64.Build.0 = Debug|x64
 		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}.Release|x64.ActiveCfg = Release|x64
 		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}.Release|x64.Build.0 = Release|x64
-		{C9BB7089-270E-4612-8BD7-9A74BDFDEC56}.Debug|x64.ActiveCfg = Debug|x64
-		{C9BB7089-270E-4612-8BD7-9A74BDFDEC56}.Debug|x64.Build.0 = Debug|x64
-		{C9BB7089-270E-4612-8BD7-9A74BDFDEC56}.Release|x64.ActiveCfg = Release|x64
-		{C9BB7089-270E-4612-8BD7-9A74BDFDEC56}.Release|x64.Build.0 = Release|x64
 		{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}.Debug|x64.ActiveCfg = Debug|x64
 		{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}.Debug|x64.Build.0 = Debug|x64
 		{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}.Release|x64.ActiveCfg = Release|x64
@@ -38,8 +30,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C9BB7089-270E-4612-8BD7-9A74BDFDEC56} = {FFB6A99B-D6EB-4165-B755-AC4E1427766F}
 	EndGlobalSection
 EndGlobal

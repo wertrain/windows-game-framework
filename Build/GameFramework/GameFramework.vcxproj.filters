@@ -1,23 +1,267 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="nnfw">
-      <UniqueIdentifier>{14cfab91-0df5-43f2-b091-25b3776f2dfe}</UniqueIdentifier>
+    <Filter Include="Source">
+      <UniqueIdentifier>{a7259b51-ddbb-4e49-bd9e-3140f19c25f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nnfw\sys">
-      <UniqueIdentifier>{10f709c1-3935-44da-b372-d348380173de}</UniqueIdentifier>
+    <Filter Include="Include">
+      <UniqueIdentifier>{b935282e-7ff3-4d68-993e-f276ee1207c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nnfw\gfx">
-      <UniqueIdentifier>{06173698-faf7-48c4-83e5-9d06a5bb76a5}</UniqueIdentifier>
+    <Filter Include="Include\nnfw">
+      <UniqueIdentifier>{b9343d45-fbee-4879-9c7a-8a8c6d7a26b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nnfw\ut">
-      <UniqueIdentifier>{dcf58741-d190-4db5-8aee-eb6d21961582}</UniqueIdentifier>
+    <Filter Include="Source\nnfw">
+      <UniqueIdentifier>{c74c9563-2579-46a0-ab68-9ed4af930156}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nnfw\external">
-      <UniqueIdentifier>{4359ad6f-e417-4723-ada8-9b7c5a668c34}</UniqueIdentifier>
+    <Filter Include="Source\nnfw\common">
+      <UniqueIdentifier>{58d39296-3eb2-4531-87f7-5a75858faed6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nnfw\core">
-      <UniqueIdentifier>{0db4a871-8643-43d8-a8cb-b8c1221b0784}</UniqueIdentifier>
+    <Filter Include="Source\nnfw\core">
+      <UniqueIdentifier>{7470347c-ada8-4a47-88f0-1e646a82fe7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\nnfw\external">
+      <UniqueIdentifier>{fd4ebb60-a0f0-42de-9aa7-7942abd2f22d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\gfx">
+      <UniqueIdentifier>{c4f50f14-2145-4238-9326-f4356c0dd91b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\sys">
+      <UniqueIdentifier>{f614d077-0c01-414f-b551-06b70dca0dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\ut">
+      <UniqueIdentifier>{f8c15e18-8c1f-4b53-98b3-a4f023cb6107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\gfx\effct">
+      <UniqueIdentifier>{84acfabd-6263-4a06-9e57-8428696d12ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\gfx\primitive">
+      <UniqueIdentifier>{87509817-46fd-42da-abcd-3c4253ab447c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\gfx\font">
+      <UniqueIdentifier>{9f714a08-d8e7-47f4-8e86-d2148be98ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\gfx\model">
+      <UniqueIdentifier>{5ddda3ef-97c5-46fc-904b-80a1422badd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\external\DirectXTex">
+      <UniqueIdentifier>{90bdd14e-f73d-4bad-9553-fb4a08a5641d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\external\DirectXTex\WICTextureLoader">
+      <UniqueIdentifier>{0184f755-44ca-4235-b231-f97ebe2324c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\core">
+      <UniqueIdentifier>{8fec9d3c-bd45-4c13-b243-77f7880e46c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\common">
+      <UniqueIdentifier>{ac0669ec-ae86-45e8-beec-6badeba4010c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\external">
+      <UniqueIdentifier>{af9d5a57-6fe4-40c8-9b78-b751f8c71475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\external\DirectXTex">
+      <UniqueIdentifier>{a41fc527-8f97-4125-8fde-661e2a8e78c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\external\DirectXTex\WICTextureLoader">
+      <UniqueIdentifier>{5e7565bb-8910-4be5-89ca-6f3ee45d679b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\gfx">
+      <UniqueIdentifier>{e923faf5-9407-4ab6-befd-d7663ac740b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\gfx\model">
+      <UniqueIdentifier>{dde4ebdf-c194-45dc-a7df-53b258384116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\gfx\effect">
+      <UniqueIdentifier>{5638bd99-31c7-495d-9763-c68bab17a42a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\gfx\primitive">
+      <UniqueIdentifier>{b6d3cabd-16af-45c7-9685-c42a80045631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\gfx\font">
+      <UniqueIdentifier>{9dcece80-bf5b-42ea-b27c-ff881611b9f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\sys">
+      <UniqueIdentifier>{375a4fde-8b8d-4b5b-b228-b525d173ee04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\ut">
+      <UniqueIdentifier>{0c39f247-27eb-440e-9c40-8fe94a3f5aac}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\nnfw\ut\Memory.cpp">
+      <Filter>Source\nnfw\ut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\ut\Singleton.cpp">
+      <Filter>Source\nnfw\ut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\ut\Stopwatch.cpp">
+      <Filter>Source\nnfw\ut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\sys\Application.cpp">
+      <Filter>Source\nnfw\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\sys\File.cpp">
+      <Filter>Source\nnfw\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\Bitmap.cpp">
+      <Filter>Source\nnfw\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\GraphicsBase.cpp">
+      <Filter>Source\nnfw\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\Render2D.cpp">
+      <Filter>Source\nnfw\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\Text.cpp">
+      <Filter>Source\nnfw\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\Texture.cpp">
+      <Filter>Source\nnfw\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\TextWriter.cpp">
+      <Filter>Source\nnfw\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp">
+      <Filter>Source\nnfw\gfx\effct</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\font\DefaultFont.cpp">
+      <Filter>Source\nnfw\gfx\font</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\model\ModelBase.cpp">
+      <Filter>Source\nnfw\gfx\model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\model\ModelMqo.cpp">
+      <Filter>Source\nnfw\gfx\model</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\primitive\Primitive.cpp">
+      <Filter>Source\nnfw\gfx\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\primitive\Quadrangle.cpp">
+      <Filter>Source\nnfw\gfx\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\primitive\Triangle.cpp">
+      <Filter>Source\nnfw\gfx\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.cpp">
+      <Filter>Source\nnfw\external\DirectXTex\WICTextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\core\DX11Manager.cpp">
+      <Filter>Source\nnfw\core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\core\ObjectBase.cpp">
+      <Filter>Source\nnfw\core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\core\ReferencedObject.cpp">
+      <Filter>Source\nnfw\core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\common\Debug.cpp">
+      <Filter>Source\nnfw\common</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\common\Defines.cpp">
+      <Filter>Source\nnfw\common</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\common\Types.cpp">
+      <Filter>Source\nnfw\common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\nnfw\Includes.h">
+      <Filter>Include\nnfw</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\Constants.h">
+      <Filter>Include\nnfw</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\GameMain.h">
+      <Filter>Include\nnfw</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\core\DX11Manager.h">
+      <Filter>Include\nnfw\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\core\ObjectBase.h">
+      <Filter>Include\nnfw\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\core\ReferencedObject.h">
+      <Filter>Include\nnfw\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\common\Debug.h">
+      <Filter>Include\nnfw\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\common\Defines.h">
+      <Filter>Include\nnfw\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\common\Includes.h">
+      <Filter>Include\nnfw\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\common\Types.h">
+      <Filter>Include\nnfw\common</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.h">
+      <Filter>Include\nnfw\external\DirectXTex\WICTextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\Bitmap.h">
+      <Filter>Include\nnfw\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\GraphicsBase.h">
+      <Filter>Include\nnfw\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\Includes.h">
+      <Filter>Include\nnfw\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\Render2D.h">
+      <Filter>Include\nnfw\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\Text.h">
+      <Filter>Include\nnfw\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\Texture.h">
+      <Filter>Include\nnfw\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\TextWriter.h">
+      <Filter>Include\nnfw\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\model\ModelBase.h">
+      <Filter>Include\nnfw\gfx\model</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\model\ModelMqo.h">
+      <Filter>Include\nnfw\gfx\model</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\effect\Particle.h">
+      <Filter>Include\nnfw\gfx\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\primitive\Primitive.h">
+      <Filter>Include\nnfw\gfx\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\primitive\Quadrangle.h">
+      <Filter>Include\nnfw\gfx\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\primitive\Triangle.h">
+      <Filter>Include\nnfw\gfx\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\font\DefaultFont.h">
+      <Filter>Include\nnfw\gfx\font</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\font\FontImage.h">
+      <Filter>Include\nnfw\gfx\font</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\sys\Application.h">
+      <Filter>Include\nnfw\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\sys\File.h">
+      <Filter>Include\nnfw\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\sys\Includes.h">
+      <Filter>Include\nnfw\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\ut\Includes.h">
+      <Filter>Include\nnfw\ut</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\ut\Memory.h">
+      <Filter>Include\nnfw\ut</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\ut\Singleton.h">
+      <Filter>Include\nnfw\ut</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\ut\Stopwatch.h">
+      <Filter>Include\nnfw\ut</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

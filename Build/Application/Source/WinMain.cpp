@@ -13,12 +13,12 @@
 #include <time.h>
 #include <d3d11.h>
 
-#include "Common/Includes.h"
-#include "Core/DX11Manager.h"
-#include "System/Application.h"
-#include "Graphics/Text.h"
-#include "GameMain.h"
-#include "Constants.h"
+#include <nnfw/common/Includes.h>
+#include <nnfw/core/DX11Manager.h>
+#include <nnfw/sys/Application.h>
+#include <nnfw/gfx/Text.h>
+#include <nnfw/GameMain.h>
+#include <nnfw/Constants.h>
 
 struct ThreadParam 
 {
