@@ -8,6 +8,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "GameFramework\Shader\Shader.vcxproj", "{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\Application.vcxproj", "{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5} = {E138F3A9-D6C2-4827-8D95-83F51C9A92F5}
+		{B74EFDE3-7B69-433D-925D-292870A90CC4} = {B74EFDE3-7B69-433D-925D-292870A90CC4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
