@@ -90,13 +90,13 @@ void Draw(ID3D11DeviceContext* context)
 {
 #if defined ARCHIVER_TEST
 #elif defined TEXTWRITE_TEST
-    s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
+    s_Render2D.Render(context, 0.0f, 80.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 #elif defined DEFAULTFONT_TEST
     s_DefaultFont.Render(context); 
 #elif defined MODEL_TEST
     s_Mqo.Render(context);
 #else
-    s_Render2D.Render(context, 0.0f, 100.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
+    s_Render2D.Render(context, 0.0f, 80.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 #endif
 }
 
