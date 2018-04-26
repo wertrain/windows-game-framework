@@ -52,6 +52,7 @@
     <ClInclude Include="Include\nnfw\gfx\effect\Particle.h" />
     <ClInclude Include="Include\nnfw\gfx\font\DefaultFont.h" />
     <ClInclude Include="Include\nnfw\gfx\font\FontImage.h" />
+    <ClInclude Include="Include\nnfw\gfx\font\FontShader.h" />
     <ClInclude Include="Include\nnfw\gfx\GraphicsBase.h" />
     <ClInclude Include="Include\nnfw\gfx\Includes.h" />
     <ClInclude Include="Include\nnfw\gfx\model\ModelBase.h" />

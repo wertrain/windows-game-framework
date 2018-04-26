@@ -263,5 +263,8 @@
     <ClInclude Include="Include\nnfw\ut\Stopwatch.h">
       <Filter>Include\nnfw\ut</Filter>
     </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\font\FontShader.h">
+      <Filter>Include\nnfw\gfx\font</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

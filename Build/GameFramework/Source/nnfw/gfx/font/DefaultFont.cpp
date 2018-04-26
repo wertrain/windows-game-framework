@@ -11,6 +11,7 @@
 #include <nnfw/Constants.h>
 #include <nnfw/external/DirectXTex/WICTextureLoader/WICTextureLoader.h>
 #include <nnfw/gfx/font/FontImage.h>
+#include <nnfw/gfx/font/FontShader.h>
 
 #include <nnfw/gfx/font/DefaultFont.h>
 
@@ -83,6 +84,19 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     mVertexDataSize = sizeof(VertexData);
     mVertexNum = 4;
 
+#if BUILTIN_FONT_SHADER
+    // 頂点シェーダー生成
+    if (FAILED(device->CreateVertexShader(vs_2d_instancing_cso, vs_2d_instancing_cso_len, NULL, &mVertexShader)))
+    {
+        return false;
+    }
+
+    // ピクセルシェーダー生成
+    if (FAILED(device->CreatePixelShader(ps_2d_instancing_cso, ps_2d_instancing_cso_len, NULL, &mPixelShader)))
+    {
+        return false;
+    }
+#else
     NS_FW_SYS::Binary vsFile;
     NS_FW_SYS::Binary psFile;
 
@@ -108,6 +122,7 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     {
         return false;
     }
+#endif
 
     // 入力レイアウト定義
     D3D11_INPUT_ELEMENT_DESC layout[] = {
@@ -122,7 +137,11 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
     const UINT elem_num = ARRAYSIZE(layout);
 
     // 入力レイアウト作成
+#if BUILTIN_FONT_SHADER
+    HRESULT hr = device->CreateInputLayout(layout, elem_num, vs_2d_instancing_cso, vs_2d_instancing_cso_len, &mVertexLayout);
+#else
     HRESULT hr = device->CreateInputLayout(layout, elem_num, vsFile.Get(), vsFile.Size(), &mVertexLayout);
+#endif
     if (FAILED(hr)) {
         return false;
     }
