@@ -17,7 +17,7 @@ fw::gfx::ModelMqo s_Mqo;
 //#define ARCHIVER_TEST
 //#define TEXTWRITE_TEST
 //#define DEFAULTFONT_TEST
-#define MODEL_TEST
+//#define MODEL_TEST
 
 #ifdef ARCHIVER_TEST
 void ArchiverTest(ID3D11Device* device)
@@ -78,7 +78,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 /**
  * update frame
  */
-void Update(const DWORD /*elapsedTime*/, const DWORD /*nowTime*/)
+void Update(const u64 /*elapsedTime*/, const u64 /*nowTime*/)
 {
 
 }
@@ -96,7 +96,7 @@ void Draw(ID3D11DeviceContext* context)
 #elif defined MODEL_TEST
     s_Mqo.Render(context);
 #else
-    s_Render2D.Render(context, 0.0f, 80.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
+    //s_Render2D.Render(context, 0.0f, 80.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 #endif
 }
 
