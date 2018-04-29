@@ -6,7 +6,7 @@
 #define UTILITY_MEMORY_H_
 
 #include <memory>
-#include "../Common/Defines.h"
+#include <nnfw/common/Defines.h>
 
 NS_FW_UTIL_BEGIN
 

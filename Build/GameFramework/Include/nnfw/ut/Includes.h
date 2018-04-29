@@ -7,8 +7,8 @@
 
 #include <memory>
 #include <chrono>
-#include "../Common/Defines.h"
-#include "Memory.h"
-#include "Stopwatch.h"
+#include <nnfw/common/Defines.h>
+#include <nnfw/ut/Memory.h>
+#include <nnfw/ut/Stopwatch.h>
 
 #endif // UTILITY_INCLUDES_H_
