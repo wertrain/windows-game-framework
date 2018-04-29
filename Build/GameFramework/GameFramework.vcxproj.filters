@@ -162,6 +162,9 @@
     <ClCompile Include="Source\nnfw\common\Types.cpp">
       <Filter>Source\nnfw\common</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\ut\Log.cpp">
+      <Filter>Source\nnfw\ut</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -265,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\gfx\font\FontShader.h">
       <Filter>Include\nnfw\gfx\font</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\ut\Log.h">
+      <Filter>Include\nnfw\ut</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

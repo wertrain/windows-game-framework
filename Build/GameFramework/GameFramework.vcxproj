@@ -33,6 +33,7 @@
     <ClCompile Include="Source\nnfw\gfx\TextWriter.cpp" />
     <ClCompile Include="Source\nnfw\sys\Application.cpp" />
     <ClCompile Include="Source\nnfw\sys\File.cpp" />
+    <ClCompile Include="Source\nnfw\ut\Log.cpp" />
     <ClCompile Include="Source\nnfw\ut\Memory.cpp" />
     <ClCompile Include="Source\nnfw\ut\Singleton.cpp" />
     <ClCompile Include="Source\nnfw\ut\Stopwatch.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="Include\nnfw\sys\File.h" />
     <ClInclude Include="Include\nnfw\sys\Includes.h" />
     <ClInclude Include="Include\nnfw\ut\Includes.h" />
+    <ClInclude Include="Include\nnfw\ut\Log.h" />
     <ClInclude Include="Include\nnfw\ut\Memory.h" />
     <ClInclude Include="Include\nnfw\ut\Singleton.h" />
     <ClInclude Include="Include\nnfw\ut\Stopwatch.h" />
