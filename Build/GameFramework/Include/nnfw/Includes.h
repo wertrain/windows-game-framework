@@ -7,10 +7,10 @@
 
 #include <d3d11.h>
 #include <Windows.h>
-#include "common/Includes.h"
-#include "sys/Includes.h"
-#include "ut/Includes.h"
-#include "GameMain.h"
-#include "Constants.h"
+#include <nnfw/common/Includes.h>
+#include <nnfw/sys/Includes.h>
+#include <nnfw/ut/Includes.h>
+#include <nnfw/Constants.h>
+#include <nnfw/GameMain.h>
 
 #endif // INCLUDES_H_
