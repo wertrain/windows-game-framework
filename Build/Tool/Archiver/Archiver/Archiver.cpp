@@ -2,7 +2,7 @@
  * @file Archiver.cpp
  * @brief アーカイバクラス
  */
-#include "../../../nnfw/Common/Defines.h"
+#include <nnfw/common/Defines.h>
 
 #include "Archiver.h"
 
