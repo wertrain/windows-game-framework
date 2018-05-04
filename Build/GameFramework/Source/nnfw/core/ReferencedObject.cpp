@@ -2,6 +2,8 @@
  * @file ReferencedObject.cpp
  * @brief 参照されるオブジェクトの基底クラス
  */
+#include "Precompiled.h"
+
 #include <nnfw/core/ReferencedObject.h>
 
 NS_FW_SYS_BEGIN

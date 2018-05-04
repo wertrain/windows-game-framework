@@ -2,6 +2,8 @@
  * @file Texture.cpp
  * @brief テクスチャクラス
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <nnfw/common/Includes.h>
 #include <nnfw/external/DirectXTex/WICTextureLoader/WICTextureLoader.h>

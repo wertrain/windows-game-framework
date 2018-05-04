@@ -2,6 +2,8 @@
  * @file Text.cpp
  * @brief 画面に簡易的に文字列を表示するためのマネージャークラス
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <algorithm>
 

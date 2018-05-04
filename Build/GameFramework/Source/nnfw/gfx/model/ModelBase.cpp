@@ -2,6 +2,8 @@
  * @file ModelBase.cpp
  * @brief 3D ƒ‚ƒfƒ‹Šî’êƒNƒ‰ƒX
  */
+#include "Precompiled.h"
+
 #include <nnfw/gfx/model/ModelBase.h>
 
 NS_FW_GFX_BEGIN

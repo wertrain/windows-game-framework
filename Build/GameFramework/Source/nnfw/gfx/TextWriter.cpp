@@ -2,6 +2,8 @@
  * @file TextWriter.cpp
  * @brief テクスチャに任意のフォントの文字列を描画するクラス
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>

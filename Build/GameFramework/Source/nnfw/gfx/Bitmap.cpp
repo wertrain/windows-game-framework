@@ -2,6 +2,8 @@
  * @file Bitmap.cpp
  * @brief
  */
+#include "Precompiled.h"
+
 #include <nnfw/gfx/Bitmap.h>
 #pragma comment (lib, "msimg32.lib")
 

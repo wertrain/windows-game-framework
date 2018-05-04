@@ -2,6 +2,8 @@
  * @file Primitive.cpp
  * @brief 単純なポリゴンを表す基底クラス
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>

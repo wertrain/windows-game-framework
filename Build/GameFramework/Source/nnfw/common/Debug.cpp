@@ -2,6 +2,8 @@
  * @file Debug.cpp
  * @brief デバッグ関連定義
  */
+#include "Precompiled.h"
+
 #include <stdio.h> 
 #include <stdarg.h>
 #include <stdlib.h>

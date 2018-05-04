@@ -278,5 +278,8 @@
     <ClInclude Include="Include\nnfw\Locator.h">
       <Filter>Include\nnfw</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Precompiled.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

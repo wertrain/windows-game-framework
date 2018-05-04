@@ -2,7 +2,7 @@
  * @file Locator.cpp
  * @brief ロケーター
  */
-#include <nnfw/common/Defines.h>
+#include "Precompiled.h"
 
 #include <nnfw/Locator.h>
 

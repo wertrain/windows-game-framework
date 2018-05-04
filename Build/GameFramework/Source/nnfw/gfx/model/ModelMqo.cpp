@@ -2,6 +2,8 @@
  * @file ModelMqo.cpp
  * @brief メタセコイアモデルを扱うクラス
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 

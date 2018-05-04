@@ -2,6 +2,8 @@
  * @file DX11Manager.cpp
  * @brief DirectX 11 ŠÇ—ƒNƒ‰ƒX
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <atlbase.h>
 #include <nnfw/common/Includes.h>

@@ -2,6 +2,8 @@
  * @file Render2D.cpp
  * @brief 2D テクスチャ描画
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <atlbase.h>
 #include <DirectXMath.h>

@@ -2,6 +2,8 @@
  * @file File.cpp
  * @brief ファイルユーティリティ
  */
+#include "Precompiled.h"
+
 #include <fstream>
 #include <iostream>
 #include <cstdint>

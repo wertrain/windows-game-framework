@@ -2,6 +2,7 @@
  * @file Application.cpp
  * @brief アプリケーション管理クラス
  */
+#include "Precompiled.h"
 #include <windows.h>
 #include <time.h>
 #include <tchar.h>

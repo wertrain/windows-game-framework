@@ -2,6 +2,8 @@
  * @file Stopwatch.cpp
  * @brief 時間計測用ユーティリティ
  */
+#include "Precompiled.h"
+
 #include <memory>
 #include <chrono>
 #include <nnfw/common/Includes.h>

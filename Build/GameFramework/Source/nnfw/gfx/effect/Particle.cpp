@@ -2,6 +2,8 @@
  * @file Particle.cpp
  * @brief パーティクルを表すクラス
  */
+#include "Precompiled.h"
+
 #include <nnfw/gfx/effect/Particle.h>
 
 NS_FW_GFX_BEGIN

@@ -2,6 +2,8 @@
  * @file Triangle.cpp
  * @brief 三角形を扱うクラス
  */
+#include "Precompiled.h"
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
