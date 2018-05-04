@@ -165,6 +165,9 @@
     <ClCompile Include="Source\nnfw\ut\Log.cpp">
       <Filter>Source\nnfw\ut</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\Locator.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\ut\Log.h">
       <Filter>Include\nnfw\ut</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\Locator.h">
+      <Filter>Include\nnfw</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

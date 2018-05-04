@@ -31,6 +31,7 @@
     <ClCompile Include="Source\nnfw\gfx\Text.cpp" />
     <ClCompile Include="Source\nnfw\gfx\Texture.cpp" />
     <ClCompile Include="Source\nnfw\gfx\TextWriter.cpp" />
+    <ClCompile Include="Source\nnfw\Locator.cpp" />
     <ClCompile Include="Source\nnfw\sys\Application.cpp" />
     <ClCompile Include="Source\nnfw\sys\File.cpp" />
     <ClCompile Include="Source\nnfw\ut\Log.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="Include\nnfw\gfx\Texture.h" />
     <ClInclude Include="Include\nnfw\gfx\TextWriter.h" />
     <ClInclude Include="Include\nnfw\Includes.h" />
+    <ClInclude Include="Include\nnfw\Locator.h" />
     <ClInclude Include="Include\nnfw\sys\Application.h" />
     <ClInclude Include="Include\nnfw\sys\File.h" />
     <ClInclude Include="Include\nnfw\sys\Includes.h" />
