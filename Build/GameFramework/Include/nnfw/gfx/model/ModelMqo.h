@@ -19,25 +19,25 @@ class MqoFile
 public:
     struct Scene
     {
-        f32 pos[4];
-        f32 lookat[4];
-        f32 head;
-        f32 pich;
-        f32 ortho;
-        f32 zoom2;
-        f32 amb[4];
+        float pos[4];
+        float lookat[4];
+        float head;
+        float pich;
+        float ortho;
+        float zoom2;
+        float amb[4];
     };
 
     struct Material
     {
         std::string name;
-        s32 shader;
-        f32 col[4];
-        f32 dif;
-        f32 amb;
-        f32 emi;
-        f32 spc;
-        f32 power;
+        int32_t shader;
+        float col[4];
+        float dif;
+        float amb;
+        float emi;
+        float spc;
+        float power;
         std::string tex;
     };
 
@@ -45,31 +45,31 @@ public:
     {
         struct Vertex
         {
-            f32 pos[4];
+            float pos[4];
         };
         struct Face
         {
-            s32 num;
-            s32* V;
-            s32  M;
-            f32* UV;
+            int32_t num;
+            int32_t* V;
+            int32_t  M;
+            float* UV;
         };
 
         std::string name;
-        s32 depth;
-        s32 folding;
-        f32 scale[4];
-        f32 rotation[4];
-        f32 translation[4];
-        s32 visible;
-        s32 locking;
-        s32 shading;
-        f32 facet;
-        f32 color[4];
-        s32 color_type;
-        s32 vertex_num;
+        int32_t depth;
+        int32_t folding;
+        float scale[4];
+        float rotation[4];
+        float translation[4];
+        int32_t visible;
+        int32_t locking;
+        int32_t shading;
+        float facet;
+        float color[4];
+        int32_t color_type;
+        int32_t vertex_num;
         Vertex *vertices;
-        s32 face_num;
+        int32_t face_num;
         Face *faces;
     };
 public:
@@ -118,13 +118,13 @@ private:
     struct MeshData
     {
         VertexData* vertices;
-        u32* indices;
+        uint32_t* indices;
         ID3D11Buffer* vertexBuffer;
         ID3D11Buffer* indexBuffer;
-        u32 vertex_num;
-        u32 index_num;
-        s32 material_id;
-        s32 visible;
+        uint32_t vertex_num;
+        uint32_t index_num;
+        int32_t material_id;
+        int32_t visible;
 
         MeshData()
             : vertices(nullptr)

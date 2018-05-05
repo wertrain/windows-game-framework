@@ -153,7 +153,7 @@ const std::vector<MqoFile::Object*>* MqoFile::GetObjects()
             while (tp != NULL)                                                      \
             {                                                                       \
                 tp = strtok_s(NULL, " ", &ctx);                                     \
-                if (tp != NULL) ##var.##elem = static_cast<f32>(atof(tp));          \
+                if (tp != NULL) ##var.##elem = static_cast<float>(atof(tp));          \
             }                                                                       \
         }
 
@@ -162,7 +162,7 @@ const std::vector<MqoFile::Object*>* MqoFile::GetObjects()
             int index = 0;                                                          \
             do                                                                      \
             {                                                                       \
-                if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
+                if (tp != NULL) ##var.##elem[index++] = static_cast<float>(atof(tp)); \
                 tp = strtok_s(NULL, " ", &ctx);                                     \
             }                                                                       \
             while (tp != NULL);                                                     \
@@ -175,7 +175,7 @@ const std::vector<MqoFile::Object*>* MqoFile::GetObjects()
             while (tp != NULL)                                                      \
             {                                                                       \
                 tp = strtok_s(NULL, " ", &ctx);                                     \
-                if (tp != NULL) ##var.##elem[index++] = static_cast<f32>(atof(tp)); \
+                if (tp != NULL) ##var.##elem[index++] = static_cast<float>(atof(tp)); \
             }                                                                       \
         }
 
@@ -230,7 +230,7 @@ const std::vector<MqoFile::Object*>* MqoFile::GetObjects()
             std::smatch results;                                                 \
             if (std::regex_search(src, results, re))                             \
             {                                                                    \
-                p->##member = static_cast<f32>(atof(results[1].str().c_str()));  \
+                p->##member = static_cast<float>(atof(results[1].str().c_str()));  \
                 src = results.suffix();                                          \
             }                                                                    \
         }                                                                        \
@@ -245,7 +245,7 @@ const std::vector<MqoFile::Object*>* MqoFile::GetObjects()
             {                                                                              \
                 for (int i = 0; i < results.size() - 1; ++i)                               \
                 {                                                                          \
-                    p->##member[i] = static_cast<f32>(atof(results[i + 1].str().c_str())); \
+                    p->##member[i] = static_cast<float>(atof(results[i + 1].str().c_str())); \
                 }                                                                          \
                 src = results.suffix();                                                    \
             }                                                                              \
@@ -403,10 +403,10 @@ bool MqoFile::ParseObjectFace(Object* p, FILE* fp, char* buffer, const int buffe
             if (p->faces[face_index].num == 0) return false;
 
             const size_t v_num = p->faces[face_index].num;
-            p->faces[face_index].V = new s32[v_num];
-            memset(p->faces[face_index].V, 0, sizeof(s32) * v_num);
-            p->faces[face_index].UV = new f32[v_num * 2];
-            memset(p->faces[face_index].UV, 0, sizeof(f32) * v_num * 2);
+            p->faces[face_index].V = new int32_t[v_num];
+            memset(p->faces[face_index].V, 0, sizeof(int32_t) * v_num);
+            p->faces[face_index].UV = new float[v_num * 2];
+            memset(p->faces[face_index].UV, 0, sizeof(float) * v_num * 2);
 
             {
                 char regex_v[256] = { 0 };
@@ -532,7 +532,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
         // 1メッシュ分のデータ
         MeshData *mesh = new MeshData();
         mesh->vertices = new VertexData[obj->face_num * 4]; // 多めに確保
-        mesh->indices = new u32[obj->face_num * 4];         // 同上
+        mesh->indices = new uint32_t[obj->face_num * 4];         // 同上
         mesh->material_id = obj->faces[0].M;
         mesh->visible = obj->visible;
 
@@ -586,7 +586,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             D3D11_BUFFER_DESC bd;
             ZeroMemory(&bd, sizeof(bd));
             bd.Usage = D3D11_USAGE_DEFAULT;
-            bd.ByteWidth = sizeof(u32) * mesh->vertex_num;
+            bd.ByteWidth = sizeof(uint32_t) * mesh->vertex_num;
             bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
             bd.CPUAccessFlags = 0;
             D3D11_SUBRESOURCE_DATA InitData;
@@ -770,10 +770,10 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     ConstBuffer cbuff;
 
     // プロジェクション行列
-    f32 aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
-    f32 min_z = 0.01f;
-    f32 max_z = 10000.0f;
-    f32 fov = DirectX::XM_PIDIV4;//画角
+    float aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
+    float min_z = 0.01f;
+    float max_z = 10000.0f;
+    float fov = DirectX::XM_PIDIV4;//画角
     cbuff.mtxProj = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(fov, aspect, min_z, max_z));
 
     auto scene = mFile.GetScene();
@@ -797,10 +797,10 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         if (mesh->visible == 0) continue;
 
         // 頂点バッファ
-        u32 vb_slot = 0;
+        uint32_t vb_slot = 0;
         ID3D11Buffer* vb[] = { mesh->vertexBuffer };
-        u32 stride[] = { sizeof(VertexData) };
-        u32 offset[] = { 0 };
+        uint32_t stride[] = { sizeof(VertexData) };
+        uint32_t offset[] = { 0 };
         context->IASetVertexBuffers(vb_slot, ARRAYSIZE(vb), vb, stride, offset);
 
         // 入力レイアウト
@@ -817,7 +817,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->PSSetShader(mPixelShader, nullptr, 0);
 
         // 定数バッファ
-        u32 cb_slot = 0;
+        uint32_t cb_slot = 0;
         ID3D11Buffer* cb[1] = { mConstBuffer };
         context->VSSetConstantBuffers(cb_slot, 1, cb);
         context->PSSetConstantBuffers(cb_slot, 1, cb);
@@ -827,12 +827,12 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         // サンプラー
         if (material->texture)
         {
-            u32 smp_slot = 0;
+            uint32_t smp_slot = 0;
             ID3D11SamplerState* smp[1] = { material->sampler };
             context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
 
             // シェーダーリソースビュー（テクスチャ）
-            u32 srv_slot = 0;
+            uint32_t srv_slot = 0;
             ID3D11ShaderResourceView* srv[1] = { material->shaderResView };
             context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
         }

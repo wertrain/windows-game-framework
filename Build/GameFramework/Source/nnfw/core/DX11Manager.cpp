@@ -24,7 +24,7 @@ DX11Manager::DX11Manager()
 
 }
 
-bool DX11Manager::Initialize(const HWND hWnd, const u32 width, const u32 height)
+bool DX11Manager::Initialize(const HWND hWnd, const uint32_t width, const uint32_t height)
 {
     // デバイスの生成
     HRESULT hr = D3D11CreateDevice(

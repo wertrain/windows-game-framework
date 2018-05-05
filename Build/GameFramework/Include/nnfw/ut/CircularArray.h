@@ -25,7 +25,7 @@ public:
 
     void Clear(const T value)
     {
-        for (u32 i = 0; i < N; ++i)
+        for (uint32_t i = 0; i < N; ++i)
         {
             mArray[i] = value;
         }
@@ -56,8 +56,8 @@ public:
 
 private:
     T mArray[N];
-    u32 mHeadIndex;
-    u32 mTailIndex;
+    uint32_t mHeadIndex;
+    uint32_t mTailIndex;
 };
 
 NS_FW_UTIL_END

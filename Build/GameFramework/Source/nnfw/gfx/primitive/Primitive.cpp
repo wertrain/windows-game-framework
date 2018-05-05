@@ -52,7 +52,7 @@ Primitive::~Primitive()
 
 bool Primitive::Create(
     ID3D11Device* device, ID3D11DeviceContext* context,
-    const f32* vertices, const u32 vertex_data_size, const u32 vertex_num,
+    const float* vertices, const uint32_t vertex_data_size, const uint32_t vertex_num,
     const wchar_t* texture_filename
 )
 {
@@ -288,10 +288,10 @@ void Primitive::Destroy()
 void Primitive::Render(ID3D11DeviceContext* context)
 {
     // 頂点バッファ
-    u32 vb_slot = 0;
+    uint32_t vb_slot = 0;
     ID3D11Buffer* vb[1] = { mVertexBuffer };
-    u32 stride[1] = { mVertexDataSize };
-    u32 offset[1] = { 0 };
+    uint32_t stride[1] = { mVertexDataSize };
+    uint32_t offset[1] = { 0 };
     context->IASetVertexBuffers(vb_slot, 1, vb, stride, offset);
 
     // 入力レイアウト
@@ -311,12 +311,12 @@ void Primitive::Render(ID3D11DeviceContext* context)
     // サンプラー
     if (mTexture)
     {
-        u32 smp_slot = 0;
+        uint32_t smp_slot = 0;
         ID3D11SamplerState* smp[1] = { mSampler };
         context->PSSetSamplers(smp_slot, 1, smp);
 
         // シェーダーリソースビュー（テクスチャ）
-        u32 srv_slot = 0;
+        uint32_t srv_slot = 0;
         ID3D11ShaderResourceView* srv[1] = { mShaderResView };
         context->PSSetShaderResources(srv_slot, 1, srv);
     }
@@ -325,10 +325,10 @@ void Primitive::Render(ID3D11DeviceContext* context)
     ConstBuffer cbuff;
 
     // プロジェクション行列
-    f32 aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
-    f32 min_z = 0.01f;
-    f32 max_z = 1000.0f;
-    f32 fov = DirectX::XM_PIDIV4;//画角
+    float aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
+    float min_z = 0.01f;
+    float max_z = 1000.0f;
+    float fov = DirectX::XM_PIDIV4;//画角
     cbuff.mtxProj = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(fov, aspect, min_z, max_z));
 
     // カメラ行列
@@ -336,7 +336,7 @@ void Primitive::Render(ID3D11DeviceContext* context)
     DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
-    f32 RotateY = 0.0f;
+    float RotateY = 0.0f;
     cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(RotateY));
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
     // シェーダーでは行列を転置してから渡す
@@ -345,7 +345,7 @@ void Primitive::Render(ID3D11DeviceContext* context)
     context->UpdateSubresource(mCBuffer, 0, NULL, &cbuff, 0, 0);
 
     // 定数バッファ
-    u32 cb_slot = 0;
+    uint32_t cb_slot = 0;
     ID3D11Buffer* cb[1] = { mCBuffer };
     context->VSSetConstantBuffers(cb_slot, 1, cb);
     context->PSSetConstantBuffers(cb_slot, 1, cb);

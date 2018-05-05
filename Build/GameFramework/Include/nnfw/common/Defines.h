@@ -48,7 +48,7 @@
 /// </summary>
 /// cinttypes などを使うべきかもしれないが
 /// どうするのがベストか模索中。
-#define FRAMEWORK_COMMON_TYPES_
+//#define FRAMEWORK_COMMON_TYPES_
 
 /// <summary>
 /// DirectX の使用を明示する定義

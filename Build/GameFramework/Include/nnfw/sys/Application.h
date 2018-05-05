@@ -18,7 +18,7 @@ protected:
     friend class NS_FW_UTIL::Singleton<Application>;
     Application();
 public:
-    enum eMBStyle : u16
+    enum eMBStyle : uint16_t
     {
 #ifdef _WIN64
         eMB_Info = MB_ICONINFORMATION,

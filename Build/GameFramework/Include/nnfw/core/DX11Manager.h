@@ -19,7 +19,7 @@ protected:
     DX11Manager();
 
 public:
-    bool Initialize(const HWND hWnd, const u32 width, const u32 height);
+    bool Initialize(const HWND hWnd, const uint32_t width, const uint32_t height);
     void Finalize();
 
     void ClearRenderView();

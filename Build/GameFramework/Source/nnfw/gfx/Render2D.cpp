@@ -24,7 +24,7 @@ struct ConstBuffer
     Matrix44 mtxWorld;
 };
 
-const u32 sVertexNum = 4;
+const uint32_t sVertexNum = 4;
 
 // 頂点データ構造体
 struct VertexData
@@ -132,7 +132,7 @@ HRESULT Render2D::CreateShader(ID3D11Device* device)
         { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
-    u32 elem_num = ARRAYSIZE(layout);
+    uint32_t elem_num = ARRAYSIZE(layout);
     // 入力レイアウト作成
     // Create InputLayout VSのみに必要　どのような要素を持つか
     HRESULT hr = device->CreateInputLayout(layout, elem_num, vsFile.Get(), vsFile.Size(), &mVertexLayout);
@@ -197,19 +197,19 @@ HRESULT Render2D::CreateBuffer(ID3D11Device* device)
     return S_OK;
 }
 
-void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, const f32 width, const f32 height)
+void Render2D::Render(ID3D11DeviceContext* context, const float x, const float y, const float width, const float height)
 {
     Render(context, x, y, width, height, nullptr);
 }
 
-void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, const f32 width, const f32 height, Texture* texture)
+void Render2D::Render(ID3D11DeviceContext* context, const float x, const float y, const float width, const float height, Texture* texture)
 {
-    const f32 wh = NS_FW_CONST::WIDTH * 0.5f;
-    const f32 hh = NS_FW_CONST::HEIGHT * 0.5f;
-    const f32 x1 = -1.0f + (x / wh);
-    const f32 x2 = x1 + (width / wh);
-    const f32 y1 =  1.0f - (y / hh);
-    const f32 y2 = y1 - (height / hh);
+    const float wh = NS_FW_CONST::WIDTH * 0.5f;
+    const float hh = NS_FW_CONST::HEIGHT * 0.5f;
+    const float x1 = -1.0f + (x / wh);
+    const float x2 = x1 + (width / wh);
+    const float y1 =  1.0f - (y / hh);
+    const float y2 = y1 - (height / hh);
 
     sVertices[0].pos = Vector4(x2, y1, 0.0f, 1.0f);
     sVertices[1].pos = Vector4(x1, y1, 0.0f, 1.0f);
@@ -220,10 +220,10 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, co
     context->UpdateSubresource(mVertexBuffer, 0, NULL, &sVertices, 0, 0);
 
     // 頂点バッファ
-    u32 vb_slot = 0;
+    uint32_t vb_slot = 0;
     ID3D11Buffer* vb[1] = { mVertexBuffer };
-    u32 stride[1] = { sizeof(VertexData) };
-    u32 offset[1] = { 0 };
+    uint32_t stride[1] = { sizeof(VertexData) };
+    uint32_t offset[1] = { 0 };
     context->IASetVertexBuffers(vb_slot, 1, vb, stride, offset);
 
     // 入力レイアウト
@@ -247,17 +247,17 @@ void Render2D::Render(ID3D11DeviceContext* context, const f32 x, const f32 y, co
     context->UpdateSubresource(mConstantBuffer, 0, NULL, &cbuff, 0, 0);
 
     // 定数バッファ
-    u32 cb_slot = 0;
+    uint32_t cb_slot = 0;
     ID3D11Buffer* cb[1] = { mConstantBuffer };
     context->VSSetConstantBuffers(cb_slot, 1, cb);
     context->PSSetConstantBuffers(cb_slot, 1, cb);
 
-    u32 smp_slot = 0;
+    uint32_t smp_slot = 0;
     ID3D11SamplerState* smp[1] = { const_cast<ID3D11SamplerState*>(texture->GetSamplerState()) };
     context->PSSetSamplers(smp_slot, 1, smp);
 
     // シェーダーリソースビュー（テクスチャ）
-    u32 srv_slot = 0;
+    uint32_t srv_slot = 0;
     ID3D11ShaderResourceView* srv[1] = { const_cast<ID3D11ShaderResourceView*>(texture->GetShaderResourceView()) };
     context->PSSetShaderResources(srv_slot, 1, srv);
 

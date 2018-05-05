@@ -28,8 +28,8 @@ public:
     const ID3D11Resource* GetTexture();
     const ID3D11SamplerState* GetSamplerState();
     const ID3D11ShaderResourceView* GetShaderResourceView();
-    const u32 GetWidth();
-    const u32 GetHeight();
+    const uint32_t GetWidth();
+    const uint32_t GetHeight();
 
 protected:
     ID3D11Resource* mTexture;

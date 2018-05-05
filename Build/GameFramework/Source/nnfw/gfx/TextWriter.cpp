@@ -105,7 +105,7 @@ TextWriter::~TextWriter()
 
 }
 
-bool TextWriter::Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const s32 font_size)
+bool TextWriter::Create(const wchar_t* font_ttf_file, const wchar_t* face_name, const int32_t font_size)
 {
     // フォントを使えるようにする
     if (0 == AddFontResourceEx(
@@ -252,7 +252,7 @@ bool TextWriter::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11Devi
     std::unique_ptr<TEXTMETRIC> tmArray(new TEXTMETRIC[textLength]);
     std::unique_ptr<GLYPHMETRICS> gmArray(new GLYPHMETRICS[textLength]);
     std::vector<std::unique_ptr<BYTE>> ptrVector;
-    for (s32 index = 0; index < textLength; ++index)
+    for (int32_t index = 0; index < textLength; ++index)
     {
         UINT code = (UINT)text[index];
         
@@ -310,7 +310,7 @@ bool TextWriter::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11Devi
     BYTE* pBits = (BYTE*)hMappedResource.pData;
 
     int x_Offset = 0;
-    for (s32 index = 0; index < textLength; ++index)
+    for (int32_t index = 0; index < textLength; ++index)
     {
         TEXTMETRIC* TM = &tmArray.get()[index];
         GLYPHMETRICS* GM = &gmArray.get()[index];

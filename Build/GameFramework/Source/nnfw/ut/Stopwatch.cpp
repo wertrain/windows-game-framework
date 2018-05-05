@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <chrono>
-#include <nnfw/common/Includes.h>
 
 #include <nnfw/ut/Stopwatch.h>
 

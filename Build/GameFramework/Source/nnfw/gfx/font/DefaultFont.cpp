@@ -20,20 +20,20 @@
 NS_FW_GFX_BEGIN
 
 // テクスチャの文字数定義
-static const s32 TEXTURE_CHAR_X_NUM = gfont_DDS_x_num;
-static const s32 TEXTURE_CHAR_Y_NUM = gfont_DDS_y_num;
-static const s32 TEXTURE_FONT_WIDTH = gfont_DDS_width;
-static const s32 TEXTURE_FONT_HEIGHT = gfont_DDS_height;
+static const int TEXTURE_CHAR_X_NUM = gfont_DDS_x_num;
+static const int TEXTURE_CHAR_Y_NUM = gfont_DDS_y_num;
+static const int TEXTURE_FONT_WIDTH = gfont_DDS_width;
+static const int TEXTURE_FONT_HEIGHT = gfont_DDS_height;
 // スクリーン中の一行・一列あたり文字数定義
-static const f32 FONT_SCALE = 0.75f;
-static const s32 FONT_X_NUM = NS_FW_CONST::WIDTH / static_cast<s32>(TEXTURE_FONT_WIDTH * FONT_SCALE);
-static const s32 FONT_Y_NUM = NS_FW_CONST::HEIGHT / static_cast<s32>(TEXTURE_FONT_HEIGHT * FONT_SCALE);
-static const s32 INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
+static const float FONT_SCALE = 0.75f;
+static const int FONT_X_NUM = NS_FW_CONST::WIDTH / static_cast<int>(TEXTURE_FONT_WIDTH * FONT_SCALE);
+static const int FONT_Y_NUM = NS_FW_CONST::HEIGHT / static_cast<int>(TEXTURE_FONT_HEIGHT * FONT_SCALE);
+static const int INSTANCE_NUM = FONT_X_NUM * FONT_Y_NUM;
 // インスタンス一枚あたりのサイズ
-static const f32 PLANE_WIDTH = 2.0f / FONT_X_NUM;
-static const f32 PLANE_HEIGHT = 2.0f / FONT_Y_NUM;
-static const f32 UV_WIDTH = 1.0f / TEXTURE_CHAR_X_NUM;
-static const f32 UV_HEIGHT = 1.0f / TEXTURE_CHAR_Y_NUM;
+static const float PLANE_WIDTH = 2.0f / FONT_X_NUM;
+static const float PLANE_HEIGHT = 2.0f / FONT_Y_NUM;
+static const float UV_WIDTH = 1.0f / TEXTURE_CHAR_X_NUM;
+static const float UV_HEIGHT = 1.0f / TEXTURE_CHAR_Y_NUM;
 
 struct InstancingPos 
 {
@@ -315,7 +315,7 @@ void DefaultFont::SetText(const int x, const int y, const wchar_t* text)
     const wchar_t* p = text;
     while (*p)
     {
-        s32 index = ((FONT_Y_NUM - 1) - gy) * FONT_X_NUM + gx;
+        int32_t index = ((FONT_Y_NUM - 1) - gy) * FONT_X_NUM + gx;
         mPrintText[index] = *p;
         ++p;
         if (++gx >= FONT_X_NUM)
@@ -329,10 +329,10 @@ void DefaultFont::SetText(const int x, const int y, const wchar_t* text)
 void DefaultFont::Render(ID3D11DeviceContext* context)
 {
     // 頂点バッファ
-    u32 vb_slot = 0;
+    uint32_t vb_slot = 0;
     ID3D11Buffer* vb[2] = { mVertexBuffer, mInstancingVertexBuffer };
-    u32 stride[2] = { mVertexDataSize, sizeof(InstancingPos) };
-    u32 offset[2] = { 0, 0 };
+    uint32_t stride[2] = { mVertexDataSize, sizeof(InstancingPos) };
+    uint32_t offset[2] = { 0, 0 };
     context->IASetVertexBuffers(vb_slot, ARRAYSIZE(vb), vb, stride, offset);
 
     // 入力レイアウト
@@ -351,12 +351,12 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
     // サンプラー
     if (mTexture)
     {
-        u32 smp_slot = 0;
+        uint32_t smp_slot = 0;
         ID3D11SamplerState* smp[1] = { mSampler };
         context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
 
         // シェーダーリソースビュー（テクスチャ）
-        u32 srv_slot = 0;
+        uint32_t srv_slot = 0;
         ID3D11ShaderResourceView* srv[1] = { mShaderResView };
         context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
     }
@@ -369,13 +369,13 @@ void DefaultFont::Render(ID3D11DeviceContext* context)
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
 
-        for (s32 y = 0; y < FONT_Y_NUM; ++y)
+        for (int y = 0; y < FONT_Y_NUM; ++y)
         {
-            for (s32 x = 0; x < FONT_X_NUM; ++x)
+            for (int x = 0; x < FONT_X_NUM; ++x)
             {
-                s32 index = y * FONT_X_NUM + x;
-                instancing[index].pos.x = -1.0f + static_cast<f32>(x * PLANE_WIDTH);
-                instancing[index].pos.y = -1.0f + static_cast<f32>(y * PLANE_HEIGHT);
+                int index = y * FONT_X_NUM + x;
+                instancing[index].pos.x = -1.0f + static_cast<float>(x * PLANE_WIDTH);
+                instancing[index].pos.y = -1.0f + static_cast<float>(y * PLANE_HEIGHT);
 
                 if (mPrintText[index])
                 {

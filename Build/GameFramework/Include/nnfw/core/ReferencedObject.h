@@ -22,9 +22,9 @@ public:
     ReferencedObject &operator=(const ReferencedObject &r);
 
 public:
-    virtual s32 AddRef();
-    virtual s32 GetRef();
-    virtual s32 Release();
+    virtual int32_t AddRef();
+    virtual int32_t GetRef();
+    virtual int32_t Release();
 
 private:
     struct ReferenceCounter {

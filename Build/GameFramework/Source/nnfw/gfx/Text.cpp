@@ -11,7 +11,7 @@
 
 NS_FW_GFX_BEGIN
 
-bool DefaultFontManager::CreateLayer(ID3D11Device* device, ID3D11DeviceContext* context, const s32 id, const s32 priority)
+bool DefaultFontManager::CreateLayer(ID3D11Device* device, ID3D11DeviceContext* context, const int32_t id, const int32_t priority)
 {
     for each(auto param in mLayerArray)
     {

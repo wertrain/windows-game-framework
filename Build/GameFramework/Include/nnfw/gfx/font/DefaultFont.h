@@ -34,8 +34,8 @@ protected:
 
     ID3D11VertexShader* mVertexShader;
     ID3D11PixelShader* mPixelShader;
-    u32 mVertexNum;
-    u32 mVertexDataSize;
+    uint32_t mVertexNum;
+    uint32_t mVertexDataSize;
 
     ID3D11Resource* mTexture;
     ID3D11ShaderResourceView* mShaderResView;

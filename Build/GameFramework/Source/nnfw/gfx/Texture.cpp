@@ -155,12 +155,12 @@ const ID3D11ShaderResourceView* Texture::GetShaderResourceView()
     return mShaderResView;
 }
 
-const u32 Texture::GetWidth()
+const uint32_t Texture::GetWidth()
 {
     return mTexDesc.Width;
 }
 
-const u32 Texture::GetHeight()
+const uint32_t Texture::GetHeight()
 {
     return mTexDesc.Height;
 }

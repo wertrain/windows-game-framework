@@ -30,7 +30,7 @@ public:
     };
 
 public:
-    bool CreateLayer(ID3D11Device* device, ID3D11DeviceContext* context, const s32 id, const s32 priority);
+    bool CreateLayer(ID3D11Device* device, ID3D11DeviceContext* context, const int32_t id, const int32_t priority);
     void Destroy();
     void Render(ID3D11DeviceContext* context);
     bool SetText(const int id, const int x, const int y, const wchar_t* str);
@@ -39,8 +39,8 @@ public:
 private:
     struct LayerParam
     {
-        s32 id;
-        s32 priority;
+        int32_t id;
+        int32_t priority;
         DefaultFont font;
         bool empty;
     };
