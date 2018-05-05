@@ -34,6 +34,7 @@
     <ClCompile Include="Source\nnfw\Locator.cpp" />
     <ClCompile Include="Source\nnfw\sys\Application.cpp" />
     <ClCompile Include="Source\nnfw\sys\File.cpp" />
+    <ClCompile Include="Source\nnfw\ut\CircularArray.cpp" />
     <ClCompile Include="Source\nnfw\ut\Log.cpp" />
     <ClCompile Include="Source\nnfw\ut\Memory.cpp" />
     <ClCompile Include="Source\nnfw\ut\Singleton.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Include\nnfw\sys\Application.h" />
     <ClInclude Include="Include\nnfw\sys\File.h" />
     <ClInclude Include="Include\nnfw\sys\Includes.h" />
+    <ClInclude Include="Include\nnfw\ut\CircularArray.h" />
     <ClInclude Include="Include\nnfw\ut\Includes.h" />
     <ClInclude Include="Include\nnfw\ut\Log.h" />
     <ClInclude Include="Include\nnfw\ut\Memory.h" />

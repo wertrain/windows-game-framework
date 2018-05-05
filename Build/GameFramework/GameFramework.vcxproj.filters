@@ -168,6 +168,9 @@
     <ClCompile Include="Source\nnfw\Locator.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\ut\CircularArray.cpp">
+      <Filter>Source\nnfw\ut</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -280,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="Include\Precompiled.h">
       <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\ut\CircularArray.h">
+      <Filter>Include\nnfw\ut</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
