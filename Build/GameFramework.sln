@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\
 		{B74EFDE3-7B69-433D-925D-292870A90CC4} = {B74EFDE3-7B69-433D-925D-292870A90CC4}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameFrameworkTest", "GameFrameworkTest\GameFrameworkTest.vcxproj", "{0AE92267-5495-4E76-B002-5596E096D4A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,10 @@ Global
 		{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}.Debug|x64.Build.0 = Debug|x64
 		{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}.Release|x64.ActiveCfg = Release|x64
 		{8E5C38A9-58BA-49C3-88FB-3625AEA0A2EE}.Release|x64.Build.0 = Release|x64
+		{0AE92267-5495-4E76-B002-5596E096D4A2}.Debug|x64.ActiveCfg = Debug|x64
+		{0AE92267-5495-4E76-B002-5596E096D4A2}.Debug|x64.Build.0 = Debug|x64
+		{0AE92267-5495-4E76-B002-5596E096D4A2}.Release|x64.ActiveCfg = Release|x64
+		{0AE92267-5495-4E76-B002-5596E096D4A2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
