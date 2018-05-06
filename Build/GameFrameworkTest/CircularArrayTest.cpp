@@ -10,9 +10,8 @@ namespace GameFrameworkTest
 {
     TEST_CLASS(CircularArrayTest)
     {
-    public:
-        
-        TEST_METHOD(CircularArrayEnqueue)
+    public:        
+        TEST_METHOD(CircularArrayTestBasic)
         {
             const int N = 10;
             NS_FW_UTIL::CircularArray<int, N> circularArray;

@@ -85,6 +85,12 @@
     <Filter Include="Include\nnfw\ut">
       <UniqueIdentifier>{0c39f247-27eb-440e-9c40-8fe94a3f5aac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include\nnfw\fnd">
+      <UniqueIdentifier>{1ec1cc01-1c29-485a-9797-7f0e8a97b095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\fnd">
+      <UniqueIdentifier>{aaa744c7-a353-4524-bc49-7765cd754d6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\nnfw\ut\Memory.cpp">
@@ -165,11 +171,23 @@
     <ClCompile Include="Source\nnfw\ut\Log.cpp">
       <Filter>Source\nnfw\ut</Filter>
     </ClCompile>
-    <ClCompile Include="Source\nnfw\Locator.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\nnfw\ut\CircularArray.cpp">
       <Filter>Source\nnfw\ut</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\sys\Observer.cpp">
+      <Filter>Source\nnfw\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\sys\Subject.cpp">
+      <Filter>Source\nnfw\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\fnd\GenericPool.cpp">
+      <Filter>Source\nnfw\fnd</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\Locator.cpp">
+      <Filter>Source\nnfw</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Precompiled.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +304,15 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\ut\CircularArray.h">
       <Filter>Include\nnfw\ut</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\sys\Observer.h">
+      <Filter>Include\nnfw\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\sys\Subject.h">
+      <Filter>Include\nnfw\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\fnd\GenericPool.h">
+      <Filter>Include\nnfw\fnd</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

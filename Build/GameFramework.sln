@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameFramework", "GameFramework\GameFramework.vcxproj", "{B74EFDE3-7B69-433D-925D-292870A90CC4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5} = {E138F3A9-D6C2-4827-8D95-83F51C9A92F5}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shader", "GameFramework\Shader\Shader.vcxproj", "{E138F3A9-D6C2-4827-8D95-83F51C9A92F5}"
 EndProject
@@ -14,6 +17,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameFrameworkTest", "GameFrameworkTest\GameFrameworkTest.vcxproj", "{0AE92267-5495-4E76-B002-5596E096D4A2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E138F3A9-D6C2-4827-8D95-83F51C9A92F5} = {E138F3A9-D6C2-4827-8D95-83F51C9A92F5}
+		{B74EFDE3-7B69-433D-925D-292870A90CC4} = {B74EFDE3-7B69-433D-925D-292870A90CC4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

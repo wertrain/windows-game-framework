@@ -18,6 +18,7 @@
     <ClCompile Include="Source\nnfw\core\ObjectBase.cpp" />
     <ClCompile Include="Source\nnfw\core\ReferencedObject.cpp" />
     <ClCompile Include="Source\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.cpp" />
+    <ClCompile Include="Source\nnfw\fnd\GenericPool.cpp" />
     <ClCompile Include="Source\nnfw\gfx\Bitmap.cpp" />
     <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp" />
     <ClCompile Include="Source\nnfw\gfx\font\DefaultFont.cpp" />
@@ -34,11 +35,17 @@
     <ClCompile Include="Source\nnfw\Locator.cpp" />
     <ClCompile Include="Source\nnfw\sys\Application.cpp" />
     <ClCompile Include="Source\nnfw\sys\File.cpp" />
+    <ClCompile Include="Source\nnfw\sys\Observer.cpp" />
+    <ClCompile Include="Source\nnfw\sys\Subject.cpp" />
     <ClCompile Include="Source\nnfw\ut\CircularArray.cpp" />
     <ClCompile Include="Source\nnfw\ut\Log.cpp" />
     <ClCompile Include="Source\nnfw\ut\Memory.cpp" />
     <ClCompile Include="Source\nnfw\ut\Singleton.cpp" />
     <ClCompile Include="Source\nnfw\ut\Stopwatch.cpp" />
+    <ClCompile Include="Source\Precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\common\Debug.h" />
@@ -50,6 +57,7 @@
     <ClInclude Include="Include\nnfw\core\ObjectBase.h" />
     <ClInclude Include="Include\nnfw\core\ReferencedObject.h" />
     <ClInclude Include="Include\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="Include\nnfw\fnd\GenericPool.h" />
     <ClInclude Include="Include\nnfw\GameMain.h" />
     <ClInclude Include="Include\nnfw\gfx\Bitmap.h" />
     <ClInclude Include="Include\nnfw\gfx\effect\Particle.h" />
@@ -72,6 +80,8 @@
     <ClInclude Include="Include\nnfw\sys\Application.h" />
     <ClInclude Include="Include\nnfw\sys\File.h" />
     <ClInclude Include="Include\nnfw\sys\Includes.h" />
+    <ClInclude Include="Include\nnfw\sys\Observer.h" />
+    <ClInclude Include="Include\nnfw\sys\Subject.h" />
     <ClInclude Include="Include\nnfw\ut\CircularArray.h" />
     <ClInclude Include="Include\nnfw\ut\Includes.h" />
     <ClInclude Include="Include\nnfw\ut\Log.h" />
@@ -119,7 +129,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Include</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -131,7 +141,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Include</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>

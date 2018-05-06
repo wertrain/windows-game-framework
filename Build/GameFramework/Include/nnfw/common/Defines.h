@@ -10,6 +10,7 @@
 /// </summary>
 #ifndef FW_UNUSED_NAMESPACE
 #define NS_DEF_FW fw
+#define NS_DEF_FW_FND fnd
 #define NS_DEF_FW_GFX gfx
 #define NS_DEF_FW_SYS sys
 #define NS_DEF_FW_UTIL util
@@ -18,6 +19,7 @@
 #define NS_DEF_FW_TOOL tool
 
 #define NS_FW NS_DEF_FW
+#define NS_FW_FND NS_DEF_FW::NS_DEF_FW_FND
 #define NS_FW_GFX NS_DEF_FW::NS_DEF_FW_GFX
 #define NS_FW_SYS NS_DEF_FW::NS_DEF_FW_SYS
 #define NS_FW_UTIL NS_DEF_FW::NS_DEF_FW_UTIL
@@ -27,6 +29,8 @@
 
 #define NS_FW_BEGIN namespace NS_DEF_FW {
 #define NS_FW_END }
+#define NS_FW_FND_BEGIN NS_FW_BEGIN namespace NS_DEF_FW_FND {
+#define NS_FW_FND_END } NS_FW_END
 #define NS_FW_GFX_BEGIN NS_FW_BEGIN namespace NS_DEF_FW_GFX {
 #define NS_FW_GFX_END } NS_FW_END
 #define NS_FW_SYS_BEGIN NS_FW_BEGIN namespace NS_DEF_FW_SYS {
