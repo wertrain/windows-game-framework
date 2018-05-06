@@ -14,25 +14,28 @@ namespace GameFrameworkTest
         
         TEST_METHOD(CircularArrayEnqueue)
         {
-            NS_FW_UTIL::CircularArray<int, 10> circularArray;
+            const int N = 10;
+            NS_FW_UTIL::CircularArray<int, N> circularArray;
 
-            circularArray.Clear(100);
+            circularArray.Fill(-1);
 
-            for (int i = 0; i < 9; ++i)
+            Assert::IsTrue(circularArray.IsEmpty());
+            for (int i = 0; i <  N; ++i)
             {
                 Assert::IsTrue(circularArray.Enqueue(i));
             }
+            Assert::IsFalse(circularArray.IsEmpty());
+            Assert::IsFalse(circularArray.Enqueue(11));
 
-            for (int i = 0; i < 9; ++i)
+            for (int i = 0; i < N; ++i)
             {
-                Assert::AreEqual(i, circularArray.Dequeue());
+                int value = 0;
+                circularArray.Dequeue(value);
+                Assert::AreEqual(i, value);
             }
-
-            //fw::ut::CircularArray<>
-            //std::string name = "Bill";
-            //MyClass mc(name);
-            //Assert::AreEqual(name, mc.GetName());
+            int value = 0;
+            Assert::IsFalse(circularArray.Dequeue(value));
+            Assert::IsTrue(circularArray.IsEmpty());
         }
-
     };
 }

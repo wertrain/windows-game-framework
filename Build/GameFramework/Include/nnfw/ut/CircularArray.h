@@ -18,12 +18,20 @@ public:
         : mArray()
         , mHeadIndex(0)
         , mTailIndex(0)
+        , mCount(0)
     {
 
     }
     ~CircularArray() {};
 
-    void Clear(const T value)
+    void Reset()
+    {
+        mHeadIndex = 0;
+        mTailIndex = 0;
+        mCount = 0;
+    }
+
+    void Fill(const T value)
     {
         for (uint32_t i = 0; i < N; ++i)
         {
@@ -33,31 +41,40 @@ public:
 
     bool Enqueue(const T value)
     {
-        if ((mTailIndex + 1) % N == mHeadIndex)
+        if (mCount >= N)
         {
             return false;
         }
         mArray[mTailIndex] = value;
         mTailIndex = (mTailIndex + 1) % N;
+        ++mCount;
         return true;
     }
 
-    T Dequeue()
+    bool Dequeue(T& value)
     {
-        const int head = mHeadIndex;
+        if (mCount <= 0)
+        {
+            return false;
+        }
+        value = mArray[mHeadIndex];
         mHeadIndex = (mHeadIndex + 1) % N;
-        return mArray[head];
+        --mCount;
+        return true;
     }
 
     bool IsEmpty()
     {
-        return mHeadIndex == mTailIndex;
+        return mCount == 0;
+        // ‰º‹L‚Ì”»’è‚Å‚Í”»’èA–žƒ^ƒ“‚Æ‰Šú‚Ì‹æ•Ê‚ª‚Â‚©‚È‚¢
+        //return mHeadIndex == mTailIndex;
     }
 
 private:
     T mArray[N];
     uint32_t mHeadIndex;
     uint32_t mTailIndex;
+    uint32_t mCount;
 };
 
 NS_FW_UTIL_END
