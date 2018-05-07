@@ -189,6 +189,9 @@
     <ClCompile Include="Source\Precompiled.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\fnd\Allocator.cpp">
+      <Filter>Source\nnfw\fnd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -312,6 +315,9 @@
       <Filter>Include\nnfw\sys</Filter>
     </ClInclude>
     <ClInclude Include="Include\nnfw\fnd\GenericPool.h">
+      <Filter>Include\nnfw\fnd</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\fnd\Allocator.h">
       <Filter>Include\nnfw\fnd</Filter>
     </ClInclude>
   </ItemGroup>
