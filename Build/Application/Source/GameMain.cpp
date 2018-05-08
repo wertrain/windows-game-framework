@@ -17,7 +17,7 @@ fw::gfx::ModelMqo s_Mqo;
 //#define ARCHIVER_TEST
 //#define TEXTWRITE_TEST
 //#define DEFAULTFONT_TEST
-//#define MODEL_TEST
+#define MODEL_TEST
 
 #ifdef ARCHIVER_TEST
 void ArchiverTest(ID3D11Device* device)
@@ -65,7 +65,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 #elif defined DEFAULTFONT_TEST
     DefaultFontTest(device, context);
 #elif defined MODEL_TEST
-    if (!s_Mqo.Create(device, context, L"manto/manto.mqo"))
+    if (!s_Mqo.Create(device, context, L"D:/Develop/C++/windows-game-framework/Build/x64/Debug/manto/manto.mqo"))
         return false;
 #else
     s_Render2D.Create(device);

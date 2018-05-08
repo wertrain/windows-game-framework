@@ -532,7 +532,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
         // 1メッシュ分のデータ
         MeshData *mesh = new MeshData();
         mesh->vertices = new VertexData[obj->face_num * 4]; // 多めに確保
-        mesh->indices = new uint32_t[obj->face_num * 4];         // 同上
+        mesh->indices = new uint32_t[obj->face_num * 4];    // 同上
         mesh->material_id = obj->faces[0].M;
         mesh->visible = obj->visible;
 
