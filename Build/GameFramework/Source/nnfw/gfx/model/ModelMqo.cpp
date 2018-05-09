@@ -810,7 +810,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         //context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
         // プリミティブ形状
-        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         // シェーダ
         context->VSSetShader(mVertexShader, nullptr, 0);
