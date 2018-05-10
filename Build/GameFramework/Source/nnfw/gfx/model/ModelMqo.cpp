@@ -531,10 +531,17 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
         // 1メッシュ分のデータ
         MeshData *mesh = new MeshData();
-        mesh->vertices = new VertexData[obj->face_num * 4]; // 多めに確保
-        mesh->indices = new uint32_t[obj->face_num * 4];    // 同上
+        mesh->vertices = new VertexData[obj->vertex_num];
+        mesh->indices = new uint32_t[obj->face_num * 6]; // 多めに確保
         mesh->material_id = obj->faces[0].M;
         mesh->visible = obj->visible;
+
+        for (int i = 0; i < obj->vertex_num; ++i)
+        {
+            mesh->vertices[i].pos[0] = obj->vertices[i].pos[0];
+            mesh->vertices[i].pos[1] = obj->vertices[i].pos[1];
+            mesh->vertices[i].pos[2] = obj->vertices[i].pos[2];
+        }
 
         int idx_idx = 0;
         for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
@@ -546,22 +553,13 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             _ASSERT(face.num > 0);
             for (int v_idx = 0; v_idx < face.num; ++v_idx)
             {
-                // 頂点を展開して入れているのに
-                // インデックスがおかしいのであとで直す
-                auto index = face.V[v_idx];
-                mesh->vertices[idx_idx].pos[0] = obj->vertices[index].pos[0];
-                mesh->vertices[idx_idx].pos[1] = obj->vertices[index].pos[1];
-                mesh->vertices[idx_idx].pos[2] = obj->vertices[index].pos[2];
-
-                const int uv_idx = v_idx * 2;
-                mesh->vertices[idx_idx].uv[0] = face.UV[uv_idx];
-                mesh->vertices[idx_idx].uv[1] = face.UV[uv_idx + 1];
-
-                mesh->indices[idx_idx] = index;
+                mesh->indices[idx_idx] = face.V[v_idx];
                 idx_idx++;
             }
+            mesh->indices[idx_idx++] = mesh->indices[idx_idx - 4];
+            mesh->indices[idx_idx++] = mesh->indices[idx_idx - 3];
         }
-        mesh->vertex_num = idx_idx;
+        mesh->vertex_num = obj->vertex_num;
         mesh->index_num = idx_idx;
 
         // バーテックスバッファ
@@ -586,7 +584,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             D3D11_BUFFER_DESC bd;
             ZeroMemory(&bd, sizeof(bd));
             bd.Usage = D3D11_USAGE_DEFAULT;
-            bd.ByteWidth = sizeof(uint32_t) * mesh->vertex_num;
+            bd.ByteWidth = sizeof(uint32_t) * mesh->index_num;
             bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
             bd.CPUAccessFlags = 0;
             D3D11_SUBRESOURCE_DATA InitData;
@@ -603,38 +601,40 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
     // マテリアル
     auto materials = mFile.GetMaterials();
-    _ASSERT(materials->size() > 0);
-    for (int mat_idx = 0; mat_idx < materials->size(); ++mat_idx)
+    if (materials->size() > 0)
     {
-        auto mat = materials->at(mat_idx);
-        
-        MaterialData* data = new MaterialData();
-        if (!mat->tex.empty())
+        for (int mat_idx = 0; mat_idx < materials->size(); ++mat_idx)
         {
-            // テクスチャ作成
-            std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> cv;
-            std::wstring wpath = cv.from_bytes(mat->tex);
-            hr = DirectX::CreateWICTextureFromFile(device, context, wpath.c_str(), &data->texture, &data->shaderResView);
-            if (FAILED(hr)) {
-                return false;
-            }
+            auto mat = materials->at(mat_idx);
 
-            // サンプラー作成
-            D3D11_SAMPLER_DESC sampDesc;
-            ZeroMemory(&sampDesc, sizeof(sampDesc));
-            sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-            sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-            sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-            sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-            sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-            sampDesc.MinLOD = 0;
-            sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-            hr = device->CreateSamplerState(&sampDesc, &data->sampler);
-            if (FAILED(hr)) {
-                return false;
+            MaterialData* data = new MaterialData();
+            if (!mat->tex.empty())
+            {
+                // テクスチャ作成
+                std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> cv;
+                std::wstring wpath = cv.from_bytes(mat->tex);
+                hr = DirectX::CreateWICTextureFromFile(device, context, wpath.c_str(), &data->texture, &data->shaderResView);
+                if (FAILED(hr)) {
+                    return false;
+                }
+
+                // サンプラー作成
+                D3D11_SAMPLER_DESC sampDesc;
+                ZeroMemory(&sampDesc, sizeof(sampDesc));
+                sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+                sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+                sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+                sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+                sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+                sampDesc.MinLOD = 0;
+                sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+                hr = device->CreateSamplerState(&sampDesc, &data->sampler);
+                if (FAILED(hr)) {
+                    return false;
+                }
             }
+            mMaterials.push_back(data);
         }
-        mMaterials.push_back(data);
     }
 
     // 定数バッファ
@@ -783,7 +783,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
     static float rotY = 0;
-    Matrix44 matRot = DirectX::XMMatrixRotationY(rotY); rotY += 0.01f;
+    Matrix44 matRot = DirectX::XMMatrixRotationX(rotY); rotY += 0.01f;
     Matrix44 matTrans = DirectX::XMMatrixTranslation(scene->pos[0], scene->pos[1], scene->pos[2]);
     cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixMultiply(matRot, matTrans));
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -807,10 +807,10 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->IASetInputLayout(mVertexLayout);
 
         // インデックスバッファ
-        //context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+        context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
         // プリミティブ形状
-        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
         // シェーダ
         context->VSSetShader(mVertexShader, nullptr, 0);
@@ -823,18 +823,21 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->PSSetConstantBuffers(cb_slot, 1, cb);
 
         // マテリアル
-        auto material = mMaterials.at(mesh->material_id);
-        // サンプラー
-        if (material->texture)
+        if (mMaterials.size() > 0)
         {
-            uint32_t smp_slot = 0;
-            ID3D11SamplerState* smp[1] = { material->sampler };
-            context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
+            auto material = mMaterials.at(mesh->material_id);
+            // サンプラー
+            if (material->texture)
+            {
+                uint32_t smp_slot = 0;
+                ID3D11SamplerState* smp[1] = { material->sampler };
+                context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
 
-            // シェーダーリソースビュー（テクスチャ）
-            uint32_t srv_slot = 0;
-            ID3D11ShaderResourceView* srv[1] = { material->shaderResView };
-            context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
+                // シェーダーリソースビュー（テクスチャ）
+                uint32_t srv_slot = 0;
+                ID3D11ShaderResourceView* srv[1] = { material->shaderResView };
+                context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
+            }
         }
 
         // ラスタライザステート
@@ -847,7 +850,9 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
         // ポリゴン描画
-        context->Draw(mesh->vertex_num, 0);
+        context->DrawIndexed(mesh->index_num, 0, 0);
+
+        break;
     }
 }
 
