@@ -783,7 +783,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
     static float rotY = 0;
-    Matrix44 matRot = DirectX::XMMatrixRotationX(rotY); rotY += 0.01f;
+    Matrix44 matRot = DirectX::XMMatrixRotationY(rotY); rotY += 0.01f;
     Matrix44 matTrans = DirectX::XMMatrixTranslation(scene->pos[0], scene->pos[1], scene->pos[2]);
     cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixMultiply(matRot, matTrans));
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -850,9 +850,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
         // ƒ|ƒŠƒSƒ“•`‰æ
-        context->DrawIndexed(mesh->index_num, 0, 0);
-
-        break;
+        context->DrawIndexed(mesh->index_num, 4, 0);
     }
 }
 

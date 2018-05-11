@@ -65,7 +65,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 #elif defined DEFAULTFONT_TEST
     DefaultFontTest(device, context);
 #elif defined MODEL_TEST
-    if (!s_Mqo.Create(device, context, L"test.mqo"))
+    if (!s_Mqo.Create(device, context, L"manto/manto.mqo"))
         return false;
 #else
     s_Render2D.Create(device);
