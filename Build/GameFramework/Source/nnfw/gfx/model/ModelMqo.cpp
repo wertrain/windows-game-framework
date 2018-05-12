@@ -529,21 +529,25 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
         auto obj = objects->at(obj_idx);
         _ASSERT(obj->face_num > 0);
 
+        // インデックス数をカウントしておく
+        int index_num = 0;
+        for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
+        {
+            auto face = obj->faces[face_idx];
+            _ASSERT(face.num > 0);
+            if (face.num == 3) index_num += face.num;
+            else if (face.num == 4) index_num += face.num + 2;
+            else index_num += face.num;
+        }
+
         // 1メッシュ分のデータ
         MeshData *mesh = new MeshData();
-        mesh->vertices = new VertexData[obj->vertex_num];
-        mesh->indices = new uint32_t[obj->face_num * 6]; // 多めに確保
+        mesh->vertices = new VertexData[index_num];
+        mesh->indices = new uint32_t[index_num];
         mesh->material_id = obj->faces[0].M;
         mesh->visible = obj->visible;
 
-        for (int i = 0; i < obj->vertex_num; ++i)
-        {
-            mesh->vertices[i].pos[0] = obj->vertices[i].pos[0];
-            mesh->vertices[i].pos[1] = obj->vertices[i].pos[1];
-            mesh->vertices[i].pos[2] = obj->vertices[i].pos[2];
-        }
-
-        int idx_idx = 0;
+        int index_idx = 0;
         for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
         {
             // この範囲は同じマテリアルである想定
@@ -553,14 +557,30 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             _ASSERT(face.num > 0);
             for (int v_idx = 0; v_idx < face.num; ++v_idx)
             {
-                mesh->indices[idx_idx] = face.V[v_idx];
-                idx_idx++;
+                const uint32_t index = face.V[v_idx];
+                mesh->indices[index_idx] = index;
+                mesh->vertices[index].pos[0] = obj->vertices[index].pos[0];
+                mesh->vertices[index].pos[1] = obj->vertices[index].pos[1];
+                mesh->vertices[index].pos[2] = obj->vertices[index].pos[2];
+                const uint32_t uv_index = v_idx * 2;
+                mesh->vertices[index].uv[0] = face.UV[uv_index + 0];
+                mesh->vertices[index].uv[1] = face.UV[uv_index + 1];
+                index_idx++;
             }
-            mesh->indices[idx_idx++] = mesh->indices[idx_idx - 4];
-            mesh->indices[idx_idx++] = mesh->indices[idx_idx - 3];
+            if (face.num == 4)
+            {
+                mesh->indices[index_idx] = mesh->indices[index_idx - 4];
+                mesh->vertices[index_idx].uv[0] = mesh->vertices[index_idx - 4].uv[0];
+                mesh->vertices[index_idx].uv[1] = mesh->vertices[index_idx - 4].uv[1];
+                ++index_idx;
+                mesh->indices[index_idx] = mesh->indices[index_idx - 3];
+                mesh->vertices[index_idx].uv[0] = mesh->vertices[index_idx - 3].uv[0];
+                mesh->vertices[index_idx].uv[1] = mesh->vertices[index_idx - 3].uv[1];
+                ++index_idx;
+            }
         }
-        mesh->vertex_num = obj->vertex_num;
-        mesh->index_num = idx_idx;
+        mesh->vertex_num = index_idx;
+        mesh->index_num = index_idx;
 
         // バーテックスバッファ
         {
