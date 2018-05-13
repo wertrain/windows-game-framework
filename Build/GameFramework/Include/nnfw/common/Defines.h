@@ -64,6 +64,8 @@
 #define FRAMEWORK_USE_DIRECT_X_
 #endif // _WIN64
 
+NS_FW_BEGIN
+
 template <typename T>
 inline void SafeDelete(T*& p)
 {
@@ -93,5 +95,7 @@ inline void SafeRelease(T*& p)
         (p) = nullptr;
     }
 }
+
+NS_FW_END
 
 #endif // COMMON_DEFINES_H_
