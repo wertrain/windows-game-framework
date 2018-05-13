@@ -79,8 +79,8 @@ public:
     bool Read(const wchar_t* file);
     void Destroy();
     const Scene* GetScene();
-    const std::vector<Material*>* GetMaterials();
-    const std::vector<Object*>* GetObjects();
+    const fw::vector<Material*>* GetMaterials();
+    const fw::vector<Object*>* GetObjects();
 
 private:
     bool ParseScene(FILE* fp, char* buffer, const int bufferSize);
@@ -91,8 +91,8 @@ private:
 
 private:
     Scene mScene;
-    std::vector<Material*> mMaterials;
-    std::vector<Object*> mObjects;
+    fw::vector<Material*> mMaterials;
+    fw::vector<Object*> mObjects;
 };
 
 class ModelMqo : public ModelBase
@@ -118,7 +118,7 @@ private:
     struct MeshData
     {
         VertexData* vertices;
-        uint32_t* indices;
+        uint16_t* indices;
         ID3D11Buffer* vertexBuffer;
         ID3D11Buffer* indexBuffer;
         uint32_t vertex_num;
@@ -158,8 +158,8 @@ private:
 private:
     MqoFile mFile;
 
-    std::vector<MeshData*> mMeshData;
-    std::vector<MaterialData*> mMaterials;
+    fw::vector<MeshData*> mMeshData;
+    fw::vector<MaterialData*> mMaterials;
     ID3D11Buffer* mConstBuffer;
     ID3D11InputLayout* mVertexLayout;
     ID3D11RasterizerState* mRsState;

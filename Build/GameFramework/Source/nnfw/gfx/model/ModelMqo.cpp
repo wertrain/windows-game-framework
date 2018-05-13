@@ -97,12 +97,12 @@ const MqoFile::Scene* MqoFile::GetScene()
     return &mScene;
 }
 
-const std::vector<MqoFile::Material*>* MqoFile::GetMaterials()
+const fw::vector<MqoFile::Material*>* MqoFile::GetMaterials()
 {
     return &mMaterials;
 }
 
-const std::vector<MqoFile::Object*>* MqoFile::GetObjects()
+const fw::vector<MqoFile::Object*>* MqoFile::GetObjects()
 {
     return &mObjects;
 }

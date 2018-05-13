@@ -164,7 +164,7 @@ bool TextWriter::WriteChar(const wchar_t c, ID3D11Device* device, ID3D11DeviceCo
     GLYPHMETRICS GM;
     CONST MAT2 Mat = { { 0,1 },{ 0,0 },{ 0,0 },{ 0,1 } };
     DWORD size = GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, 0, NULL, &Mat);
-    std::unique_ptr<BYTE> ptr(new BYTE[size]);
+    fw::unique_ptr<BYTE> ptr(new BYTE[size]);
     if (GDI_ERROR == GetGlyphOutline(hdc, code, GGO_GRAY4_BITMAP, &GM, size, ptr.get(), &Mat))
     {
         return false;
@@ -249,9 +249,9 @@ bool TextWriter::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11Devi
     int textureHeight = 0;
 
     const size_t textLength = wcslen(text);
-    std::unique_ptr<TEXTMETRIC> tmArray(new TEXTMETRIC[textLength]);
-    std::unique_ptr<GLYPHMETRICS> gmArray(new GLYPHMETRICS[textLength]);
-    std::vector<std::unique_ptr<BYTE>> ptrVector;
+    fw::unique_ptr<TEXTMETRIC> tmArray(new TEXTMETRIC[textLength]);
+    fw::unique_ptr<GLYPHMETRICS> gmArray(new GLYPHMETRICS[textLength]);
+    fw::vector<std::unique_ptr<BYTE>> ptrVector;
     for (int32_t index = 0; index < textLength; ++index)
     {
         UINT code = (UINT)text[index];

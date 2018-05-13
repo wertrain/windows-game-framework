@@ -54,4 +54,17 @@ typedef DirectX::XMMATRIX Matrix44;
 
 #endif // FRAMEWORK_USE_DIRECT_X_
 
+#include <vector>
+#include <memory>
+
+NS_FW_BEGIN
+
+template <class T>
+using vector = std::vector<T>;
+
+template <class T>
+using unique_ptr = std::unique_ptr<T>;
+
+NS_FW_END
+
 #endif // COMMON_TYPES_H_

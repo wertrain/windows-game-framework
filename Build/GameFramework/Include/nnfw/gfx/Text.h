@@ -44,7 +44,7 @@ private:
         DefaultFont font;
         bool empty;
     };
-    typedef std::vector<LayerParam*> LayerArray;
+    typedef fw::vector<LayerParam*> LayerArray;
 
 private:
     LayerArray mLayerArray;
