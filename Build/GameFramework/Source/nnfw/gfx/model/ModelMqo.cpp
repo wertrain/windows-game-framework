@@ -535,52 +535,62 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
         {
             auto face = obj->faces[face_idx];
             _ASSERT(face.num > 0);
-            if (face.num == 3) index_num += face.num;
-            else if (face.num == 4) index_num += face.num + 2;
-            else index_num += face.num;
+            for (int p = 0; p < face.num - 2; ++p)
+            {
+                index_num += 3;
+            }
         }
 
         // 1メッシュ分のデータ
         MeshData *mesh = new MeshData();
         mesh->vertices = new VertexData[index_num];
-        mesh->indices = new uint32_t[index_num];
+        mesh->indices = new uint16_t[index_num];
         mesh->material_id = obj->faces[0].M;
         mesh->visible = obj->visible;
 
-        int index_idx = 0;
+        int v_count = 0;
         for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
         {
-            // この範囲は同じマテリアルである想定
-            //_ASSERT(mesh->material_id == obj->faces[face_idx].M);
-
             auto face = obj->faces[face_idx];
-            _ASSERT(face.num > 0);
-            for (int v_idx = 0; v_idx < face.num; ++v_idx)
+            for (int p = 0; p < face.num - 2; ++p)
             {
-                const uint32_t index = face.V[v_idx];
-                mesh->indices[index_idx] = index;
-                mesh->vertices[index].pos[0] = obj->vertices[index].pos[0];
-                mesh->vertices[index].pos[1] = obj->vertices[index].pos[1];
-                mesh->vertices[index].pos[2] = obj->vertices[index].pos[2];
-                const uint32_t uv_index = v_idx * 2;
-                mesh->vertices[index].uv[0] = face.UV[uv_index + 0];
-                mesh->vertices[index].uv[1] = face.UV[uv_index + 1];
-                index_idx++;
-            }
-            if (face.num == 4)
-            {
-                mesh->indices[index_idx] = mesh->indices[index_idx - 4];
-                mesh->vertices[index_idx].uv[0] = mesh->vertices[index_idx - 4].uv[0];
-                mesh->vertices[index_idx].uv[1] = mesh->vertices[index_idx - 4].uv[1];
-                ++index_idx;
-                mesh->indices[index_idx] = mesh->indices[index_idx - 3];
-                mesh->vertices[index_idx].uv[0] = mesh->vertices[index_idx - 3].uv[0];
-                mesh->vertices[index_idx].uv[1] = mesh->vertices[index_idx - 3].uv[1];
-                ++index_idx;
+                int t2 = 0;                     // とりあえず
+                int t1 = (p + 1) % face.num;    // ポリゴン裏返し
+                int t0 = (p + 2) % face.num;    // DX11のCW,CCWとの対応が必要
+                int i0 = face.V[t0];
+                int i1 = face.V[t1];
+                int i2 = face.V[t2];
+                
+                mesh->vertices[v_count + 0].pos[0] = obj->vertices[i0].pos[0];
+                mesh->vertices[v_count + 0].pos[1] = obj->vertices[i0].pos[1];
+                mesh->vertices[v_count + 0].pos[2] = obj->vertices[i0].pos[2];
+
+                mesh->vertices[v_count + 1].pos[0] = obj->vertices[i1].pos[0];
+                mesh->vertices[v_count + 1].pos[1] = obj->vertices[i1].pos[1];
+                mesh->vertices[v_count + 1].pos[2] = obj->vertices[i1].pos[2];
+
+                mesh->vertices[v_count + 2].pos[0] = obj->vertices[i2].pos[0];
+                mesh->vertices[v_count + 2].pos[1] = obj->vertices[i2].pos[1];
+                mesh->vertices[v_count + 2].pos[2] = obj->vertices[i2].pos[2];
+
+                mesh->vertices[v_count + 0].uv[0] = face.UV[t0 * 2 + 0];
+                mesh->vertices[v_count + 0].uv[1] = face.UV[t0 * 2 + 1];
+
+                mesh->vertices[v_count + 1].uv[0] = face.UV[t1 * 2 + 0];
+                mesh->vertices[v_count + 1].uv[1] = face.UV[t1 * 2 + 1];
+
+                mesh->vertices[v_count + 2].uv[0] = face.UV[t2 * 2 + 0];
+                mesh->vertices[v_count + 2].uv[1] = face.UV[t2 * 2 + 1];
+
+                
+                mesh->indices[v_count + 0] = v_count + 0;
+                mesh->indices[v_count + 1] = v_count + 1;
+                mesh->indices[v_count + 2] = v_count + 2;
+                v_count += 3;
             }
         }
-        mesh->vertex_num = index_idx;
-        mesh->index_num = index_idx;
+        mesh->vertex_num = v_count;
+        mesh->index_num = v_count;
 
         // バーテックスバッファ
         {
@@ -604,7 +614,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
             D3D11_BUFFER_DESC bd;
             ZeroMemory(&bd, sizeof(bd));
             bd.Usage = D3D11_USAGE_DEFAULT;
-            bd.ByteWidth = sizeof(uint32_t) * mesh->index_num;
+            bd.ByteWidth = sizeof(uint16_t) * mesh->index_num;
             bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
             bd.CPUAccessFlags = 0;
             D3D11_SUBRESOURCE_DATA InitData;
@@ -692,10 +702,9 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
     // ブレンドステート
     CD3D11_BLEND_DESC bddesc(default_state);
-    //ZeroMemory(&bddesc, sizeof(D3D11_BLEND_DESC));
-    //bddesc.AlphaToCoverageEnable = TRUE;
-    //bddesc.IndependentBlendEnable = TRUE;
-    //bddesc.RenderTarget[0].BlendEnable = TRUE;
+    bddesc.AlphaToCoverageEnable = TRUE;
+    bddesc.IndependentBlendEnable = TRUE;
+    bddesc.RenderTarget[0].BlendEnable = TRUE;
     hr = device->CreateBlendState(&bddesc, &mBdState);
     if (FAILED(hr)) {
         return false;
@@ -706,78 +715,33 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
 
 void ModelMqo::Destroy()
 {
-    if (mPixelShader)
-    {
-        mPixelShader->Release();
-        mPixelShader = nullptr;
-    }
-    if (mVertexShader)
-    {
-        mVertexShader->Release();
-        mVertexShader = nullptr;
-    }
-    if (mRsState)
-    {
-        mRsState->Release();
-        mRsState = nullptr;
-    }
-    if (mDsState)
-    {
-        mDsState->Release();
-        mDsState = nullptr;
-    }
-    if (mBdState)
-    {
-        mBdState->Release();
-        mBdState = nullptr;
-    }
-    if (mVertexLayout)
-    {
-        mVertexLayout->Release();
-        mVertexLayout = nullptr;
-    }
-    if (mConstBuffer)
-    {
-        mConstBuffer->Release();
-        mConstBuffer = nullptr;
-    }
+    SafeRelease(mPixelShader);
+    SafeRelease(mVertexShader);
 
-    for each (auto mat in mMaterials)
+    SafeRelease(mRsState);
+    SafeRelease(mDsState);
+    SafeRelease(mBdState);
+
+    SafeRelease(mVertexLayout);
+    SafeRelease(mConstBuffer);
+
+    for each (auto material in mMaterials)
     {
-        if (mat->sampler)
-        {
-            mat->sampler->Release();
-            mat->sampler = nullptr;
-        }
-        if (mat->shaderResView)
-        {
-            mat->shaderResView->Release();
-            mat->shaderResView = nullptr;
-        }
-        if (mat->texture)
-        {
-            mat->texture->Release();
-            mat->texture = nullptr;
-        }
-        delete mat;
+        SafeRelease(material->sampler);
+        SafeRelease(material->shaderResView);
+        SafeRelease(material->texture);
+        SafeDelete(material);
     }
     mMaterials.clear();
 
     for each (auto mesh in mMeshData)
     {
-        if (mesh->vertexBuffer)
-        {
-            mesh->vertexBuffer->Release();
-            mesh->vertexBuffer = nullptr;
-        }
-        if (mesh->indexBuffer)
-        {
-            mesh->indexBuffer->Release();
-            mesh->indexBuffer = nullptr;
-        }
-        delete[] mesh->vertices;
-        delete[] mesh->indices;
-        delete mesh;
+        SafeRelease(mesh->vertexBuffer);
+        SafeRelease(mesh->indexBuffer);
+
+        SafeDeleteArray(mesh->vertices);
+        SafeDeleteArray(mesh->indices);
+        SafeDelete(mesh);
     }
     mMeshData.clear();
 
@@ -790,7 +754,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     ConstBuffer cbuff;
 
     // プロジェクション行列
-    float aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
+    float aspect = NS_FW_CONST::WIDTH / static_cast<float>(NS_FW_CONST::HEIGHT);//アスペクト比
     float min_z = 0.01f;
     float max_z = 10000.0f;
     float fov = DirectX::XM_PIDIV4;//画角
@@ -798,13 +762,15 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
 
     auto scene = mFile.GetScene();
     // カメラ行列
-    DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
-    DirectX::XMVECTOR At = DirectX::XMVectorSet(scene->lookat[0], scene->lookat[1], scene->lookat[2], 0.0f);
+    DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -800.0f, 0.0f);
+    //DirectX::XMVECTOR At = DirectX::XMVectorSet(scene->lookat[0], scene->lookat[1], scene->lookat[2], 0.0f);
+    DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
     static float rotY = 0;
     Matrix44 matRot = DirectX::XMMatrixRotationY(rotY); rotY += 0.01f;
-    Matrix44 matTrans = DirectX::XMMatrixTranslation(scene->pos[0], scene->pos[1], scene->pos[2]);
+    //Matrix44 matTrans = DirectX::XMMatrixTranslation(scene->pos[0], scene->pos[1], scene->pos[2]); // こいつのせいでちらついていた！！
+    Matrix44 matTrans = DirectX::XMMatrixTranslation(0.0f, -100.0f, 0.0f);
     cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixMultiply(matRot, matTrans));
     cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
     // シェーダーでは行列を転置してから渡す
@@ -812,6 +778,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     // 定数バッファ内容更新
     context->UpdateSubresource(mConstBuffer, 0, NULL, &cbuff, 0, 0);
 
+    int test = 0;
     for each(auto mesh in mMeshData)
     {
         if (mesh->visible == 0) continue;
@@ -827,10 +794,10 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->IASetInputLayout(mVertexLayout);
 
         // インデックスバッファ
-        context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+        context->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R16_UINT, 0);
 
         // プリミティブ形状
-        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         // シェーダ
         context->VSSetShader(mVertexShader, nullptr, 0);
@@ -839,8 +806,8 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         // 定数バッファ
         uint32_t cb_slot = 0;
         ID3D11Buffer* cb[1] = { mConstBuffer };
-        context->VSSetConstantBuffers(cb_slot, 1, cb);
-        context->PSSetConstantBuffers(cb_slot, 1, cb);
+        context->VSSetConstantBuffers(cb_slot, ARRAYSIZE(cb), cb);
+        context->PSSetConstantBuffers(cb_slot, ARRAYSIZE(cb), cb);
 
         // マテリアル
         if (mMaterials.size() > 0)
@@ -870,7 +837,7 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
         context->OMSetBlendState(mBdState, NULL, 0xfffffff);
 
         // ポリゴン描画
-        context->DrawIndexed(mesh->index_num, 4, 0);
+        context->DrawIndexed(mesh->index_num, 0, 0);
     }
 }
 
