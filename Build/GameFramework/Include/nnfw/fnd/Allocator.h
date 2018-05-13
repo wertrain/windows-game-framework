@@ -7,6 +7,9 @@
 
 NS_FW_FND_BEGIN
 
+/// <summary>
+/// アロケータ基底クラス
+/// </summary>
 class Allocator
 {
 public:
