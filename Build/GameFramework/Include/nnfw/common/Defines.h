@@ -64,4 +64,34 @@
 #define FRAMEWORK_USE_DIRECT_X_
 #endif // _WIN64
 
+template <typename T>
+inline void SafeDelete(T*& p)
+{
+    if (p != nullptr)
+    {
+        delete (p);
+        (p) = nullptr;
+    }
+}
+
+template <typename T>
+inline void SafeDeleteArray(T*& p)
+{
+    if (p != nullptr)
+    {
+        delete [] (p);
+        (p) = nullptr;
+    }
+}
+
+template <typename T>
+inline void SafeRelease(T*& p)
+{
+    if (p != nullptr)
+    {
+        (p)->Release();
+        (p) = nullptr;
+    }
+}
+
 #endif // COMMON_DEFINES_H_
