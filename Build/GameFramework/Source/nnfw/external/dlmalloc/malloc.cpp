@@ -520,6 +520,9 @@ MAX_RELEASE_CHECK_RATE   default: 4095 unless not HAVE_MMAP
   disable, set to MAX_SIZE_T. This may lead to a very slight speed
   improvement at the expense of carrying around more memory.
 */
+#include "Precompiled.h"
+#define USE_DL_PREFIX (0)
+#include <nnfw/external/dlmalloc/malloc.h>
 
 /* Version identifier to allow people to support multiple versions */
 #ifndef DLMALLOC_VERSION
@@ -1257,7 +1260,7 @@ DLMALLOC_EXPORT void  dlmalloc_stats(void);
   p = malloc(n);
   assert(malloc_usable_size(p) >= 256);
 */
-size_t dlmalloc_usable_size(void*);
+//size_t dlmalloc_usable_size(void*);
 
 #endif /* ONLY_MSPACES */
 

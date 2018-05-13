@@ -91,6 +91,12 @@
     <Filter Include="Source\nnfw\fnd">
       <UniqueIdentifier>{aaa744c7-a353-4524-bc49-7765cd754d6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\nnfw\external\dlmalloc">
+      <UniqueIdentifier>{2f5ef80e-4f62-4495-b79e-274d2201b951}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\nnfw\external\dlmalloc">
+      <UniqueIdentifier>{c91b6ce1-c0a1-4baa-9a1d-c88029606e3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\nnfw\ut\Memory.cpp">
@@ -191,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="Source\nnfw\fnd\Allocator.cpp">
       <Filter>Source\nnfw\fnd</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\external\dlmalloc\malloc.cpp">
+      <Filter>Source\nnfw\external\dlmalloc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\fnd\Allocator.h">
       <Filter>Include\nnfw\fnd</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\external\dlmalloc\malloc.h">
+      <Filter>Include\nnfw\external\dlmalloc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
