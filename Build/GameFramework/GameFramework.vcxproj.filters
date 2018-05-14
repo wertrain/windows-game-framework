@@ -201,6 +201,9 @@
     <ClCompile Include="Source\nnfw\external\dlmalloc\malloc.cpp">
       <Filter>Source\nnfw\external\dlmalloc</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\fnd\DefaultAllocator.cpp">
+      <Filter>Source\nnfw\fnd</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\external\dlmalloc\malloc.h">
       <Filter>Include\nnfw\external\dlmalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\fnd\DefaultAllocator.h">
+      <Filter>Include\nnfw\fnd</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
