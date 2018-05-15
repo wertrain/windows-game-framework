@@ -20,7 +20,7 @@ DefaultAllocator::~DefaultAllocator()
 
 bool DefaultAllocator::Initialize()
 {
-
+    return true;
 }
 
 void DefaultAllocator::Finalize()
