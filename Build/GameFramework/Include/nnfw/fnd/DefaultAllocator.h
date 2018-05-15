@@ -15,8 +15,15 @@ NS_FW_FND_BEGIN
 class DefaultAllocator : public Allocator
 {
 public:
+    DefaultAllocator();
+    ~DefaultAllocator();
+    bool Initialize();
+    void Finalize();
     void* Alloc(const size_t size);
     void Free(void* memory);
+
+private:
+
 };
 
 NS_FW_FND_END
