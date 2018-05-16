@@ -28,4 +28,14 @@ void DefaultAllocator::Finalize()
 
 }
 
+void* Alloc(const size_t size)
+{
+
+}
+
+void Free(void* memory)
+{
+
+}
+
 NS_FW_FND_END
