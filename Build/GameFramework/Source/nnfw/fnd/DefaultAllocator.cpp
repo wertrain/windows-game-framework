@@ -30,7 +30,7 @@ void DefaultAllocator::Finalize()
 
 void* Alloc(const size_t size)
 {
-
+    return nullptr;
 }
 
 void Free(void* memory)
