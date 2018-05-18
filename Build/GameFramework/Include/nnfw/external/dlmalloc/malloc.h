@@ -32,6 +32,7 @@ extern "C" {
 #ifndef ONLY_MSPACES
 #define ONLY_MSPACES 0     /* define to a value */
 #elif ONLY_MSPACES != 0
+#undef ONLY_MSPACES
 #define ONLY_MSPACES 1
 #endif  /* ONLY_MSPACES */
 #ifndef NO_MALLINFO

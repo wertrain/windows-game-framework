@@ -98,4 +98,10 @@ inline void SafeRelease(T*& p)
 
 NS_FW_END
 
+//-----------------------------------------------
+// for Doug Lea' s malloc
+#define ONLY_MSPACES (1)
+#define NO_MALLINFO (1)
+//-----------------------------------------------
+
 #endif // COMMON_DEFINES_H_

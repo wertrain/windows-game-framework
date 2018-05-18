@@ -521,8 +521,6 @@ MAX_RELEASE_CHECK_RATE   default: 4095 unless not HAVE_MMAP
   improvement at the expense of carrying around more memory.
 */
 #include "Precompiled.h"
-#define MSPACES (1) 
-#define USE_DL_PREFIX (0)
 #include <nnfw/external/dlmalloc/malloc.h>
 
 /* Version identifier to allow people to support multiple versions */
