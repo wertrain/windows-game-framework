@@ -14,6 +14,7 @@ class Allocator
 {
 public:
     virtual void* Alloc(const size_t size) = 0;
+    virtual void* Alloc(const size_t size, const size_t align) = 0;
     virtual void Free(void* memory) = 0;
 };
 
