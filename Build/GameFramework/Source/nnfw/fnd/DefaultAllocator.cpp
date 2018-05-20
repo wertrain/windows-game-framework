@@ -4,8 +4,17 @@
  */
 #include "Precompiled.h"
 
+
 #include <nnfw/external/dlmalloc/malloc.h>
 #include <nnfw/fnd/DefaultAllocator.h>
+
+#ifndef NDEBUG
+namespace
+{
+    static NS_FW::dictonary<void*, size_t> sInnerMemoryMap;
+    static NS_FW::mutex sMutex;
+}
+#endif // #ifndef NDEBUG
 
 NS_FW_FND_BEGIN
 
@@ -17,7 +26,7 @@ class DefaultAllocator::Implement
 {
 public:
     Implement()
-        : mAreaName()
+        : mId(0)
         , mMSpace(nullptr)
         , mSize(0)
     {
@@ -29,11 +38,9 @@ public:
 
     }
 
-    bool Initialize(const char* areaName, const size_t size)
+    bool Initialize(const uint8_t id, const size_t size)
     {
-        const size_t nameSize = (sizeof((mAreaName)) / sizeof((mAreaName)[0]));
-        strcpy_s(mAreaName, nameSize, areaName);
-
+        mId = id;
         mMSpace = create_mspace(size, 0);
         assert(mMSpace);
         mSize = size;
@@ -54,8 +61,14 @@ public:
         return mMSpace;
     }
 
+    const uint8_t GetId()
+    {
+        return mId;
+    }
+
 private:
-    char mAreaName[32];
+    uint8_t mId;
+    uint8_t padding[7];
     mspace mMSpace;
     size_t mSize;
 };
@@ -73,9 +86,9 @@ DefaultAllocator::~DefaultAllocator()
 
 }
 
-bool DefaultAllocator::Initialize(const char* areaName, const size_t size)
+bool DefaultAllocator::Initialize(const uint8_t id, const size_t size)
 {
-    return mImplement->Initialize(areaName, size);
+    return mImplement->Initialize(id, size);
 }
 
 void DefaultAllocator::Finalize()
@@ -90,17 +103,119 @@ void* DefaultAllocator::Alloc(const size_t size)
 
 void* DefaultAllocator::Alloc(const size_t size, const size_t align)
 {
-    return mspace_memalign(mImplement->GetMSpace(), align, size);
+    const size_t dbgblockSize =
+#ifdef NDEBUG
+        0;
+#else
+        sizeof(DefaultAllocator::DebugBlock);
+#endif
+    void* memory = mspace_memalign(mImplement->GetMSpace(), align, size + dbgblockSize);
+    assert(memory);
+
+#ifndef NDEBUG
+    SetDebugBlock(memory, size);
+#endif
+    return memory;
 }
 
 void DefaultAllocator::Free(void* memory)
 {
+#ifndef NDEBUG
+    {
+        NS_FW::ScopedLock<NS_FW::mutex> lock(sMutex);
+
+        auto it = sInnerMemoryMap.find(memory);
+        if (it != sInnerMemoryMap.end())
+        {
+            const size_t size = sInnerMemoryMap[memory];
+            DebugBlock* block = static_cast<DebugBlock*>(memory) + size;
+            // ƒƒ‚ƒŠ”j‰óŒŸo
+            assert(block->trap == DETECT_MEMORY_CORRUPTION_VALUE);
+
+            sInnerMemoryMap.erase(it);
+        }
+    }
+#endif
     mspace_free(mImplement->GetMSpace(), memory);
 }
 
 void* DefaultAllocator::ReAlloc(void* memory, const size_t size)
 {
-    return mspace_realloc(mImplement->GetMSpace(), memory, size);
+    const size_t dbgblockSize =
+#ifdef NDEBUG
+        0;
+#else
+        sizeof(DefaultAllocator::DebugBlock);
+#endif
+    void* newMemory = mspace_realloc(mImplement->GetMSpace(), memory, size + dbgblockSize);
+    assert(newMemory);
+
+#ifndef NDEBUG
+    SetDebugBlock(newMemory, size);
+#endif
+    return newMemory;
+}
+
+#ifndef NDEBUG
+void DefaultAllocator::SetDebugBlock(void* memory, const size_t size)
+{
+    const size_t dbgblockSize = sizeof(DefaultAllocator::DebugBlock);
+    DebugBlock* block = static_cast<DebugBlock*>(memory) + size - dbgblockSize;
+    memset(block, 0, sizeof(DebugBlock));
+    block->trap = DETECT_MEMORY_CORRUPTION_VALUE;
+    block->size = size;
+    block->memory = memory;
+    block->area = mImplement->GetId();
+
+    memset(memory, 0xCL, size);
+    sInnerMemoryMap[memory] = size;
+}
+#endif
+
+//-----------------------------------------------------------------------------
+
+DefaultAllocatorManager::DefaultAllocatorManager()
+    : mAllocator()
+{
+
+}
+
+DefaultAllocatorManager::~DefaultAllocatorManager()
+{
+
+}
+
+bool DefaultAllocatorManager::Initialize()
+{
+    const char* areaName[MemoryArea::AREA_NUM] =
+    {
+        "AREA_SYSTEM",
+        "AREA_MAIN",
+        "AREA_DEBUG"
+    };
+
+    for (int i = 0; i < MemoryArea::AREA_NUM; ++i)
+    {
+        if (!mAllocator[i].Initialize(static_cast<MemoryArea>(i), static_cast<MemoryAreaSize>(i)))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void DefaultAllocatorManager::Finalize()
+{
+    for (int i = 0; i < MemoryArea::AREA_NUM; ++i)
+    {
+        mAllocator[i].Finalize();
+    }
+}
+
+DefaultAllocator* DefaultAllocatorManager::GetAllocator(const MemoryArea area)
+{
+    assert(area < MemoryArea::AREA_NUM);
+    return &mAllocator[area];
 }
 
 NS_FW_FND_END

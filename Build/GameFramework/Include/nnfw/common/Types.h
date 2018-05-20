@@ -56,6 +56,8 @@ typedef DirectX::XMMATRIX Matrix44;
 
 #include <vector>
 #include <memory>
+#include <map>
+#include <mutex>
 
 NS_FW_BEGIN
 
@@ -64,6 +66,13 @@ using vector = std::vector<T>;
 
 template <class T>
 using unique_ptr = std::unique_ptr<T>;
+
+template <class K, class V>
+using dictonary = std::map<K, V>;
+
+using mutex = std::mutex;
+template <class T>
+using ScopedLock = std::lock_guard<T>;
 
 NS_FW_END
 
