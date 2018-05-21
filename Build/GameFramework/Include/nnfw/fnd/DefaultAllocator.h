@@ -15,6 +15,8 @@ NS_FW_FND_BEGIN
 /// </summary>
 class DefaultAllocator : public Allocator
 {
+    friend class DefaultAllocatorManager;
+
 public:
     DefaultAllocator();
     ~DefaultAllocator();
@@ -83,6 +85,13 @@ public:
     void Finalize();
 
     DefaultAllocator* GetAllocator(const MemoryArea area);
+
+#ifndef NDEBUG
+    /// メモリリークチェック
+    bool CheckMemoryLeak();
+    /// メモリ破壊チェック
+    bool CheckMemoryCorruption();
+#endif // #ifndef NDEBUG
 
 private:
     DefaultAllocator mAllocator[AREA_NUM];

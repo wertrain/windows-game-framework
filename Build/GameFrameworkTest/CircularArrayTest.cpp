@@ -13,10 +13,10 @@ namespace GameFrameworkTest
     public:        
         TEST_METHOD(CircularArrayTestBasic)
         {
-            const int N = 10;
+            const int N = 1024;
             NS_FW_UTIL::CircularArray<int, N> circularArray;
 
-            circularArray.Fill(-1);
+            //circularArray.Fill(-1);
 
             Assert::IsTrue(circularArray.IsEmpty());
             for (int i = 0; i <  N; ++i)
@@ -24,7 +24,7 @@ namespace GameFrameworkTest
                 Assert::IsTrue(circularArray.Enqueue(i));
             }
             Assert::IsFalse(circularArray.IsEmpty());
-            Assert::IsFalse(circularArray.Enqueue(11));
+            Assert::IsFalse(circularArray.Enqueue(N + 1));
 
             for (int i = 0; i < N; ++i)
             {

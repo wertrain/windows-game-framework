@@ -131,6 +131,9 @@ void DefaultAllocator::Free(void* memory)
             DebugBlock* block = static_cast<DebugBlock*>(memory) + size;
             // メモリ破壊検出
             assert(block->trap == DETECT_MEMORY_CORRUPTION_VALUE);
+            
+            // メモリを指定値で埋める
+            memset(memory, 0xFE, size + sizeof(DefaultAllocator::DebugBlock));
 
             sInnerMemoryMap.erase(it);
         }
@@ -160,14 +163,16 @@ void* DefaultAllocator::ReAlloc(void* memory, const size_t size)
 void DefaultAllocator::SetDebugBlock(void* memory, const size_t size)
 {
     const size_t dbgblockSize = sizeof(DefaultAllocator::DebugBlock);
-    DebugBlock* block = static_cast<DebugBlock*>(memory) + size - dbgblockSize;
+    // メモリを指定値で埋める
+    memset(memory, 0xC1, size);
+
+    DebugBlock* block = static_cast<DebugBlock*>(memory) + size;
     memset(block, 0, sizeof(DebugBlock));
     block->trap = DETECT_MEMORY_CORRUPTION_VALUE;
     block->size = size;
     block->memory = memory;
     block->area = mImplement->GetId();
 
-    memset(memory, 0xCL, size);
     sInnerMemoryMap[memory] = size;
 }
 #endif
@@ -217,5 +222,36 @@ DefaultAllocator* DefaultAllocatorManager::GetAllocator(const MemoryArea area)
     assert(area < MemoryArea::AREA_NUM);
     return &mAllocator[area];
 }
+
+//-----------------------------------------------------------------------------
+
+#ifndef NDEBUG
+
+#include <nnfw/common/Debug.h>
+
+bool DefaultAllocatorManager::CheckMemoryLeak()
+{
+    if (sInnerMemoryMap.empty())
+    {
+        return false;
+    }
+    return true;
+}
+
+bool DefaultAllocatorManager::CheckMemoryCorruption()
+{
+    for each (auto it in sInnerMemoryMap)
+    {
+        DefaultAllocator::DebugBlock* block = static_cast<DefaultAllocator::DebugBlock*>(it.first) + it.second;
+
+        if (block->trap != DefaultAllocator::DETECT_MEMORY_CORRUPTION_VALUE)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+#endif // #ifndef NDEBUG
 
 NS_FW_FND_END
