@@ -166,7 +166,7 @@ void DefaultAllocator::SetDebugBlock(void* memory, const size_t size)
     memset(memory, 0xC1, size);
 
     DebugBlock* block = reinterpret_cast<DebugBlock*>(reinterpret_cast<size_t>(memory) + size);
-    memset(block, 0xCC, sizeof(DebugBlock));
+    memset(block, 0, sizeof(DebugBlock));
     block->trap = DETECT_MEMORY_CORRUPTION_VALUE;
     block->size = size;
     block->memory = memory;
@@ -226,8 +226,6 @@ DefaultAllocator* DefaultAllocatorManager::GetAllocator(const MemoryArea area)
 
 #ifndef NDEBUG
 
-#include <nnfw/common/Debug.h>
-
 bool DefaultAllocatorManager::CheckMemoryLeak()
 {
     if (sInnerMemoryMap.empty())
@@ -249,6 +247,22 @@ bool DefaultAllocatorManager::CheckMemoryCorruption()
         }
     }
     return false;
+}
+
+uint32_t DefaultAllocatorManager::RestoreMemoryCorruption()
+{
+    uint32_t restoreCount = 0;
+    for each (auto it in sInnerMemoryMap)
+    {
+        DefaultAllocator::DebugBlock* block = reinterpret_cast<DefaultAllocator::DebugBlock*>((reinterpret_cast<size_t>(it.first) + it.second));
+
+        if (block->trap != DefaultAllocator::DETECT_MEMORY_CORRUPTION_VALUE)
+        {
+            block->trap = DefaultAllocator::DETECT_MEMORY_CORRUPTION_VALUE;
+            ++restoreCount;
+        }
+    }
+    return restoreCount;
 }
 
 #endif // #ifndef NDEBUG
