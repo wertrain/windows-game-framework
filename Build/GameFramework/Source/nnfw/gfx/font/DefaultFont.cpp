@@ -66,6 +66,8 @@ DefaultFont::~DefaultFont()
 
 bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+    NNFW_UNUSED(context);
+
     // 頂点データ構造体
     struct VertexData
     {

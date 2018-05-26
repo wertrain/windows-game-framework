@@ -548,7 +548,7 @@ bool ModelMqo::Create(ID3D11Device* device, ID3D11DeviceContext* context, const 
         mesh->material_id = obj->faces[0].M;
         mesh->visible = obj->visible;
 
-        int v_count = 0;
+        uint16_t v_count = 0;
         for (int face_idx = 0; face_idx < obj->face_num; ++face_idx)
         {
             auto face = obj->faces[face_idx];
@@ -760,9 +760,9 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     float fov = DirectX::XM_PIDIV4;//‰æŠp
     cbuff.mtxProj = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(fov, aspect, min_z, max_z));
 
-    auto scene = mFile.GetScene();
     // ƒJƒƒ‰s—ñ
     DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -800.0f, 0.0f);
+    //auto scene = mFile.GetScene();
     //DirectX::XMVECTOR At = DirectX::XMVectorSet(scene->lookat[0], scene->lookat[1], scene->lookat[2], 0.0f);
     DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);

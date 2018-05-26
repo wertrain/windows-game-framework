@@ -56,6 +56,8 @@ bool Primitive::Create(
     const wchar_t* texture_filename
 )
 {
+    NNFW_UNUSED(context);
+
     const bool use_texture = texture_filename != nullptr;
 
     mVertexDataSize = vertex_data_size;

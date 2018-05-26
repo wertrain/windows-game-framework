@@ -64,6 +64,11 @@
 #define FRAMEWORK_USE_DIRECT_X_
 #endif // _WIN64
 
+/// <summary>
+/// UNUSED É}ÉNÉç
+/// </summary>
+#define NNFW_UNUSED(x) ((void)(x))
+
 NS_FW_BEGIN
 
 template <typename T>

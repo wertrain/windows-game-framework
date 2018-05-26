@@ -353,12 +353,15 @@ bool TextWriter::WriteText(const wchar_t* text, ID3D11Device* device, ID3D11Devi
 
 bool TextWriter::WriteText(ID3D11Device* device, ID3D11DeviceContext* context)
 {
+    NNFW_UNUSED(device);
+    NNFW_UNUSED(context);
+
     return false;
 }
 
 void TextWriter::Render(ID3D11DeviceContext* context)
 {
-
+    NNFW_UNUSED(context);
 }
 
 NS_FW_GFX_END
