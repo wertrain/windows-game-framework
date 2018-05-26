@@ -12,6 +12,7 @@ NS_FW_FND_BEGIN
 
 /// <summary>
 /// デフォルトアロケータ
+/// メモリ破壊検出機能付き
 /// </summary>
 class DefaultAllocator : public Allocator
 {
@@ -29,9 +30,9 @@ public:
     void* ReAlloc(void* memory, const size_t size);
 
 private:
-    static const size_t DEFAULT_ALLOC_SIZE = 1024 * 1024 * 64;
-    static const size_t DEFAULT_ALIGNMENT_SIZE = 16;
-    static const uint32_t DETECT_MEMORY_CORRUPTION_VALUE = 0xBAADF00D;
+    static const size_t DEFAULT_ALLOC_SIZE = 1024 * 1024 * 64;         ///< 確保メモリ初期値
+    static const size_t DEFAULT_ALIGNMENT_SIZE = 16;                   ///< アラインメント初期値
+    static const uint32_t DETECT_MEMORY_CORRUPTION_VALUE = 0xBAADF00D; ///< メモリ破壊検出用の値
 
 private:
     struct DebugBlock
@@ -91,6 +92,8 @@ public:
     bool CheckMemoryLeak();
     /// メモリ破壊チェック
     bool CheckMemoryCorruption();
+    /// メモリ破壊修復（テスト用）
+    uint32_t RestoreMemoryCorruption();
 #endif // #ifndef NDEBUG
 
 private:
