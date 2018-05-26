@@ -778,7 +778,6 @@ void ModelMqo::Render(ID3D11DeviceContext* context)
     // 定数バッファ内容更新
     context->UpdateSubresource(mConstBuffer, 0, NULL, &cbuff, 0, 0);
 
-    int test = 0;
     for each(auto mesh in mMeshData)
     {
         if (mesh->visible == 0) continue;
