@@ -43,7 +43,11 @@ namespace GameFrameworkTest
                 // メモリ破壊チェック
                 Assert::IsFalse(manager.CheckMemoryCorruption());
                 // メモリ破壊
-                //static_cast<char*>(memory)[64] = 0x00;
+                static_cast<char*>(memory)[64] = 0x00;
+                // メモリ破壊再チェック
+                Assert::IsTrue(manager.CheckMemoryCorruption());
+                // メモリ修復
+                Assert::IsTrue(1 == manager.RestoreMemoryCorruption());
 
                 allocator->Free(memory);
             }
