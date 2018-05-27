@@ -8,21 +8,27 @@
 NS_FW_UTIL_BEGIN
 
 /// <summary>
-/// 環状配列
+/// 環状配列基底クラス
 /// </summary>
-template <typename T, int N>
-class CircularArray
+template <typename T>
+class CircularArrayInterface
 {
 public:
-    CircularArray<T, N>::CircularArray()
-        : mArray()
+    CircularArrayInterface<T>::CircularArrayInterface()
+        : mArray(nullptr)
         , mHeadIndex(0)
         , mTailIndex(0)
         , mCount(0)
     {
 
     }
-    ~CircularArray() {};
+    virtual ~CircularArrayInterface() {}
+
+    T &operator[](const size_t i)
+    {
+        assert(i < mSize);
+        return mArray[(mHeadIndex + i) % mSize];
+    }
 
     void Reset()
     {
@@ -39,14 +45,14 @@ public:
         }
     }
 
-    bool Enqueue(const T value)
+    bool Enqueue(const T& value)
     {
-        if (mCount >= N)
+        if (mCount >= mSize)
         {
             return false;
         }
         mArray[mTailIndex] = value;
-        mTailIndex = (mTailIndex + 1) % N;
+        mTailIndex = (mTailIndex + 1) % mSize;
         ++mCount;
         return true;
     }
@@ -58,7 +64,7 @@ public:
             return false;
         }
         value = mArray[mHeadIndex];
-        mHeadIndex = (mHeadIndex + 1) % N;
+        mHeadIndex = (mHeadIndex + 1) % mSize;
         --mCount;
         return true;
     }
@@ -70,11 +76,83 @@ public:
         //return mHeadIndex == mTailIndex;
     }
 
+    size_t GetSize()
+    {
+        return mSize;
+    }
+
+protected:
+    void Construct(T* p, const size_t size)
+    {
+        mArray = p;
+        mSize = size;
+    }
+
 private:
-    T mArray[N];
+    T* mArray;
+    size_t mSize;
     uint32_t mHeadIndex;
     uint32_t mTailIndex;
     uint32_t mCount;
+};
+
+/// <summary>
+/// 固定長環状配列
+/// </summary>
+template <typename T, size_t N>
+class FixedCircularArray : public CircularArrayInterface<T>
+{
+public:
+    FixedCircularArray() 
+        : CircularArrayInterface()
+    {
+        Construct(mData, N);
+    }
+    ~FixedCircularArray() {}
+
+private:
+    T mData[N];
+};
+
+/// <summary>
+/// 可変長メモリ環状配列
+/// </summary>
+template <typename T>
+class CircularArray : public CircularArrayInterface<T>
+{
+public:
+    CircularArray()
+        : CircularArrayInterface()
+        , mData(nullptr)
+    {
+
+    }
+    CircularArray(const size_t size)
+        : CircularArrayInterface()
+        , mData(new T[size])
+    {
+        Construct(mData, size);
+    }
+    ~CircularArray() { Destroy(); }
+
+    bool Create(const size_t size)
+    {
+        if (mData == nullptr)
+        {
+            mData = new T[size];
+            Construct(mData, size);
+            return true;
+        }
+        return false;
+    }
+    void Destroy()
+    {
+        delete mData;
+        mData = nullptr;
+    }
+
+private:
+    T* mData;
 };
 
 NS_FW_UTIL_END
