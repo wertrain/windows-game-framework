@@ -97,6 +97,9 @@
     <Filter Include="Include\nnfw\external\dlmalloc">
       <UniqueIdentifier>{c91b6ce1-c0a1-4baa-9a1d-c88029606e3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include\nnfw\external\MersenneTwister">
+      <UniqueIdentifier>{2e0b47e4-db22-4681-b259-a9c16060652b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\nnfw\ut\Memory.cpp">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="Source\nnfw\fnd\DefaultAllocator.cpp">
       <Filter>Source\nnfw\fnd</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\ut\Random.cpp">
+      <Filter>Source\nnfw\ut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +343,12 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\fnd\DefaultAllocator.h">
       <Filter>Include\nnfw\fnd</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\ut\Random.h">
+      <Filter>Include\nnfw\ut</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\external\MersenneTwister\MersenneTwister.h">
+      <Filter>Include\nnfw\external\MersenneTwister</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
