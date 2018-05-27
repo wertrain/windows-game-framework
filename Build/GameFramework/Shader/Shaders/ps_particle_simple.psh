@@ -5,21 +5,13 @@
 Texture2D texDiffuse : register(t0);
 SamplerState samLinear : register(s0);
 
-cbuffer ConstBuff : register(b0)
-{
-    matrix mtxWorld;
-};
-
-//--------------------------------------------------------------------------------------
-
 struct PS_INPUT
 {
     float4 Pos : SV_POSITION;
-    float4 Color : COLOR;
-    float4 UV : TEXCOORD;
+    float2 UV : TEXCOORD;
 };
 
 float4 psMain(PS_INPUT input) : SV_Target
 {
-    return texDiffuse.Sample(samLinear, input.UV.xy) ;
+    return texDiffuse.Sample(samLinear, input.UV);
 }
