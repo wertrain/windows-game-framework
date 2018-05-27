@@ -21,6 +21,7 @@ public:
     Random(unsigned long aulInitKey[], int iKeyLength);
     ~Random();
 
+    float NextFloat();
     double NextDouble();
     uint32_t NextUInt();
 

@@ -31,6 +31,11 @@ Random::~Random()
 
 }
 
+float Random::NextFloat()
+{
+    return static_cast<float>(mImplement.genrand_real1());
+}
+
 double Random::NextDouble()
 {
     return mImplement.genrand_real1();
