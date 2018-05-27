@@ -26,7 +26,6 @@ public:
 
     T &operator[](const size_t i)
     {
-        assert(i < mSize);
         return mArray[(mHeadIndex + i) % mSize];
     }
 

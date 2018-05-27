@@ -42,6 +42,12 @@ namespace GameFrameworkTest
 
             for (int i = 0; i < N; ++i)
             {
+                int value = (*circularArray)[i];
+                Assert::AreEqual(i, value);
+            }
+
+            for (int i = 0; i < N; ++i)
+            {
                 int value = 0;
                 circularArray->Dequeue(value);
                 Assert::AreEqual(i, value);
