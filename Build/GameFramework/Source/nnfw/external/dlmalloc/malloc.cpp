@@ -522,6 +522,9 @@ MAX_RELEASE_CHECK_RATE   default: 4095 unless not HAVE_MMAP
 */
 #include "Precompiled.h"
 #include <nnfw/external/dlmalloc/malloc.h>
+#pragma warning( push )  
+#pragma warning( disable : 4702 )
+#pragma warning( disable : 4127 )
 
 /* Version identifier to allow people to support multiple versions */
 #ifndef DLMALLOC_VERSION
@@ -6280,3 +6283,4 @@ History:
          structure of old version,  but most details differ.)
 
 */
+#pragma warning( pop )  
