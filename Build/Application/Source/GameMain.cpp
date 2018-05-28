@@ -7,17 +7,19 @@
 #include <nnfw/gfx/Includes.h>
 //#include "Tool/Archiver/Includes.h"
 #include <nnfw/gfx/Model/ModelMqo.h>
+#include <nnfw/gfx/effect/Particle.h>
 
 fw::gfx::TextWriter s_Text;
 fw::gfx::Texture s_Texure;
 fw::gfx::Render2D s_Render2D;
 fw::gfx::DefaultFont s_DefaultFont;
 fw::gfx::ModelMqo s_Mqo;
+fw::gfx::Particles s_Particles;
 
 //#define ARCHIVER_TEST
 //#define TEXTWRITE_TEST
 //#define DEFAULTFONT_TEST
-#define MODEL_TEST
+//#define MODEL_TEST
 
 #ifdef ARCHIVER_TEST
 void ArchiverTest(ID3D11Device* device)
@@ -68,8 +70,10 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
     if (!s_Mqo.Create(device, context, L"manto/manto.mqo"))
         return false;
 #else
-    s_Render2D.Create(device);
-    s_Texure.CreateFromFile(device, TEXT("usa.png"));
+    if (!s_Particles.Create(device, context, 100))
+        return false;
+    //s_Render2D.Create(device);
+    //s_Texure.CreateFromFile(device, TEXT("usa.png"));
 #endif
 
     return true;
@@ -96,6 +100,7 @@ void Draw(ID3D11DeviceContext* context)
 #elif defined MODEL_TEST
     s_Mqo.Render(context);
 #else
+    s_Particles.Render(context);
     //s_Render2D.Render(context, 0.0f, 80.0f, static_cast<f32>(s_Texure.GetWidth()), static_cast<f32>(s_Texure.GetHeight()), &s_Texure);
 #endif
 }
@@ -114,7 +119,8 @@ void Destroy()
 #elif defined MODEL_TEST
     s_Mqo.Destroy();
 #else
-    s_Text.Destroy();
-    s_Render2D.Destroy();
+    s_Particles.Destroy();
+    //s_Text.Destroy();
+    //s_Render2D.Destroy();
 #endif
 }

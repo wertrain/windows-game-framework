@@ -17,8 +17,8 @@
 NS_FW_GFX_BEGIN
 
 // インスタンス一枚あたりのサイズ
-static const float PLANE_WIDTH = 1.0f;
-static const float PLANE_HEIGHT = 1.0f;
+static const float PLANE_WIDTH = 0.1f;
+static const float PLANE_HEIGHT = 0.1f;
 static const float UV_WIDTH = 1.0f;
 static const float UV_HEIGHT = 1.0f;
 
@@ -187,7 +187,7 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     }
 
     {
-        std::wstring wpath = L"";
+        std::wstring wpath = L"me.jpg";
 
         // テクスチャ作成
         hr = DirectX::CreateWICTextureFromFile(device, context, wpath.c_str(), &mTexture, &mShaderResView);
@@ -239,6 +239,8 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         particle.pos = Vector4(rand.NextFloat(), rand.NextFloat(), rand.NextFloat(), 0);
         mParticles.Enqueue(particle);
     }
+
+    mInstanceNum = instanceNum;
 
     return true;
 }

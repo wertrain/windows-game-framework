@@ -7,6 +7,7 @@
 
 #include <nnfw/ut/CircularArray.h>
 #include <nnfw/gfx/GraphicsBase.h>
+#include <DirectXMath.h>
 
 NS_FW_GFX_BEGIN
 
