@@ -236,7 +236,7 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     for (uint32_t i = 0; i < instanceNum; ++i)
     {
         Particle particle;
-        particle.pos = Vector4(rand.NextFloat(), rand.NextFloat(), rand.NextFloat(), 0);
+        particle.pos = Vector4(-1.0 + rand.NextFloat() * 2.0f, -1.0 + rand.NextFloat() * 2.0f, -1.0 + rand.NextFloat()  * 2.0f, 0);
         mParticles.Enqueue(particle);
     }
 
