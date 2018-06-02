@@ -20,6 +20,6 @@ PS_INPUT vsMain(VS_INPUT input)
 {
     PS_INPUT output = (PS_INPUT)0;
     output.Pos = float4(input.Pos, 1.0f) + float4(input.InstancePos.x, input.InstancePos.y, 0.0f, 0.0f);
-    output.UV = input.UV + input.InstancePos.zw;
+    output.UV = input.UV;
     return output;
 }
