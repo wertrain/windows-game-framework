@@ -6,6 +6,7 @@ struct VS_INPUT
 {
     float3 Pos : POSITION;
     float2 UV : TEXCOORD;
+    float2 TexAdd : TEXCOORD_ADD;
     float4 InstancePos : IPOSITION;
     uint InstanceId : SV_InstanceID; // インスタンシング描画 ID （要 Shader Model 4.0 以上）
 };

@@ -41,6 +41,7 @@ Particles::Particles()
     , mTexture(nullptr)
     , mShaderResView(nullptr)
     , mSampler(nullptr)
+    , mDepthStencilState(nullptr)
     , mInstanceNum(0)
     , mParticles()
 {
@@ -120,6 +121,7 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     D3D11_INPUT_ELEMENT_DESC layout[] = {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "TEXCOORD", 0,    DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD_ADD", 0,    DXGI_FORMAT_R32G32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
         { "IPOSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
         { "IPOSITION", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
@@ -150,8 +152,9 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         ZeroMemory(&InitData, sizeof(InitData));
         InitData.pSysMem = vertices;
         hr = device->CreateBuffer(&bd, &InitData, &mVertexBuffer);
-        if (FAILED(hr)) {
-            return hr;
+        if (FAILED(hr))
+        {
+            return false;
         }
     }
 
@@ -163,8 +166,9 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         hr = device->CreateBuffer(&bd, nullptr, &mInstancingVertexBuffer);
-        if (FAILED(hr)) {
-            return hr;
+        if (FAILED(hr))
+        {
+            return false;
         }
     }
 
@@ -181,8 +185,9 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         ZeroMemory(&InitData, sizeof(InitData));
         InitData.pSysMem = indices;
         hr = device->CreateBuffer(&bd, &InitData, &mIndexBuffer);
-        if (FAILED(hr)) {
-            return hr;
+        if (FAILED(hr))
+        {
+            return false;
         }
     }
 
@@ -191,8 +196,9 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
 
         // テクスチャ作成
         hr = DirectX::CreateWICTextureFromFile(device, context, wpath.c_str(), &mTexture, &mShaderResView);
-        if (FAILED(hr)) {
-            return hr;
+        if (FAILED(hr))
+        {
+            return false;
         }
 
         // サンプラー作成
@@ -206,8 +212,9 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         sampDesc.MinLOD = 0;
         sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
         hr = device->CreateSamplerState(&sampDesc, &mSampler);
-        if (FAILED(hr)) {
-            return hr;
+        if (FAILED(hr))
+        {
+            return false;
         }
     }
 
@@ -226,17 +233,34 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     bddesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
     bddesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
     hr = device->CreateBlendState(&bddesc, &mBdState);
-    if (FAILED(hr)) {
-        return hr;
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    // デプス無効
+    D3D11_DEPTH_STENCIL_DESC ddsDesc;
+    ::ZeroMemory(&ddsDesc, sizeof(ddsDesc));
+    ddsDesc.DepthEnable = FALSE;
+    ddsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    ddsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+    ddsDesc.StencilEnable = FALSE;
+    hr = device->CreateDepthStencilState(&ddsDesc, &mDepthStencilState);
+    if (FAILED(hr))
+    {
+        return false;
     }
 
     mParticles.Initialize(instanceNum);
 
-    NS_FW_UTIL::Random rand;
+    NS_FW_UTIL::Random rand(time(0));
     for (uint32_t i = 0; i < instanceNum; ++i)
     {
         Particle particle;
-        particle.pos = Vector4(-1.0f + rand.NextFloat() * 2.0f, -1.0f + rand.NextFloat() * 2.0f, -1.0f + rand.NextFloat()  * 2.0f, 1.0f);
+        particle.pos = Vector4(
+            (-1.0f + rand.NextFloat() * 2.0f) - PLANE_WIDTH * 0.5f, 
+            (-1.0f + rand.NextFloat() * 2.0f) - PLANE_HEIGHT * 0.5f,
+            (-1.0f + rand.NextFloat() * 2.0f), 1.0f);
         mParticles.Enqueue(particle);
     }
 
@@ -249,54 +273,20 @@ void Particles::Destroy()
 {
     mParticles.Finalize();
 
-    if (mSampler)
-    {
-        mSampler->Release();
-        mSampler = nullptr;
-    }
+    SafeRelease(mDepthStencilState);
 
-    if (mShaderResView)
-    {
-        mShaderResView->Release();
-        mShaderResView = nullptr;
-    }
+    SafeRelease(mSampler);
+    SafeRelease(mShaderResView);
+    SafeRelease(mTexture);
 
-    if (mTexture)
-    {
-        mTexture->Release();
-        mTexture = nullptr;
-    }
+    SafeRelease(mPixelShader);
+    SafeRelease(mVertexShader);
 
-    if (mPixelShader)
-    {
-        mPixelShader->Release();
-        mPixelShader = nullptr;
-    }
-    if (mVertexShader)
-    {
-        mVertexShader->Release();
-        mVertexShader = nullptr;
-    }
-    if (mBdState)
-    {
-        mBdState->Release();
-        mBdState = nullptr;
-    }
-    if (mIndexBuffer)
-    {
-        mIndexBuffer->Release();
-        mIndexBuffer = nullptr;
-    }
-    if (mVertexBuffer)
-    {
-        mVertexBuffer->Release();
-        mVertexBuffer = nullptr;
-    }
-    if (mVertexLayout)
-    {
-        mVertexLayout->Release();
-        mVertexLayout = nullptr;
-    }
+    SafeRelease(mBdState);
+
+    SafeRelease(mIndexBuffer);
+    SafeRelease(mVertexBuffer);
+    SafeRelease(mVertexLayout);
 }
 
 
@@ -326,12 +316,12 @@ void Particles::Render(ID3D11DeviceContext* context)
     if (mTexture)
     {
         uint32_t smp_slot = 0;
-        ID3D11SamplerState* smp[1] = { mSampler };
+        ID3D11SamplerState* smp[] = { mSampler, mSampler };
         context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
 
         // シェーダーリソースビュー（テクスチャ）
         uint32_t srv_slot = 0;
-        ID3D11ShaderResourceView* srv[1] = { mShaderResView };
+        ID3D11ShaderResourceView* srv[] = { mShaderResView, mShaderResView };
         context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
     }
 
@@ -349,12 +339,23 @@ void Particles::Render(ID3D11DeviceContext* context)
         }
         context->Unmap(mInstancingVertexBuffer, 0);
     }
+    
+    // 以前のステート保存
+    ID3D11DepthStencilState* beforeState;
+    context->OMGetDepthStencilState(&beforeState, 0);
+
+    // デプス無効化
+    context->OMSetDepthStencilState(mDepthStencilState, 0);
 
     // ブレンドステート
-    context->OMSetBlendState(mBdState, NULL, 0xfffffff);
+    float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    context->OMSetBlendState(mBdState, blendFactor, 0xfffffff);
 
     // ポリゴン描画
     context->DrawIndexedInstanced(mVertexNum, mInstanceNum, 0, 0, 0);
+
+    // ステートを戻す
+    context->OMSetDepthStencilState(beforeState, 0);
 }
 
 NS_FW_GFX_END

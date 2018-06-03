@@ -46,6 +46,8 @@ private:
     ID3D11Resource* mTexture;
     ID3D11ShaderResourceView* mShaderResView;
     ID3D11SamplerState* mSampler;
+    ID3D11DepthStencilState* mDepthStencilState;
+
     uint32_t mInstanceNum;
     NS_FW_UTIL::CircularArray<Particle> mParticles;
 };
