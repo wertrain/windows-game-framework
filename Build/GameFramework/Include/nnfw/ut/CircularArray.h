@@ -132,9 +132,9 @@ public:
     {
         Construct(mData, size);
     }
-    ~CircularArray() { Destroy(); }
+    ~CircularArray() { Finalize(); }
 
-    bool Create(const size_t size)
+    bool Initialize(const size_t size)
     {
         if (mData == nullptr)
         {
@@ -144,7 +144,7 @@ public:
         }
         return false;
     }
-    void Destroy()
+    void Finalize()
     {
         delete mData;
         mData = nullptr;

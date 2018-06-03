@@ -230,13 +230,13 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         return hr;
     }
 
-    mParticles.Create(instanceNum);
+    mParticles.Initialize(instanceNum);
 
     NS_FW_UTIL::Random rand;
     for (uint32_t i = 0; i < instanceNum; ++i)
     {
         Particle particle;
-        particle.pos = Vector4(-1.0 + rand.NextFloat() * 2.0f, -1.0 + rand.NextFloat() * 2.0f, -1.0 + rand.NextFloat()  * 2.0f, 1.0f);
+        particle.pos = Vector4(-1.0f + rand.NextFloat() * 2.0f, -1.0f + rand.NextFloat() * 2.0f, -1.0f + rand.NextFloat()  * 2.0f, 1.0f);
         mParticles.Enqueue(particle);
     }
 
@@ -247,7 +247,7 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
 
 void Particles::Destroy()
 {
-    mParticles.Destroy();
+    mParticles.Finalize();
 
     if (mSampler)
     {
