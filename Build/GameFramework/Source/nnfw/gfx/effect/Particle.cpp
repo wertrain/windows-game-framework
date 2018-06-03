@@ -17,8 +17,7 @@
 NS_FW_GFX_BEGIN
 
 // インスタンス一枚あたりのサイズ
-static const float PLANE_WIDTH = 0.1f;
-static const float PLANE_HEIGHT = 0.1f;
+static const float PLANE_SIZE = 0.5f;
 static const float UV_WIDTH = 1.0f;
 static const float UV_HEIGHT = 1.0f;
 
@@ -68,11 +67,13 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     VertexData vertices[] =
     {
         // UV は上下左右反転
-        { { 0.0f,        0.0f,         0.0f }, { 0.0f,     UV_HEIGHT } },
-        { { PLANE_WIDTH, 0.0f,         0.0f }, { UV_WIDTH, UV_HEIGHT } },
-        { { 0.0f,        PLANE_HEIGHT, 0.0f }, { 0.0f,     0.0f      } },
-        { { PLANE_WIDTH, PLANE_HEIGHT, 0.0f }, { UV_WIDTH, 0.0f      } }
+        { { 0.0f,       0.0f,         0.0f }, { 0.0f,     UV_HEIGHT } },
+        { { PLANE_SIZE, 0.0f,         0.0f }, { UV_WIDTH, UV_HEIGHT } },
+        { { 0.0f,       PLANE_SIZE, 0.0f }, { 0.0f,     0.0f      } },
+        { { PLANE_SIZE, PLANE_SIZE, 0.0f }, { UV_WIDTH, 0.0f      } }
     };
+    // z 座標にはサイズの半分の値を入れておく
+    vertices[0].pos[2] = vertices[1].pos[2] = vertices[2].pos[2] = vertices[3].pos[2] = PLANE_SIZE * 0.5f;
 
     mVertexDataSize = sizeof(VertexData);
     mVertexNum = 4;
@@ -120,8 +121,7 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     // 入力レイアウト定義
     D3D11_INPUT_ELEMENT_DESC layout[] = {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXCOORD", 0,    DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXCOORD_ADD", 0,    DXGI_FORMAT_R32G32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
         { "IPOSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
         { "IPOSITION", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
@@ -253,14 +253,15 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
 
     mParticles.Initialize(instanceNum);
 
-    NS_FW_UTIL::Random rand(time(0));
+    NS_FW_UTIL::Random rand(static_cast<unsigned long>(time(0)));
     for (uint32_t i = 0; i < instanceNum; ++i)
     {
         Particle particle;
         particle.pos = Vector4(
-            (-1.0f + rand.NextFloat() * 2.0f) - PLANE_WIDTH * 0.5f, 
-            (-1.0f + rand.NextFloat() * 2.0f) - PLANE_HEIGHT * 0.5f,
-            (-1.0f + rand.NextFloat() * 2.0f), 1.0f);
+            (-1.0f + rand.NextFloat() * 2.0f),
+            (-1.0f + rand.NextFloat() * 2.0f),
+            (-1.0f + rand.NextFloat() * 2.0f), 
+            rand.NextFloat() * 0.1f); // w には回転速度をいれておく
         mParticles.Enqueue(particle);
     }
 
@@ -316,12 +317,12 @@ void Particles::Render(ID3D11DeviceContext* context)
     if (mTexture)
     {
         uint32_t smp_slot = 0;
-        ID3D11SamplerState* smp[] = { mSampler, mSampler };
+        ID3D11SamplerState* smp[] = { mSampler };
         context->PSSetSamplers(smp_slot, ARRAYSIZE(smp), smp);
 
         // シェーダーリソースビュー（テクスチャ）
         uint32_t srv_slot = 0;
-        ID3D11ShaderResourceView* srv[] = { mShaderResView, mShaderResView };
+        ID3D11ShaderResourceView* srv[] = { mShaderResView };
         context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
     }
 
@@ -332,9 +333,10 @@ void Particles::Render(ID3D11DeviceContext* context)
         HRESULT hr = context->Map(mInstancingVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
-        
+
         for (unsigned int index = 0; index < mInstanceNum; ++index)
         {
+            mParticles[index].pos.z += mParticles[index].pos.w;
             instancing[index].pos = mParticles[index].pos;
         }
         context->Unmap(mInstancingVertexBuffer, 0);
