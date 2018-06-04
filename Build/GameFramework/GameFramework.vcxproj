@@ -23,7 +23,7 @@
     <ClCompile Include="Source\nnfw\fnd\DefaultAllocator.cpp" />
     <ClCompile Include="Source\nnfw\fnd\GenericPool.cpp" />
     <ClCompile Include="Source\nnfw\gfx\Bitmap.cpp" />
-    <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\effect\Particle2D.cpp" />
     <ClCompile Include="Source\nnfw\gfx\font\DefaultFont.cpp" />
     <ClCompile Include="Source\nnfw\gfx\GraphicsBase.cpp" />
     <ClCompile Include="Source\nnfw\gfx\model\ModelBase.cpp" />
@@ -68,7 +68,7 @@
     <ClInclude Include="Include\nnfw\fnd\GenericPool.h" />
     <ClInclude Include="Include\nnfw\GameMain.h" />
     <ClInclude Include="Include\nnfw\gfx\Bitmap.h" />
-    <ClInclude Include="Include\nnfw\gfx\effect\Particle.h" />
+    <ClInclude Include="Include\nnfw\gfx\effect\Particle2D.h" />
     <ClInclude Include="Include\nnfw\gfx\font\DefaultFont.h" />
     <ClInclude Include="Include\nnfw\gfx\font\FontImage.h" />
     <ClInclude Include="Include\nnfw\gfx\font\FontShader.h" />

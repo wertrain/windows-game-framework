@@ -135,9 +135,6 @@
     <ClCompile Include="Source\nnfw\gfx\TextWriter.cpp">
       <Filter>Source\nnfw\gfx</Filter>
     </ClCompile>
-    <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp">
-      <Filter>Source\nnfw\gfx\effct</Filter>
-    </ClCompile>
     <ClCompile Include="Source\nnfw\gfx\font\DefaultFont.cpp">
       <Filter>Source\nnfw\gfx\font</Filter>
     </ClCompile>
@@ -210,6 +207,9 @@
     <ClCompile Include="Source\nnfw\ut\Random.cpp">
       <Filter>Source\nnfw\ut</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\effect\Particle2D.cpp">
+      <Filter>Source\nnfw\gfx\effct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -271,9 +271,6 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\gfx\model\ModelMqo.h">
       <Filter>Include\nnfw\gfx\model</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\nnfw\gfx\effect\Particle.h">
-      <Filter>Include\nnfw\gfx\effect</Filter>
     </ClInclude>
     <ClInclude Include="Include\nnfw\gfx\primitive\Primitive.h">
       <Filter>Include\nnfw\gfx\primitive</Filter>
@@ -349,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\external\MersenneTwister\MersenneTwister.h">
       <Filter>Include\nnfw\external\MersenneTwister</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\effect\Particle2D.h">
+      <Filter>Include\nnfw\gfx\effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

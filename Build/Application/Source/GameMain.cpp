@@ -7,7 +7,7 @@
 #include <nnfw/gfx/Includes.h>
 //#include "Tool/Archiver/Includes.h"
 #include <nnfw/gfx/Model/ModelMqo.h>
-#include <nnfw/gfx/effect/Particle.h>
+#include <nnfw/gfx/effect/Particle2D.h>
 
 fw::gfx::TextWriter s_Text;
 fw::gfx::Texture s_Texure;
