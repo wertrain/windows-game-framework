@@ -1,5 +1,5 @@
 /**
- * @file Particle.cpp
+ * @file Particle2D.cpp
  * @brief パーティクルを表すクラス
  */
 #include "Precompiled.h"

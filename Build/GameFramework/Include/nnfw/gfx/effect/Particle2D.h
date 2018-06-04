@@ -1,5 +1,5 @@
 /**
- * @file Particle.h
+ * @file Particle2D.h
  * @brief パーティクルを表すクラス
  */
 #ifndef GRAPHICS_EFFECT_PARTICLE_H_
