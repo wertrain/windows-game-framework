@@ -14,7 +14,7 @@ fw::gfx::Texture s_Texure;
 fw::gfx::Render2D s_Render2D;
 fw::gfx::DefaultFont s_DefaultFont;
 fw::gfx::ModelMqo s_Mqo;
-fw::gfx::Particles s_Particles;
+fw::gfx::Particles2D s_Particles;
 
 //#define ARCHIVER_TEST
 //#define TEXTWRITE_TEST

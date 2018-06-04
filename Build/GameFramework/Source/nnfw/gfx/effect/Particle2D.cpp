@@ -12,7 +12,7 @@
 #include <nnfw/ut/Memory.h>
 #include <nnfw/ut/Random.h>
 #include <nnfw/external/DirectXTex/WICTextureLoader/WICTextureLoader.h>
-#include <nnfw/gfx/effect/Particle.h>
+#include <nnfw/gfx/effect/Particle2D.h>
 
 NS_FW_GFX_BEGIN
 
@@ -27,7 +27,7 @@ struct InstancingPos
 };
 static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
 
-Particles::Particles()
+Particles2D::Particles2D()
     : mVertexLayout(nullptr)
     , mVertexBuffer(nullptr)
     , mInstancingVertexBuffer(nullptr)
@@ -47,12 +47,12 @@ Particles::Particles()
 
 }
 
-Particles::~Particles()
+Particles2D::~Particles2D()
 {
 
 }
 
-bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const uint32_t instanceNum)
+bool Particles2D::Create(ID3D11Device* device, ID3D11DeviceContext* context, const uint32_t instanceNum)
 {
     NNFW_UNUSED(context);
 
@@ -270,7 +270,7 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     return true;
 }
 
-void Particles::Destroy()
+void Particles2D::Destroy()
 {
     mParticles.Finalize();
 
@@ -291,7 +291,7 @@ void Particles::Destroy()
 }
 
 
-void Particles::Render(ID3D11DeviceContext* context)
+void Particles2D::Render(ID3D11DeviceContext* context)
 {
     // 頂点バッファ
     uint32_t vb_slot = 0;

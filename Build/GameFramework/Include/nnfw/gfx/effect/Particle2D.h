@@ -14,11 +14,11 @@ NS_FW_GFX_BEGIN
 /// <summary>
 /// パーティクルを表すクラス
 /// </summary>
-class Particles
+class Particles2D
 {
 public:
-    Particles();
-    ~Particles();
+    Particles2D();
+    ~Particles2D();
 
     bool Create(ID3D11Device* device, ID3D11DeviceContext* context, const uint32_t instanceNum);
     void Destroy();
