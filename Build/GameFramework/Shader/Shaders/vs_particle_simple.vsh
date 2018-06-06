@@ -25,6 +25,7 @@ PS_INPUT vsMain(VS_INPUT input)
     // ’†S“_‚Å‰ñ“]‚µ‚½‚¢
     float4 center_pos = float4(input.Pos.x - center_x, input.Pos.y - center_y, 1.0f, 1.0f);
 
+    // ‰ñ“]s—ñ‚Ìì¬
     float rot = input.InstancePos.z;
     matrix rotMatrix = matrix
     (
