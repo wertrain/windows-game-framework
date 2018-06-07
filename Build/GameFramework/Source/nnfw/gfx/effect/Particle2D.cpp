@@ -67,8 +67,8 @@ bool Particles2D::Create(ID3D11Device* device, ID3D11DeviceContext* context, con
     VertexData vertices[] =
     {
         // UV ÇÕè„â∫ç∂âEîΩì]
-        { { 0.0f,       0.0f,         0.0f }, { 0.0f,     UV_HEIGHT } },
-        { { PLANE_SIZE, 0.0f,         0.0f }, { UV_WIDTH, UV_HEIGHT } },
+        { { 0.0f,       0.0f,       0.0f }, { 0.0f,     UV_HEIGHT } },
+        { { PLANE_SIZE, 0.0f,       0.0f }, { UV_WIDTH, UV_HEIGHT } },
         { { 0.0f,       PLANE_SIZE, 0.0f }, { 0.0f,     0.0f      } },
         { { PLANE_SIZE, PLANE_SIZE, 0.0f }, { UV_WIDTH, 0.0f      } }
     };
