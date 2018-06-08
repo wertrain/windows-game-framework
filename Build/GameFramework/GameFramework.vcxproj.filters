@@ -210,6 +210,9 @@
     <ClCompile Include="Source\nnfw\gfx\effect\Particle2D.cpp">
       <Filter>Source\nnfw\gfx\effct</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp">
+      <Filter>Source\nnfw\gfx\effct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -348,6 +351,9 @@
       <Filter>Include\nnfw\external\MersenneTwister</Filter>
     </ClInclude>
     <ClInclude Include="Include\nnfw\gfx\effect\Particle2D.h">
+      <Filter>Include\nnfw\gfx\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\effect\Particle.h">
       <Filter>Include\nnfw\gfx\effect</Filter>
     </ClInclude>
   </ItemGroup>

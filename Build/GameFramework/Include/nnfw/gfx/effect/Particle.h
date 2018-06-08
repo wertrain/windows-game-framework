@@ -1,9 +1,9 @@
 /**
- * @file Particle2D.h
+ * @file Particle.h
  * @brief パーティクルを表すクラス
  */
-#ifndef GRAPHICS_EFFECT_PARTICLE2D_H_
-#define GRAPHICS_EFFECT_PARTICLE2D_H_
+#ifndef GRAPHICS_EFFECT_PARTICLE_H_
+#define GRAPHICS_EFFECT_PARTICLE_H_
 
 #include <nnfw/ut/CircularArray.h>
 #include <nnfw/gfx/GraphicsBase.h>
@@ -14,11 +14,11 @@ NS_FW_GFX_BEGIN
 /// <summary>
 /// パーティクルを表すクラス
 /// </summary>
-class Particles2D
+class Particles
 {
 public:
-    Particles2D();
-    ~Particles2D();
+    Particles();
+    ~Particles();
 
     bool Create(ID3D11Device* device, ID3D11DeviceContext* context, const uint32_t instanceNum);
     void Destroy();
@@ -54,4 +54,4 @@ private:
 
 NS_FW_GFX_END
 
-#endif // GRAPHICS_EFFECT_PARTICLE2D_H_
+#endif // GRAPHICS_EFFECT_PARTICLE_H_
