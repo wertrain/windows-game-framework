@@ -7,14 +7,14 @@
 #include <nnfw/gfx/Includes.h>
 //#include "Tool/Archiver/Includes.h"
 #include <nnfw/gfx/Model/ModelMqo.h>
-#include <nnfw/gfx/effect/Particle2D.h>
+#include <nnfw/gfx/effect/Particle.h>
 
 fw::gfx::TextWriter s_Text;
 fw::gfx::Texture s_Texure;
 fw::gfx::Render2D s_Render2D;
 fw::gfx::DefaultFont s_DefaultFont;
 fw::gfx::ModelMqo s_Mqo;
-fw::gfx::Particles2D s_Particles;
+fw::gfx::Particles s_Particles;
 
 //#define ARCHIVER_TEST
 //#define TEXTWRITE_TEST
