@@ -2,6 +2,14 @@
 // Vertex Shader
 //--------------------------------------------------------------------------------------
 
+cbuffer ConstBuff : register(b0)
+{
+    matrix mtxProj;
+    matrix mtxView;
+    matrix mtxWorld;
+    float4 Diffuse;
+};
+
 struct VS_INPUT
 {
     float3 Pos : POSITION;
@@ -26,7 +34,7 @@ PS_INPUT vsMain(VS_INPUT input)
     float4 center_pos = float4(input.Pos.x - center_x, input.Pos.y - center_y, 1.0f, 1.0f);
 
     // âÒì]çsóÒÇÃçÏê¨
-    float rot = input.InstancePos.z;
+    float rot = input.InstancePos.w;
     matrix rotMatrix = matrix
     (
         cos(rot), sin(rot), 0.0, 0.0,
@@ -36,9 +44,12 @@ PS_INPUT vsMain(VS_INPUT input)
     );
     float4 v_pos = mul(center_pos, rotMatrix);
 
-    float4 pos = float4(input.InstancePos.x, input.InstancePos.y, 0.0f, 0.0f);
+    float4 pos = float4(input.InstancePos.x, input.InstancePos.y, input.InstancePos.z, 0.0f);
     output.Pos = v_pos + pos;
-        
+    output.Pos = mul(output.Pos, mtxWorld);
+    output.Pos = mul(output.Pos, mtxView);
+    output.Pos = mul(output.Pos, mtxProj);
     output.UV = input.UV;
+
     return output;
 }

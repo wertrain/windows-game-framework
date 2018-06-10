@@ -28,6 +28,8 @@ private:
     struct Particle
     {
         Vector4 pos;
+        float speed;
+        float lifespan;
     };
 
 private:
@@ -38,6 +40,7 @@ private:
 
     ID3D11BlendState* mBdState;
 
+    ID3D11Buffer* mConstBuffer;
     ID3D11VertexShader* mVertexShader;
     ID3D11PixelShader* mPixelShader;
     uint32_t mVertexNum;

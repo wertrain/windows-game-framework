@@ -7,6 +7,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
+#include <nnfw/Constants.h>
 #include <nnfw/common/Includes.h>
 #include <nnfw/sys/Includes.h>
 #include <nnfw/ut/Memory.h>
@@ -16,8 +17,17 @@
 
 NS_FW_GFX_BEGIN
 
+// シェーダ定数バッファ
+struct ConstBuffer
+{
+    Matrix44 mtxProj;
+    Matrix44 mtxView;
+    Matrix44 mtxWorld;
+    Vector4 Diffuse;
+};
+
 // インスタンス一枚あたりのサイズ
-static const float PLANE_SIZE = 0.5f;
+static const float PLANE_SIZE = 1.0f;
 static const float UV_WIDTH = 1.0f;
 static const float UV_HEIGHT = 1.0f;
 
@@ -33,6 +43,7 @@ Particles::Particles()
     , mInstancingVertexBuffer(nullptr)
     , mIndexBuffer(nullptr)
     , mBdState(nullptr)
+    , mConstBuffer(nullptr)
     , mVertexShader(nullptr)
     , mPixelShader(nullptr)
     , mVertexNum(0)
@@ -191,6 +202,20 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         }
     }
 
+    // 定数バッファ
+    {
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(bd));
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.ByteWidth = sizeof(ConstBuffer);
+        bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        bd.CPUAccessFlags = 0;
+        hr = device->CreateBuffer(&bd, nullptr, &mConstBuffer);
+        if (FAILED(hr)) {
+            return false;
+        }
+    }
+
     {
         std::wstring wpath = L"particle4u.png";
 
@@ -260,8 +285,10 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         particle.pos = Vector4(
             (-1.0f + rand.NextFloat() * 2.0f),
             (-1.0f + rand.NextFloat() * 2.0f),
-            (-1.0f + rand.NextFloat() * 2.0f), 
-            rand.NextFloat() * 0.1f); // w には回転速度をいれておく
+            (-1.0f + rand.NextFloat() * 10.0f), 
+            0.0f);
+        particle.speed = rand.NextFloat() * 0.1f; // 回転速度をいれておく
+        particle.lifespan = rand.NextFloat() * 30.0f;
         mParticles.Enqueue(particle);
     }
 
@@ -285,6 +312,8 @@ void Particles::Destroy()
 
     SafeRelease(mBdState);
 
+    SafeRelease(mConstBuffer);
+
     SafeRelease(mIndexBuffer);
     SafeRelease(mVertexBuffer);
     SafeRelease(mVertexLayout);
@@ -293,6 +322,26 @@ void Particles::Destroy()
 
 void Particles::Render(ID3D11DeviceContext* context)
 {
+    //定数バッファ
+    ConstBuffer cbuff;
+
+    // プロジェクション行列
+    float aspect = NS_FW_CONST::WIDTH / NS_FW_CONST::HEIGHT;//アスペクト比
+    float min_z = 0.01f;
+    float max_z = 1000.0f;
+    float fov = DirectX::XM_PIDIV4;//画角
+    cbuff.mtxProj = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(fov, aspect, min_z, max_z));
+
+    // カメラ行列
+    DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f);
+    DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+    DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+    cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
+    float RotateY = 0.0f;
+    cbuff.mtxWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixRotationY(RotateY));
+    cbuff.Diffuse = Vector4(1.0f, 0.0f, 0.0f, 1);
+    // シェーダーでは行列を転置してから渡す
+
     // 頂点バッファ
     uint32_t vb_slot = 0;
     ID3D11Buffer* vb[2] = { mVertexBuffer, mInstancingVertexBuffer };
@@ -313,6 +362,15 @@ void Particles::Render(ID3D11DeviceContext* context)
     context->VSSetShader(mVertexShader, nullptr, 0);
     context->PSSetShader(mPixelShader, nullptr, 0);
 
+    // 定数バッファ内容更新
+    context->UpdateSubresource(mConstBuffer, 0, NULL, &cbuff, 0, 0);
+
+    // 定数バッファ
+    uint32_t cb_slot = 0;
+    ID3D11Buffer* cb[1] = { mConstBuffer };
+    context->VSSetConstantBuffers(cb_slot, ARRAYSIZE(cb), cb);
+    context->PSSetConstantBuffers(cb_slot, ARRAYSIZE(cb), cb);
+
     // サンプラー
     if (mTexture)
     {
@@ -326,6 +384,9 @@ void Particles::Render(ID3D11DeviceContext* context)
         context->PSSetShaderResources(srv_slot, ARRAYSIZE(srv), srv);
     }
 
+    // パーティクル描画数
+    int drawParticleNum = 0;
+
     // インスタンシング描画位置
     {
         D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -334,11 +395,27 @@ void Particles::Render(ID3D11DeviceContext* context)
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
 
+
+        unsigned int count = 0;
         for (unsigned int index = 0; index < mInstanceNum; ++index)
         {
-            mParticles[index].pos.z += mParticles[index].pos.w;
-            instancing[index].pos = mParticles[index].pos;
+            if (mParticles[index].lifespan <= 0) continue;
+
+            mParticles[index].pos.w += mParticles[index].speed;
+            mParticles[index].lifespan -= 0.1f;
+            instancing[drawParticleNum++].pos = mParticles[index].pos;
         }
+
+        // パーティクルを復活
+        NS_FW_UTIL::Random rand(static_cast<unsigned long>(time(0)));
+        for (unsigned int index = 0; index < mInstanceNum; ++index)
+        {
+            if (rand.NextFloat() > 0.8f && mParticles[index].lifespan <= 0)
+            {
+                mParticles[index].lifespan = rand.NextFloat() * 30.0f;
+            }
+        }
+
         context->Unmap(mInstancingVertexBuffer, 0);
     }
     
@@ -354,7 +431,7 @@ void Particles::Render(ID3D11DeviceContext* context)
     context->OMSetBlendState(mBdState, blendFactor, 0xfffffff);
 
     // ポリゴン描画
-    context->DrawIndexedInstanced(mVertexNum, mInstanceNum, 0, 0, 0);
+    context->DrawIndexedInstanced(mVertexNum, drawParticleNum, 0, 0, 0);
 
     // ステートを戻す
     context->OMSetDepthStencilState(beforeState, 0);
