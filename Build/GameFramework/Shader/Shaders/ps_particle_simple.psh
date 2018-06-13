@@ -9,13 +9,11 @@ struct PS_INPUT
 {
     float4 Pos : SV_POSITION;
     float2 UV : TEXCOORD;
-    float4 Color : COLOR;
 };
 
 float4 psMain(PS_INPUT input) : SV_Target
 {
     float4 tex = texDiffuse.Sample(samLinear, input.UV);
-    tex.a = input.Color.a;
     //if (tex.a <= 0.0) discard;
     return tex;
 }

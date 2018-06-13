@@ -34,9 +34,8 @@ static const float UV_HEIGHT = 1.0f;
 struct InstancingPos
 {
     Vector4 pos;
-    Vector4 color;
 };
-static_assert(sizeof(InstancingPos) == 32, "sizeof InstancingPos == 32");
+static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
 
 Particles::Particles()
     : mVertexLayout(nullptr)
@@ -404,7 +403,6 @@ void Particles::Render(ID3D11DeviceContext* context)
             mParticles[index].pos.w += mParticles[index].speed;
             mParticles[index].lifespan -= 0.1f;
             instancing[drawParticleNum].pos = mParticles[index].pos;
-            instancing[drawParticleNum].color = Vector4(0,0,0,0);
             ++drawParticleNum;
         }
 
