@@ -403,7 +403,9 @@ void Particles::Render(ID3D11DeviceContext* context)
 
             mParticles[index].pos.w += mParticles[index].speed;
             mParticles[index].lifespan -= 0.1f;
-            instancing[drawParticleNum++].pos = mParticles[index].pos;
+            instancing[drawParticleNum].pos = mParticles[index].pos;
+            instancing[drawParticleNum].color = Vector4(0,0,0,0);
+            ++drawParticleNum;
         }
 
         // パーティクルを復活

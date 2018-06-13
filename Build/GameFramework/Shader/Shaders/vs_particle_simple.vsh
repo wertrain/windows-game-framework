@@ -15,6 +15,7 @@ struct VS_INPUT
     float3 Pos : POSITION;
     float2 UV : TEXCOORD;
     float4 InstancePos : IPOSITION;
+    float4 InstanceColor : COLOR0;
     uint InstanceId : SV_InstanceID; // インスタンシング描画 ID （要 Shader Model 4.0 以上）
 };
 
@@ -22,6 +23,7 @@ struct PS_INPUT
 {
     float4 Pos : SV_POSITION;
     float2 UV : TEXCOORD;
+    float4 Color : COLOR0;
 };
 
 PS_INPUT vsMain(VS_INPUT input)
@@ -50,6 +52,7 @@ PS_INPUT vsMain(VS_INPUT input)
     output.Pos = mul(output.Pos, mtxView);
     output.Pos = mul(output.Pos, mtxProj);
     output.UV = input.UV;
+    output.Color = input.InstanceColor;
 
     return output;
 }
