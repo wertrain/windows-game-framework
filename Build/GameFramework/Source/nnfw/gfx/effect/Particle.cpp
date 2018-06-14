@@ -395,7 +395,6 @@ void Particles::Render(ID3D11DeviceContext* context)
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
 
-
         for (unsigned int index = 0; index < mInstanceNum; ++index)
         {
             if (mParticles[index].lifespan <= 0) continue;
@@ -415,7 +414,6 @@ void Particles::Render(ID3D11DeviceContext* context)
                 mParticles[index].lifespan = rand.NextFloat() * 30.0f;
             }
         }
-
         context->Unmap(mInstancingVertexBuffer, 0);
     }
     
