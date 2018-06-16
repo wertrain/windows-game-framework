@@ -37,10 +37,22 @@ struct InstancingPos
 };
 static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
 
+struct InstancingColor
+{
+    Vector4 color;
+};
+static_assert(sizeof(InstancingColor) == 16, "sizeof InstancingColor == 16");
+
+static const uint32_t instancingBufferSize[] = 
+{
+    sizeof(InstancingPos),
+    sizeof(InstancingColor)
+};
+
 Particles::Particles()
     : mVertexLayout(nullptr)
     , mVertexBuffer(nullptr)
-    , mInstancingVertexBuffer(nullptr)
+    , mInstancingBuffer()
     , mIndexBuffer(nullptr)
     , mBdState(nullptr)
     , mConstBuffer(nullptr)
@@ -55,7 +67,7 @@ Particles::Particles()
     , mInstanceNum(0)
     , mParticles()
 {
-
+    ZeroMemory(mInstancingBuffer, sizeof(mInstancingBuffer));
 }
 
 Particles::~Particles()
@@ -135,9 +147,9 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
         { "IPOSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "IPOSITION", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "IPOSITION", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "IPOSITION", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        { "ICOLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 2,  0, D3D11_INPUT_PER_INSTANCE_DATA, 2 },
+        //{ "IPOSITION", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        //{ "IPOSITION", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
     const UINT elem_num = ARRAYSIZE(layout);
 
@@ -169,14 +181,16 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         }
     }
 
+    // インスタンシング描画用バッファ
+    for (int i = 0; i < InstancingBufferType::Num; ++i)
     {
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
         bd.Usage = D3D11_USAGE_DYNAMIC;
-        bd.ByteWidth = sizeof(InstancingPos) * instanceNum;
+        bd.ByteWidth = instancingBufferSize[i] * instanceNum;
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        hr = device->CreateBuffer(&bd, nullptr, &mInstancingVertexBuffer);
+        hr = device->CreateBuffer(&bd, nullptr, &mInstancingBuffer[i]);
         if (FAILED(hr))
         {
             return false;
@@ -315,6 +329,10 @@ void Particles::Destroy()
     SafeRelease(mConstBuffer);
 
     SafeRelease(mIndexBuffer);
+    for (int i = 0; i < InstancingBufferType::Num; ++i)
+    {
+        SafeRelease(mInstancingBuffer[i]);
+    }
     SafeRelease(mVertexBuffer);
     SafeRelease(mVertexLayout);
 }
@@ -344,9 +362,17 @@ void Particles::Render(ID3D11DeviceContext* context)
 
     // 頂点バッファ
     uint32_t vb_slot = 0;
-    ID3D11Buffer* vb[2] = { mVertexBuffer, mInstancingVertexBuffer };
-    uint32_t stride[2] = { mVertexDataSize, sizeof(InstancingPos) };
-    uint32_t offset[2] = { 0, 0 };
+    const uint32_t vb_size = 1 + InstancingBufferType::Num;
+    ID3D11Buffer* vb[vb_size]; vb[0] = mVertexBuffer;
+    uint32_t stride[vb_size]; stride[0] = mVertexDataSize;
+    uint32_t offset[vb_size]; offset[0] = 0;
+    for (int i = 1; i < vb_size; ++i)
+    {
+        int index = i - 1;
+        vb[i] = mInstancingBuffer[index];
+        stride[i] = instancingBufferSize[index];
+        offset[i] = 0;
+    }
     context->IASetVertexBuffers(vb_slot, ARRAYSIZE(vb), vb, stride, offset);
 
     // 入力レイアウト
@@ -391,7 +417,7 @@ void Particles::Render(ID3D11DeviceContext* context)
     {
         D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-        HRESULT hr = context->Map(mInstancingVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        HRESULT hr = context->Map(mInstancingBuffer[InstancingBufferType::Position], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
         if (FAILED(hr)) return;
         InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
 
@@ -414,9 +440,23 @@ void Particles::Render(ID3D11DeviceContext* context)
                 mParticles[index].lifespan = rand.NextFloat() * 30.0f;
             }
         }
-        context->Unmap(mInstancingVertexBuffer, 0);
+        context->Unmap(mInstancingBuffer[InstancingBufferType::Position], 0);
     }
-    
+    // インスタンシング描画色
+    {
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+        HRESULT hr = context->Map(mInstancingBuffer[InstancingBufferType::Color], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        if (FAILED(hr)) return;
+        InstancingColor* instancing = (InstancingColor*)(mappedResource.pData);
+        for (unsigned int index = 0; index < drawParticleNum; ++index)
+        {
+            instancing[index].color = Vector4(1, 0, 0, 1);
+        }
+
+        context->Unmap(mInstancingBuffer[InstancingBufferType::Color], 0);
+    }
+
     // 以前のステート保存
     ID3D11DepthStencilState* beforeState;
     context->OMGetDepthStencilState(&beforeState, 0);
