@@ -15,7 +15,7 @@ struct PS_INPUT
 float4 psMain(PS_INPUT input) : SV_Target
 {
     float4 tex = texDiffuse.Sample(samLinear, input.UV);
-    tex = input.Color;
+    tex.a = tex.a * input.Color.a;
     //if (tex.a <= 0.0) discard;
     return tex;
 }

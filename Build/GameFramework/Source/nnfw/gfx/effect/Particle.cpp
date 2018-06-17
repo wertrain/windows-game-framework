@@ -415,11 +415,54 @@ void Particles::Render(ID3D11DeviceContext* context)
 
     // インスタンシング描画位置
     {
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        class ParticleProcessor
+        {
+        public:
+            ParticleProcessor(ID3D11Buffer* buffer) : mMappedResource(), mBuffer(buffer) {}
+            ~ParticleProcessor() {}
+            bool Initialize(ID3D11DeviceContext* context)
+            {
+                HRESULT hr = context->Map(mBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mMappedResource);
+                return SUCCEEDED(hr);
+            }
+            void Finalize(ID3D11DeviceContext* context)
+            {
+                context->Unmap(mBuffer, 0);
+            }
+            virtual void Process(const Particle& particle, const uint32_t index) = 0;
+        protected:
+            D3D11_MAPPED_SUBRESOURCE mMappedResource;
+            ID3D11Buffer* mBuffer;
+        };
+        class ParticlePositionProcessor : public ParticleProcessor
+        {
+        public:
+            ParticlePositionProcessor(ID3D11Buffer* buffer) : ParticleProcessor(buffer) {}
+            void Process(const Particle& particle, const uint32_t index) override final
+            {
+                InstancingPos* instancing = (InstancingPos*)(mMappedResource.pData);
+                instancing[index].pos = particle.pos;
+            }
+        };
+        class ParticleColorProcessor : public ParticleProcessor
+        {
+        public:
+            ParticleColorProcessor(ID3D11Buffer* buffer) : ParticleProcessor(buffer) {}
+            void Process(const Particle& particle, const uint32_t index) override final
+            {
+                InstancingColor* instancing = (InstancingColor*)(mMappedResource.pData);
+                instancing[index].color = Vector4(0, 0, 0, 0.1f);
+            }
+        };
 
-        HRESULT hr = context->Map(mInstancingBuffer[InstancingBufferType::Position], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-        if (FAILED(hr)) return;
-        InstancingPos* instancing = (InstancingPos*)(mappedResource.pData);
+        ParticlePositionProcessor positionProcessor(mInstancingBuffer[InstancingBufferType::Position]);
+        ParticleColorProcessor colorProcessor(mInstancingBuffer[InstancingBufferType::Color]);
+        ParticleProcessor* processor[] = { &positionProcessor, &colorProcessor };
+
+        for (int i = 0; i < InstancingBufferType::Num; ++i)
+        {
+            processor[i]->Initialize(context);
+        }
 
         for (unsigned int index = 0; index < mInstanceNum; ++index)
         {
@@ -427,7 +470,10 @@ void Particles::Render(ID3D11DeviceContext* context)
 
             mParticles[index].pos.w += mParticles[index].speed;
             mParticles[index].lifespan -= 0.1f;
-            instancing[drawParticleNum].pos = mParticles[index].pos;
+            for (int i = 0; i < InstancingBufferType::Num; ++i)
+            {
+                processor[i]->Process(mParticles[index], drawParticleNum);
+            }
             ++drawParticleNum;
         }
 
@@ -440,21 +486,11 @@ void Particles::Render(ID3D11DeviceContext* context)
                 mParticles[index].lifespan = rand.NextFloat() * 30.0f;
             }
         }
-        context->Unmap(mInstancingBuffer[InstancingBufferType::Position], 0);
-    }
-    // インスタンシング描画色
-    {
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-        HRESULT hr = context->Map(mInstancingBuffer[InstancingBufferType::Color], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-        if (FAILED(hr)) return;
-        InstancingColor* instancing = (InstancingColor*)(mappedResource.pData);
-        for (unsigned int index = 0; index < drawParticleNum; ++index)
+        for (int i = 0; i < InstancingBufferType::Num; ++i)
         {
-            instancing[index].color = Vector4(1, 0, 0, 1);
+            processor[i]->Finalize(context);
         }
-
-        context->Unmap(mInstancingBuffer[InstancingBufferType::Color], 0);
     }
 
     // 以前のステート保存
