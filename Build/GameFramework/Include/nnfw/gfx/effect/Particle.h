@@ -22,14 +22,23 @@ public:
 
     bool Create(ID3D11Device* device, ID3D11DeviceContext* context, const uint32_t instanceNum);
     void Destroy();
+    bool Emit();
+    void EmitAll();
     void Render(ID3D11DeviceContext* context);
 
 private:
     struct Particle
     {
+        enum Flags
+        {
+            Alive = (1 << 0)
+        };
+
+        uint32_t flag;
         Vector4 pos;
         float speed;
-        float lifespan;
+        float lifeSpan;
+        float maxLifeSpan;
     };
 
     enum InstancingBufferType : uint32_t

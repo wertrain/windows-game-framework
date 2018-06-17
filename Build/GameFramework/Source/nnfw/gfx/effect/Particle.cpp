@@ -49,6 +49,8 @@ static const uint32_t instancingBufferSize[] =
     sizeof(InstancingColor)
 };
 
+static NS_FW_UTIL::Random sRand(static_cast<unsigned long>(time(0)));
+
 Particles::Particles()
     : mVertexLayout(nullptr)
     , mVertexBuffer(nullptr)
@@ -291,22 +293,9 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     }
 
     mParticles.Initialize(instanceNum);
-
-    NS_FW_UTIL::Random rand(static_cast<unsigned long>(time(0)));
-    for (uint32_t i = 0; i < instanceNum; ++i)
-    {
-        Particle particle;
-        particle.pos = Vector4(
-            (-1.0f + rand.NextFloat() * 2.0f),
-            (-1.0f + rand.NextFloat() * 2.0f),
-            (-1.0f + rand.NextFloat() * 10.0f), 
-            0.0f);
-        particle.speed = rand.NextFloat() * 0.1f; // 回転速度をいれておく
-        particle.lifespan = rand.NextFloat() * 30.0f;
-        mParticles.Enqueue(particle);
-    }
-
     mInstanceNum = instanceNum;
+
+    EmitAll();
 
     return true;
 }
@@ -337,6 +326,29 @@ void Particles::Destroy()
     SafeRelease(mVertexLayout);
 }
 
+bool Particles::Emit()
+{
+    static int count = 0;
+    Particle particle;
+    particle.pos = Vector4(
+        (-1.0f + sRand.NextFloat() * 2.0f),
+        (-1.0f + sRand.NextFloat() * 2.0f),
+        (-1.0f + sRand.NextFloat() * 10.0f),
+        0.0f);
+    particle.speed = sRand.NextFloat() * 0.1f; // 回転速度をいれておく
+    particle.lifeSpan = particle.maxLifeSpan = sRand.NextFloat() * 100.0f;
+    particle.maxLifeSpan = sRand.NextFloat();
+    particle.flag = Particle::Flags::Alive;
+    return mParticles.Enqueue(particle);
+}
+
+void Particles::EmitAll()
+{
+    for (unsigned int index = 0; index < mInstanceNum; ++index)
+    {
+        Emit();
+    }
+}
 
 void Particles::Render(ID3D11DeviceContext* context)
 {
@@ -420,12 +432,12 @@ void Particles::Render(ID3D11DeviceContext* context)
         public:
             ParticleProcessor(ID3D11Buffer* buffer) : mMappedResource(), mBuffer(buffer) {}
             ~ParticleProcessor() {}
-            bool Initialize(ID3D11DeviceContext* context)
+            bool Map(ID3D11DeviceContext* context)
             {
                 HRESULT hr = context->Map(mBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mMappedResource);
                 return SUCCEEDED(hr);
             }
-            void Finalize(ID3D11DeviceContext* context)
+            void Unmap(ID3D11DeviceContext* context)
             {
                 context->Unmap(mBuffer, 0);
             }
@@ -451,7 +463,7 @@ void Particles::Render(ID3D11DeviceContext* context)
             void Process(const Particle& particle, const uint32_t index) override final
             {
                 InstancingColor* instancing = (InstancingColor*)(mMappedResource.pData);
-                instancing[index].color = Vector4(0, 0, 0, 0.1f);
+                instancing[index].color = Vector4(0, 0, 0, particle.maxLifeSpan);
             }
         };
 
@@ -461,35 +473,27 @@ void Particles::Render(ID3D11DeviceContext* context)
 
         for (int i = 0; i < InstancingBufferType::Num; ++i)
         {
-            processor[i]->Initialize(context);
+            processor[i]->Map(context);
         }
 
         for (unsigned int index = 0; index < mInstanceNum; ++index)
         {
-            if (mParticles[index].lifespan <= 0) continue;
-
-            mParticles[index].pos.w += mParticles[index].speed;
-            mParticles[index].lifespan -= 0.1f;
+            Particle& particle = mParticles[index];
+            particle.pos.w += particle.speed;
+            if ((particle.lifeSpan -= 0.1f) <= 0)
+            {
+                continue;
+            }
             for (int i = 0; i < InstancingBufferType::Num; ++i)
             {
-                processor[i]->Process(mParticles[index], drawParticleNum);
+                processor[i]->Process(particle, drawParticleNum);
             }
             ++drawParticleNum;
         }
 
-        // パーティクルを復活
-        NS_FW_UTIL::Random rand(static_cast<unsigned long>(time(0)));
-        for (unsigned int index = 0; index < mInstanceNum; ++index)
-        {
-            if (rand.NextFloat() > 0.8f && mParticles[index].lifespan <= 0)
-            {
-                mParticles[index].lifespan = rand.NextFloat() * 30.0f;
-            }
-        }
-
         for (int i = 0; i < InstancingBufferType::Num; ++i)
         {
-            processor[i]->Finalize(context);
+            processor[i]->Unmap(context);
         }
     }
 

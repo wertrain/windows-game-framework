@@ -146,7 +146,7 @@ public:
     }
     void Finalize()
     {
-        delete mData;
+        delete [] mData;
         mData = nullptr;
     }
 
