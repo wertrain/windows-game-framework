@@ -77,7 +77,7 @@ Particles::~Particles()
 
 }
 
-bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const uint32_t instanceNum)
+bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t *fileName, const uint32_t instanceNum)
 {
     NNFW_UNUSED(context);
 
@@ -233,7 +233,7 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     }
 
     {
-        std::wstring wpath = L"particle4u.png";
+        std::wstring wpath = fileName;
 
         // テクスチャ作成
         hr = DirectX::CreateWICTextureFromFile(device, context, wpath.c_str(), &mTexture, &mShaderResView);
@@ -335,7 +335,7 @@ bool Particles::Emit()
         (-1.0f + sRand.NextFloat() * 2.0f),
         (-1.0f + sRand.NextFloat() * 10.0f),
         0.0f);
-    particle.speed = sRand.NextFloat() * 0.1f; // 回転速度をいれておく
+    particle.speed = sRand.NextFloat() * 0.1f; // 回転速度
     particle.lifeSpan = particle.maxLifeSpan = sRand.NextFloat() * 100.0f;
     particle.maxLifeSpan = sRand.NextFloat();
     particle.flag = Particle::Flags::Alive;
