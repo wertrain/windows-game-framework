@@ -158,36 +158,12 @@ bool DX11Manager::Initialize(const HWND hWnd, const uint32_t width, const uint32
 
 void DX11Manager::Finalize()
 {
-    if (mRenderTargetView)
-    {
-        mRenderTargetView->Release();
-        mRenderTargetView = nullptr;
-    }
-    if (mDepthStencilView)
-    {
-        mDepthStencilView->Release();
-        mDepthStencilView = nullptr;
-    }
-    if (mDepthStencil)
-    {
-        mDepthStencil->Release();
-        mDepthStencil = nullptr;
-    }
-    if (mDXGISwpChain)
-    {
-        mDXGISwpChain->Release();
-        mDXGISwpChain = nullptr;
-    }
-    if (mDeviceContext)
-    {
-        mDeviceContext->Release();
-        mDeviceContext = nullptr;
-    }
-    if (mDevice)
-    {
-        mDevice->Release();
-        mDevice = nullptr;
-    }
+    SafeRelease(mRenderTargetView);
+    SafeRelease(mDepthStencilView);
+    SafeRelease(mDepthStencil);
+    SafeRelease(mDXGISwpChain);
+    SafeRelease(mDeviceContext);
+    SafeRelease(mDevice);
 }
 
 void DX11Manager::ClearRenderView()
