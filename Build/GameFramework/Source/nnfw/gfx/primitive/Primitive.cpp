@@ -222,69 +222,20 @@ bool Primitive::Create(
 
 void Primitive::Destroy()
 {
-    if (mSampler)
-    {
-        mSampler->Release();
-        mSampler = nullptr;
-    }
+    SafeRelease(mSampler);
+    SafeRelease(mShaderResView);
+    SafeRelease(mTexture);
+    SafeRelease(mPixelShader);
+    SafeRelease(mVertexShader);
 
-    if (mShaderResView)
-    {
-        mShaderResView->Release();
-        mShaderResView = nullptr;
-    }
+    SafeRelease(mBdState);
+    SafeRelease(mDsState);
+    SafeRelease(mRsState);
 
-    if (mTexture)
-    {
-        mTexture->Release();
-        mTexture = nullptr;
-    }
-
-    if (mPixelShader)
-    {
-        mPixelShader->Release();
-        mPixelShader = nullptr;
-    }
-    if (mVertexShader)
-    {
-        mVertexShader->Release();
-        mVertexShader = nullptr;
-    }
-    if (mBdState)
-    {
-        mBdState->Release();
-        mBdState = nullptr;
-    }
-    if (mDsState)
-    {
-        mDsState->Release();
-        mDsState = nullptr;
-    }
-    if (mRsState)
-    {
-        mRsState->Release();
-        mRsState = nullptr;
-    }
-    if (mCBuffer)
-    {
-        mCBuffer->Release();
-        mCBuffer = nullptr;
-    }
-    if (mIndexBuffer)
-    {
-        mIndexBuffer->Release();
-        mIndexBuffer = nullptr;
-    }
-    if (mVertexBuffer)
-    {
-        mVertexBuffer->Release();
-        mVertexBuffer = nullptr;
-    }
-    if (mVertexLayout)
-    {
-        mVertexLayout->Release();
-        mVertexLayout = nullptr;
-    }
+    SafeRelease(mCBuffer);
+    SafeRelease(mIndexBuffer);
+    SafeRelease(mVertexBuffer);
+    SafeRelease(mVertexLayout);
 }
 
 void Primitive::Render(ID3D11DeviceContext* context)
