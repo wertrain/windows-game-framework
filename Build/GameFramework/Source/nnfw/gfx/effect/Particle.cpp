@@ -463,7 +463,7 @@ void Particles::Render(ID3D11DeviceContext* context)
             void Process(const Particle& particle, const uint32_t index) override final
             {
                 InstancingColor* instancing = (InstancingColor*)(mMappedResource.pData);
-                instancing[index].color = Vector4(0, 0, 0, particle.maxLifeSpan);
+                instancing[index].color = Vector4(0, 0, 0, (particle.lifeSpan / particle.maxLifeSpan));
             }
         };
 
