@@ -20,7 +20,7 @@ public:
     Particles();
     ~Particles();
 
-    bool Create(ID3D11Device* device, ID3D11DeviceContext* context, const uint32_t instanceNum);
+    bool Create(ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t *fileName, const uint32_t instanceNum);
     void Destroy();
     bool Emit();
     void EmitAll();
