@@ -337,7 +337,7 @@ bool Particles::Emit()
         0.0f);
     particle.speed = sRand.NextFloat() * 0.1f; // ‰ñ“]‘¬“x
     particle.lifeSpan = particle.maxLifeSpan = sRand.NextFloat() * 100.0f;
-    particle.maxLifeSpan = sRand.NextFloat();
+    //particle.maxLifeSpan = sRand.NextFloat();
     particle.flag = Particle::Flags::Alive;
     return mParticles.Enqueue(particle);
 }
