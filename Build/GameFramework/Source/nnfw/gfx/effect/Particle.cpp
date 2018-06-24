@@ -31,23 +31,13 @@ static const float PLANE_SIZE = 1.0f;
 static const float UV_WIDTH = 1.0f;
 static const float UV_HEIGHT = 1.0f;
 
-struct InstancingPos
+struct InstancingData
 {
     Vector4 pos;
-};
-static_assert(sizeof(InstancingPos) == 16, "sizeof InstancingPos == 16");
-
-struct InstancingColor
-{
     Vector4 color;
 };
-static_assert(sizeof(InstancingColor) == 16, "sizeof InstancingColor == 16");
-
-static const uint32_t instancingBufferSize[] = 
-{
-    sizeof(InstancingPos),
-    sizeof(InstancingColor)
-};
+static const uint32_t instancingDataSize = sizeof(InstancingData);
+static_assert(sizeof(InstancingData) == 32, "sizeof InstancingData == 32");
 
 static NS_FW_UTIL::Random sRand(static_cast<unsigned long>(time(0)));
 
@@ -69,7 +59,7 @@ Particles::Particles()
     , mInstanceNum(0)
     , mParticles()
 {
-    ZeroMemory(mInstancingBuffer, sizeof(mInstancingBuffer));
+
 }
 
 Particles::~Particles()
@@ -149,7 +139,8 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         // 入力アセンブラにジオメトリ処理用の行列を追加設定する
         { "IPOSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,  0, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
-        { "ICOLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 2,  0, D3D11_INPUT_PER_INSTANCE_DATA, 2 },
+        { "ICOLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
+        //{ "ICOLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 2,  0, D3D11_INPUT_PER_INSTANCE_DATA, 2 },
         //{ "IPOSITION", 2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
         //{ "IPOSITION", 3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48, D3D11_INPUT_PER_INSTANCE_DATA, 1 },
     };
@@ -184,15 +175,14 @@ bool Particles::Create(ID3D11Device* device, ID3D11DeviceContext* context, const
     }
 
     // インスタンシング描画用バッファ
-    for (int i = 0; i < InstancingBufferType::Num; ++i)
     {
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
         bd.Usage = D3D11_USAGE_DYNAMIC;
-        bd.ByteWidth = instancingBufferSize[i] * instanceNum;
+        bd.ByteWidth = instancingDataSize * instanceNum;
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        hr = device->CreateBuffer(&bd, nullptr, &mInstancingBuffer[i]);
+        hr = device->CreateBuffer(&bd, nullptr, &mInstancingBuffer);
         if (FAILED(hr))
         {
             return false;
@@ -318,10 +308,7 @@ void Particles::Destroy()
     SafeRelease(mConstBuffer);
 
     SafeRelease(mIndexBuffer);
-    for (int i = 0; i < InstancingBufferType::Num; ++i)
-    {
-        SafeRelease(mInstancingBuffer[i]);
-    }
+    SafeRelease(mInstancingBuffer);
     SafeRelease(mVertexBuffer);
     SafeRelease(mVertexLayout);
 }
@@ -374,17 +361,10 @@ void Particles::Render(ID3D11DeviceContext* context)
 
     // 頂点バッファ
     uint32_t vb_slot = 0;
-    const uint32_t vb_size = 1 + InstancingBufferType::Num;
-    ID3D11Buffer* vb[vb_size]; vb[0] = mVertexBuffer;
-    uint32_t stride[vb_size]; stride[0] = mVertexDataSize;
-    uint32_t offset[vb_size]; offset[0] = 0;
-    for (int i = 1; i < vb_size; ++i)
-    {
-        int index = i - 1;
-        vb[i] = mInstancingBuffer[index];
-        stride[i] = instancingBufferSize[index];
-        offset[i] = 0;
-    }
+    const uint32_t vb_size = 2;
+    ID3D11Buffer* vb[vb_size] = { mVertexBuffer, mInstancingBuffer };
+    uint32_t stride[vb_size] = { mVertexDataSize, instancingDataSize };
+    uint32_t offset[vb_size] = { 0, 0 };
     context->IASetVertexBuffers(vb_slot, ARRAYSIZE(vb), vb, stride, offset);
 
     // 入力レイアウト
@@ -425,55 +405,13 @@ void Particles::Render(ID3D11DeviceContext* context)
     // パーティクル描画数
     int drawParticleNum = 0;
 
-    // インスタンシング描画位置
+    // インスタンシング描画
     {
-        class ParticleProcessor
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        HRESULT hr = context->Map(mInstancingBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+        if (FAILED(hr))
         {
-        public:
-            ParticleProcessor(ID3D11Buffer* buffer) : mMappedResource(), mBuffer(buffer) {}
-            ~ParticleProcessor() {}
-            bool Map(ID3D11DeviceContext* context)
-            {
-                HRESULT hr = context->Map(mBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mMappedResource);
-                return SUCCEEDED(hr);
-            }
-            void Unmap(ID3D11DeviceContext* context)
-            {
-                context->Unmap(mBuffer, 0);
-            }
-            virtual void Process(const Particle& particle, const uint32_t index) = 0;
-        protected:
-            D3D11_MAPPED_SUBRESOURCE mMappedResource;
-            ID3D11Buffer* mBuffer;
-        };
-        class ParticlePositionProcessor : public ParticleProcessor
-        {
-        public:
-            ParticlePositionProcessor(ID3D11Buffer* buffer) : ParticleProcessor(buffer) {}
-            void Process(const Particle& particle, const uint32_t index) override final
-            {
-                InstancingPos* instancing = (InstancingPos*)(mMappedResource.pData);
-                instancing[index].pos = particle.pos;
-            }
-        };
-        class ParticleColorProcessor : public ParticleProcessor
-        {
-        public:
-            ParticleColorProcessor(ID3D11Buffer* buffer) : ParticleProcessor(buffer) {}
-            void Process(const Particle& particle, const uint32_t index) override final
-            {
-                InstancingColor* instancing = (InstancingColor*)(mMappedResource.pData);
-                instancing[index].color = Vector4(0, 0, 0, (particle.lifeSpan / particle.maxLifeSpan));
-            }
-        };
-
-        ParticlePositionProcessor positionProcessor(mInstancingBuffer[InstancingBufferType::Position]);
-        ParticleColorProcessor colorProcessor(mInstancingBuffer[InstancingBufferType::Color]);
-        ParticleProcessor* processor[] = { &positionProcessor, &colorProcessor };
-
-        for (int i = 0; i < InstancingBufferType::Num; ++i)
-        {
-            processor[i]->Map(context);
+            return;
         }
 
         for (unsigned int index = 0; index < mInstanceNum; ++index)
@@ -484,17 +422,14 @@ void Particles::Render(ID3D11DeviceContext* context)
             {
                 continue;
             }
-            for (int i = 0; i < InstancingBufferType::Num; ++i)
-            {
-                processor[i]->Process(particle, drawParticleNum);
-            }
+            InstancingData* instancing = (InstancingData*)(mappedResource.pData);
+            instancing[drawParticleNum].pos = particle.pos;
+            instancing[drawParticleNum].color = Vector4(0, 0, 0, (particle.lifeSpan / particle.maxLifeSpan));
+
             ++drawParticleNum;
         }
 
-        for (int i = 0; i < InstancingBufferType::Num; ++i)
-        {
-            processor[i]->Unmap(context);
-        }
+        context->Unmap(mInstancingBuffer, 0);
     }
 
     // 以前のステート保存

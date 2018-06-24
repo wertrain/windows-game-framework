@@ -41,17 +41,10 @@ private:
         float maxLifeSpan;
     };
 
-    enum InstancingBufferType : uint32_t
-    {
-        Position = 0,
-        Color,
-        Num
-    };
-
 private:
     ID3D11InputLayout* mVertexLayout;
     ID3D11Buffer* mVertexBuffer;
-    ID3D11Buffer* mInstancingBuffer[InstancingBufferType::Num];
+    ID3D11Buffer* mInstancingBuffer;
     ID3D11Buffer* mIndexBuffer;
 
     ID3D11BlendState* mBdState;
