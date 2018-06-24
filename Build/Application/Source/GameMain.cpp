@@ -70,7 +70,7 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
     if (!s_Mqo.Create(device, context, L"manto/manto.mqo"))
         return false;
 #else
-    if (!s_Particles.Create(device, context, L"particle4u.png", 8))
+    if (!s_Particles.Create(device, context, L"particle4u.png", 1024))
         return false;
     //s_Render2D.Create(device);
     //s_Texure.CreateFromFile(device, TEXT("usa.png"));

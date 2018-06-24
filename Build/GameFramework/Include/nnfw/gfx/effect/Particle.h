@@ -36,6 +36,7 @@ private:
 
         uint32_t flag;
         Vector4 pos;
+        Vector4 velocity;
         float speed;
         float lifeSpan;
         float maxLifeSpan;

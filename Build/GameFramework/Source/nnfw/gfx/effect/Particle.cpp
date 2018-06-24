@@ -325,6 +325,7 @@ bool Particles::Emit()
     particle.speed = sRand.NextFloat() * 0.1f; // 回転速度
     particle.lifeSpan = particle.maxLifeSpan = sRand.NextFloat() * 100.0f;
     //particle.maxLifeSpan = sRand.NextFloat();
+    particle.velocity = Vector4(-0.01f + sRand.NextFloat() * 0.03f, 0, -0.01f + sRand.NextFloat() * 0.03f, 0);
     particle.flag = Particle::Flags::Alive;
     return mParticles.Enqueue(particle);
 }
@@ -414,9 +415,21 @@ void Particles::Render(ID3D11DeviceContext* context)
             return;
         }
 
+        float gravity = 0.0006f;
+        float reaction = 1.5f;
         for (unsigned int index = 0; index < mInstanceNum; ++index)
         {
             Particle& particle = mParticles[index];
+
+            particle.velocity.y += gravity;    //スピードに重力が加算される
+            particle.pos.x = particle.pos.x - particle.velocity.x;    //ボールにスピードが設定される
+            particle.pos.y = particle.pos.y - particle.velocity.y;    //ボールにスピードが設定される
+            particle.pos.z = particle.pos.z - particle.velocity.z;    //ボールにスピードが設定される
+            if (particle.pos.y < -3.0f) {    //もしボールが画面の下まで落ちたら、
+                particle.velocity.y *= -reaction;    //反発力によって上に上がる
+                particle.pos.y =  -3.0f;    //ボールは画面の外に外れない
+            }
+
             particle.pos.w += particle.speed;
             if ((particle.lifeSpan -= 0.1f) <= 0)
             {
@@ -425,6 +438,7 @@ void Particles::Render(ID3D11DeviceContext* context)
             InstancingData* instancing = (InstancingData*)(mappedResource.pData);
             instancing[drawParticleNum].pos = particle.pos;
             instancing[drawParticleNum].color = Vector4(0, 0, 0, (particle.lifeSpan / particle.maxLifeSpan));
+
 
             ++drawParticleNum;
         }
