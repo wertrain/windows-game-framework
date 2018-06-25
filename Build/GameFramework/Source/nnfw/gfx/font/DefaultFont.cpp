@@ -248,60 +248,16 @@ bool DefaultFont::Create(ID3D11Device* device, ID3D11DeviceContext* context)
 
 void DefaultFont::Destroy()
 {
-    if (mPrintText)
-    {
-        delete[] mPrintText;
-        mPrintText = nullptr;
-    }
-
-    if (mSampler)
-    {
-        mSampler->Release();
-        mSampler = nullptr;
-    }
-
-    if (mShaderResView)
-    {
-        mShaderResView->Release();
-        mShaderResView = nullptr;
-    }
-
-    if (mTexture)
-    {
-        mTexture->Release();
-        mTexture = nullptr;
-    }
-
-    if (mPixelShader)
-    {
-        mPixelShader->Release();
-        mPixelShader = nullptr;
-    }
-    if (mVertexShader)
-    {
-        mVertexShader->Release();
-        mVertexShader = nullptr;
-    }
-    if (mBdState)
-    {
-        mBdState->Release();
-        mBdState = nullptr;
-    }
-    if (mIndexBuffer)
-    {
-        mIndexBuffer->Release();
-        mIndexBuffer = nullptr;
-    }
-    if (mVertexBuffer)
-    {
-        mVertexBuffer->Release();
-        mVertexBuffer = nullptr;
-    }
-    if (mVertexLayout)
-    {
-        mVertexLayout->Release();
-        mVertexLayout = nullptr;
-    }
+    SafeDeleteArray(mPrintText);
+    SafeRelease(mSampler);
+    SafeRelease(mShaderResView);
+    SafeRelease(mTexture);
+    SafeRelease(mPixelShader);
+    SafeRelease(mVertexShader);
+    SafeRelease(mBdState);
+    SafeRelease(mIndexBuffer);
+    SafeRelease(mVertexBuffer);
+    SafeRelease(mVertexLayout);
 }
 
 void DefaultFont::ClearText()
