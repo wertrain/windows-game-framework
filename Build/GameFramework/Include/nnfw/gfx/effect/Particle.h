@@ -42,6 +42,11 @@ private:
         float maxLifeSpan;
     };
 
+    struct Emitter
+    {
+
+    };
+
 private:
     ID3D11InputLayout* mVertexLayout;
     ID3D11Buffer* mVertexBuffer;
