@@ -24,6 +24,7 @@ public:
     void Destroy();
     bool Emit();
     void EmitAll();
+    void Update(const float elapsedTime);
     void Render(ID3D11DeviceContext* context);
 
 private:
@@ -44,7 +45,7 @@ private:
 
     struct Emitter
     {
-
+        float g
     };
 
 private:

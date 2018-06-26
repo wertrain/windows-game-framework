@@ -338,6 +338,11 @@ void Particles::EmitAll()
     }
 }
 
+void Particles::Update(const float elapsedTime)
+{
+
+}
+
 void Particles::Render(ID3D11DeviceContext* context)
 {
     //定数バッファ
