@@ -82,9 +82,10 @@ bool Create(ID3D11Device* device, ID3D11DeviceContext* context)
 /**
  * update frame
  */
-void Update(const uint64_t /*elapsedTime*/, const uint64_t /*nowTime*/)
+void Update(const uint64_t elapsedTime, const uint64_t /*nowTime*/)
 {
-
+    const float fElapsedTime = static_cast<float>(elapsedTime);
+    s_Particles.Update(fElapsedTime);
 }
 
 /**
