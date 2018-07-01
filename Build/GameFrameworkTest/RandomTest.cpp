@@ -16,12 +16,23 @@ namespace GameFrameworkTest
         {
             char buffer[256];
 
-            fw::util::Random random(time(nullptr));
+            fw::util::Random random((unsigned long)time(nullptr));
             for (int i = 0; i < 10; ++i)
             {
                 float f = random.NextFloat();
-                
                 sprintf_s(buffer, "Float %f\n", f);
+                Logger::WriteMessage(buffer);
+            }
+            for (int i = 0; i < 10; ++i)
+            {
+                uint32_t f = random.NextUInt();
+                sprintf_s(buffer, "Uint %u\n", f);
+                Logger::WriteMessage(buffer);
+            }
+            for (int i = 0; i < 10; ++i)
+            {
+                uint32_t f = random.GetRange(0, 10);
+                sprintf_s(buffer, "Uint %u\n", f);
                 Logger::WriteMessage(buffer);
             }
         }
