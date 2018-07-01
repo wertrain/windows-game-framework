@@ -24,6 +24,8 @@ public:
     float NextFloat();
     double NextDouble();
     uint32_t NextUInt();
+    int32_t Random::GetRange(const int32_t min, const int32_t max);
+    uint32_t Random::GetRange(const uint32_t min, const uint32_t max);
 
 private:
     CMersenneTwister mImplement;

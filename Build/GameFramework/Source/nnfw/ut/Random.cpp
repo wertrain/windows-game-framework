@@ -46,4 +46,14 @@ uint32_t Random::NextUInt()
     return mImplement.genrand_uint32();
 }
 
+int32_t Random::Random::GetRange(const int32_t min, const int32_t max)
+{
+    return mImplement.genrand_uint32() % (max - min + 1) + min;
+}
+
+uint32_t Random::Random::GetRange(const uint32_t min, const uint32_t max)
+{
+    return mImplement.genrand_uint32() % (max - min + 1) + min;
+}
+
 NS_FW_UTIL_END
