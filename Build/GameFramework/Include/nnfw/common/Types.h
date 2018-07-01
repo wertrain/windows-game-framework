@@ -54,6 +54,9 @@ typedef DirectX::XMMATRIX Matrix44;
 
 #endif // FRAMEWORK_USE_DIRECT_X_
 
+#include <d3d11.h> // SimpleMath ‚ÅŽg—p‚·‚é
+#include <nnfw/external/DirectXTK/SimpleMath.h>
+
 #include <vector>
 #include <memory>
 #include <map>

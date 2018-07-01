@@ -19,6 +19,7 @@
     <ClCompile Include="Source\nnfw\core\ReferencedObject.cpp" />
     <ClCompile Include="Source\nnfw\core\ServiceBase.cpp" />
     <ClCompile Include="Source\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.cpp" />
+    <ClCompile Include="Source\nnfw\external\DirectXTK\SimpleMath.cpp" />
     <ClCompile Include="Source\nnfw\external\dlmalloc\malloc.cpp" />
     <ClCompile Include="Source\nnfw\fnd\Allocator.cpp" />
     <ClCompile Include="Source\nnfw\fnd\DefaultAllocator.cpp" />
@@ -26,6 +27,7 @@
     <ClCompile Include="Source\nnfw\gfx\Bitmap.cpp" />
     <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp" />
     <ClCompile Include="Source\nnfw\gfx\effect\Particle2D.cpp" />
+    <ClCompile Include="Source\nnfw\gfx\effect\ParticleSystem.cpp" />
     <ClCompile Include="Source\nnfw\gfx\font\DefaultFont.cpp" />
     <ClCompile Include="Source\nnfw\gfx\GraphicsBase.cpp" />
     <ClCompile Include="Source\nnfw\gfx\model\ModelBase.cpp" />
@@ -64,6 +66,7 @@
     <ClInclude Include="Include\nnfw\core\ReferencedObject.h" />
     <ClInclude Include="Include\nnfw\core\ServiceBase.h" />
     <ClInclude Include="Include\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
+    <ClInclude Include="Include\nnfw\external\DirectXTK\SimpleMath.h" />
     <ClInclude Include="Include\nnfw\external\dlmalloc\malloc.h" />
     <ClInclude Include="Include\nnfw\external\MersenneTwister\MersenneTwister.h" />
     <ClInclude Include="Include\nnfw\fnd\Allocator.h" />
@@ -73,6 +76,7 @@
     <ClInclude Include="Include\nnfw\gfx\Bitmap.h" />
     <ClInclude Include="Include\nnfw\gfx\effect\Particle.h" />
     <ClInclude Include="Include\nnfw\gfx\effect\Particle2D.h" />
+    <ClInclude Include="Include\nnfw\gfx\effect\ParticleSystem.h" />
     <ClInclude Include="Include\nnfw\gfx\font\DefaultFont.h" />
     <ClInclude Include="Include\nnfw\gfx\font\FontImage.h" />
     <ClInclude Include="Include\nnfw\gfx\font\FontShader.h" />
@@ -102,6 +106,9 @@
     <ClInclude Include="Include\nnfw\ut\Singleton.h" />
     <ClInclude Include="Include\nnfw\ut\Stopwatch.h" />
     <ClInclude Include="Include\Precompiled.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Include\nnfw\external\DirectXTK\SimpleMath.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

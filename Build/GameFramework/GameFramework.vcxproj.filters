@@ -100,6 +100,12 @@
     <Filter Include="Include\nnfw\external\MersenneTwister">
       <UniqueIdentifier>{2e0b47e4-db22-4681-b259-a9c16060652b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include\nnfw\external\DirectXTK">
+      <UniqueIdentifier>{303a9aac-3e2a-4fa7-93dd-ccf0a0ae8d7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\nnfw\external\DirectXTK">
+      <UniqueIdentifier>{577e4662-2f25-4ea0-8216-3a92c621cb22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\nnfw\ut\Memory.cpp">
@@ -215,6 +221,12 @@
     </ClCompile>
     <ClCompile Include="Source\nnfw\core\ServiceBase.cpp">
       <Filter>Source\nnfw\core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\gfx\effect\ParticleSystem.cpp">
+      <Filter>Source\nnfw\gfx\effct</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\nnfw\external\DirectXTK\SimpleMath.cpp">
+      <Filter>Source\nnfw\external\DirectXTK</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,5 +374,16 @@
     <ClInclude Include="Include\nnfw\core\ServiceBase.h">
       <Filter>Include\nnfw\core</Filter>
     </ClInclude>
+    <ClInclude Include="Include\nnfw\gfx\effect\ParticleSystem.h">
+      <Filter>Include\nnfw\gfx\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\external\DirectXTK\SimpleMath.h">
+      <Filter>Include\nnfw\external\DirectXTK</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Include\nnfw\external\DirectXTK\SimpleMath.inl">
+      <Filter>Include\nnfw\external\DirectXTK</Filter>
+    </None>
   </ItemGroup>
 </Project>
