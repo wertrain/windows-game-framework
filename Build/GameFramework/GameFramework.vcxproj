@@ -17,6 +17,7 @@
     <ClCompile Include="Source\nnfw\core\DX11Manager.cpp" />
     <ClCompile Include="Source\nnfw\core\ObjectBase.cpp" />
     <ClCompile Include="Source\nnfw\core\ReferencedObject.cpp" />
+    <ClCompile Include="Source\nnfw\core\ServiceBase.cpp" />
     <ClCompile Include="Source\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.cpp" />
     <ClCompile Include="Source\nnfw\external\dlmalloc\malloc.cpp" />
     <ClCompile Include="Source\nnfw\fnd\Allocator.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Include\nnfw\core\DX11Manager.h" />
     <ClInclude Include="Include\nnfw\core\ObjectBase.h" />
     <ClInclude Include="Include\nnfw\core\ReferencedObject.h" />
+    <ClInclude Include="Include\nnfw\core\ServiceBase.h" />
     <ClInclude Include="Include\nnfw\external\DirectXTex\WICTextureLoader\WICTextureLoader.h" />
     <ClInclude Include="Include\nnfw\external\dlmalloc\malloc.h" />
     <ClInclude Include="Include\nnfw\external\MersenneTwister\MersenneTwister.h" />

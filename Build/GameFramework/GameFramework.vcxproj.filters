@@ -213,6 +213,9 @@
     <ClCompile Include="Source\nnfw\gfx\effect\Particle.cpp">
       <Filter>Source\nnfw\gfx\effct</Filter>
     </ClCompile>
+    <ClCompile Include="Source\nnfw\core\ServiceBase.cpp">
+      <Filter>Source\nnfw\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\nnfw\Includes.h">
@@ -355,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="Include\nnfw\gfx\effect\Particle.h">
       <Filter>Include\nnfw\gfx\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\nnfw\core\ServiceBase.h">
+      <Filter>Include\nnfw\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
