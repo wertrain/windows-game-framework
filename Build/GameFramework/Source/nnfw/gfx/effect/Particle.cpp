@@ -313,34 +313,39 @@ void Particles::Destroy()
     SafeRelease(mVertexLayout);
 }
 
-bool Particles::Emit()
+bool Particles::Emit(const Vector4& pos)
 {
     static int count = 0;
     Particle particle;
-    particle.pos = Vector4(
-        (-1.0f + sRand.NextFloat() * 2.0f),
-        (-1.0f + sRand.NextFloat() * 2.0f),
-        (-1.0f + sRand.NextFloat() * 10.0f),
-        0.0f);
+    particle.pos = pos;
     particle.speed = sRand.NextFloat() * 0.1f; // 回転速度
     particle.lifeSpan = particle.maxLifeSpan = sRand.NextFloat() * 100.0f;
     //particle.maxLifeSpan = sRand.NextFloat();
-    particle.velocity = Vector4(-0.01f + sRand.NextFloat() * 0.03f, 0, -0.01f + sRand.NextFloat() * 0.03f, 0);
+    particle.velocity = Vector4(-0.01f + sRand.NextFloat() * 0.03f, sRand.NextFloat() * -5.0f, -0.01f + sRand.NextFloat() * 0.03f, 0);
     particle.flag = Particle::Flags::Alive;
     return mParticles.Enqueue(particle);
 }
 
 void Particles::EmitAll()
 {
+    auto pos = Vector4(0, 0, 0, 0);
     for (unsigned int index = 0; index < mInstanceNum; ++index)
     {
-        Emit();
+        // auto pos = Vector4(
+        //     (-1.0f + sRand.NextFloat() * 2.0f),
+        //     (-1.0f + sRand.NextFloat() * 2.0f),
+        //     (-1.0f + sRand.NextFloat() * 10.0f),
+        //     0.0f);
+        Emit(pos);
     }
 }
 
 void Particles::Update(const float elapsedTime)
 {
-    float gravity = 0.0006f;
+    NNFW_UNUSED(elapsedTime);
+    static int count = 0;
+    if (++count < 100) return;
+    float gravity = 0.001f;
     float reaction = 1.5f;
     for (unsigned int index = 0; index < mInstanceNum; ++index)
     {
@@ -352,10 +357,10 @@ void Particles::Update(const float elapsedTime)
             particle.pos.x = particle.pos.x - particle.velocity.x;    //ボールにスピードが設定される
             particle.pos.y = particle.pos.y - particle.velocity.y;    //ボールにスピードが設定される
             particle.pos.z = particle.pos.z - particle.velocity.z;    //ボールにスピードが設定される
-            if (particle.pos.y < -3.0f) {    //もしボールが画面の下まで落ちたら、
-                particle.velocity.y *= -reaction;    //反発力によって上に上がる
-                particle.pos.y = -3.0f;    //ボールは画面の外に外れない
-            }
+            //if (particle.pos.y < -3.0f) {    //もしボールが画面の下まで落ちたら、
+            //    particle.velocity.y *= -reaction;    //反発力によって上に上がる
+            //    particle.pos.y = -3.0f;    //ボールは画面の外に外れない
+            //}
             particle.pos.w += particle.speed;
 
             if ((particle.lifeSpan -= 0.1f) <= 0)
@@ -381,7 +386,7 @@ void Particles::Render(ID3D11DeviceContext* context)
     cbuff.mtxProj = DirectX::XMMatrixTranspose(DirectX::XMMatrixPerspectiveFovLH(fov, aspect, min_z, max_z));
 
     // カメラ行列
-    DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f);
+    DirectX::XMVECTOR Eye = DirectX::XMVectorSet(0.0f, 0.0f, -50.0f, 0.0f);
     DirectX::XMVECTOR At = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
     DirectX::XMVECTOR Up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
     cbuff.mtxView = DirectX::XMMatrixTranspose(DirectX::XMMatrixLookAtLH(Eye, At, Up));
@@ -445,8 +450,6 @@ void Particles::Render(ID3D11DeviceContext* context)
             return;
         }
 
-        float gravity = 0.0006f;
-        float reaction = 1.5f;
         for (unsigned int index = 0; index < mInstanceNum; ++index)
         {
             Particle& particle = mParticles[index];

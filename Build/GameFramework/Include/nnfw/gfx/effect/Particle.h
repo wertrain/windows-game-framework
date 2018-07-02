@@ -22,7 +22,7 @@ public:
 
     bool Create(ID3D11Device* device, ID3D11DeviceContext* context, const wchar_t *fileName, const uint32_t instanceNum);
     void Destroy();
-    bool Emit();
+    bool Emit(const Vector4& pos);
     void EmitAll();
     void Update(const float elapsedTime);
     void Render(ID3D11DeviceContext* context);
