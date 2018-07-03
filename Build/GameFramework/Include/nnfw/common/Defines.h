@@ -61,7 +61,8 @@
 /// そもそも、フレームワークでは Device などを、生のまま使用しているので、DirectXを使用する前提のコードになっている。
 /// 気が向けば、そのあたりもラップするかもしれないが、今のところはこの定義はあってないようなもの。
 #ifdef _WIN64
-#define FRAMEWORK_USE_DIRECT_X_
+//#define FRAMEWORK_USE_DIRECT_X_
+#define FRAMEWORK_USE_SIMPLE_MATH_
 #endif // _WIN64
 
 /// <summary>

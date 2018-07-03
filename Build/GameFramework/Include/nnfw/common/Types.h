@@ -54,8 +54,18 @@ typedef DirectX::XMMATRIX Matrix44;
 
 #endif // FRAMEWORK_USE_DIRECT_X_
 
+#ifdef FRAMEWORK_USE_SIMPLE_MATH_
+
 #include <d3d11.h> // SimpleMath ‚ÅŽg—p‚·‚é
 #include <nnfw/external/DirectXTK/SimpleMath.h>
+
+typedef DirectX::SimpleMath::Vector2 Vector2;
+typedef DirectX::SimpleMath::Vector3 Vector3;
+typedef DirectX::SimpleMath::Vector4 Vector4;
+typedef DirectX::SimpleMath::Matrix Matrix44;
+typedef DirectX::SimpleMath::Quaternion Quaternion;
+
+#endif // FRAMEWORK_USE_SIMPLE_MATH_
 
 #include <vector>
 #include <memory>
