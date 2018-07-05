@@ -354,9 +354,7 @@ void Particles::Update(const float elapsedTime)
         if ((particle.flag & Particle::Flags::Alive) > 0)
         {
             particle.velocity.y += gravity;    //スピードに重力が加算される
-            particle.pos.x = particle.pos.x - particle.velocity.x;    //ボールにスピードが設定される
-            particle.pos.y = particle.pos.y - particle.velocity.y;    //ボールにスピードが設定される
-            particle.pos.z = particle.pos.z - particle.velocity.z;    //ボールにスピードが設定される
+            particle.pos = particle.pos - particle.velocity;    //ボールにスピードが設定される
             //if (particle.pos.y < -3.0f) {    //もしボールが画面の下まで落ちたら、
             //    particle.velocity.y *= -reaction;    //反発力によって上に上がる
             //    particle.pos.y = -3.0f;    //ボールは画面の外に外れない
