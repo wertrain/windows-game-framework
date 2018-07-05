@@ -346,7 +346,7 @@ void Particles::Update(const float elapsedTime)
     static int count = 0;
     if (++count < 100) return;
     float gravity = 0.001f;
-    float reaction = 1.5f;
+
     for (unsigned int index = 0; index < mInstanceNum; ++index)
     {
         Particle& particle = mParticles[index];

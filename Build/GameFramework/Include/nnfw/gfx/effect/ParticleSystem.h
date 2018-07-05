@@ -6,7 +6,6 @@
 #define GRAPHICS_EFFECT_PARTICLE_SYSTEM_H_
 
 #include <nnfw/ut/CircularArray.h>
-#include <DirectXMath.h>
 
 NS_FW_GFX_BEGIN
 
