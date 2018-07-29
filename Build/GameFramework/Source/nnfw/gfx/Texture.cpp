@@ -23,23 +23,9 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-    if (mSampler != nullptr)
-    {
-        mSampler->Release();
-        mSampler = nullptr;
-    }
-
-    if (mShaderResView != nullptr)
-    {
-        mShaderResView->Release();
-        mShaderResView = nullptr;
-    }
-
-    if (mTexture != nullptr)
-    {
-        mTexture->Release();
-        mTexture = nullptr;
-    }
+    SafeRelease(mSampler);
+    SafeRelease(mShaderResView);
+    SafeRelease(mTexture);
 }
 
 bool Texture::CreateFromFile(ID3D11Device* device, const wchar_t* filename)
