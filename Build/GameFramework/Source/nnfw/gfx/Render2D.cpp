@@ -68,31 +68,11 @@ bool Render2D::Create(ID3D11Device* device)
 
 void Render2D::Destroy()
 {
-    if (mIndexBuffer != nullptr)
-    {
-        mIndexBuffer->Release();
-        mIndexBuffer = nullptr;
-    }
-    if (mPixelShader != nullptr)
-    {
-        mPixelShader->Release();
-        mPixelShader = nullptr;
-    }
-    if (mVertexShader != nullptr)
-    {
-        mVertexShader->Release();
-        mVertexShader = nullptr;
-    }
-    if (mConstantBuffer != nullptr)
-    {
-        mConstantBuffer->Release();
-        mConstantBuffer = nullptr;
-    }
-    if (mVertexLayout != nullptr)
-    {
-        mVertexLayout->Release();
-        mVertexLayout = nullptr;
-    }
+    SafeRelease(mIndexBuffer);
+    SafeRelease(mPixelShader);
+    SafeRelease(mVertexShader);
+    SafeRelease(mConstantBuffer);
+    SafeRelease(mVertexLayout);
 }
 
 HRESULT Render2D::CreateShader(ID3D11Device* device)
