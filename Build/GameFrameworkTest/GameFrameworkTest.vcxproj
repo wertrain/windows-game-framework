@@ -92,6 +92,7 @@
     <ClCompile Include="DefaultAllocatorTest.cpp" />
     <ClCompile Include="ObserverTest.cpp" />
     <ClCompile Include="RandomTest.cpp" />
+    <ClCompile Include="ReferencedObjectTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
