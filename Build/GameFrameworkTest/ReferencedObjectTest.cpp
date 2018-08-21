@@ -33,13 +33,10 @@ namespace GameFrameworkTest
             TestReferencedObject* obj = new TestReferencedObject();
 
             {
-                TestReferencedObject* obj2 = obj;
-                obj2->DoSomething();
-            }
+                TestReferencedObject obj2 = *obj;
+                obj2.DoSomething();
 
-            if (obj->Release() == 0)
-            {
-                delete obj;
+                Assert::IsTrue(obj->GetRef() == 2);
             }
 
             {
