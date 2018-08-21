@@ -42,6 +42,16 @@ namespace GameFrameworkTest
                 delete obj;
             }
 
+            {
+                TestReferencedObject* obj3 = obj;
+                obj3->DoSomething();
+            }
+
+            if (obj->Release() == 0)
+            {
+                delete obj;
+            }
+
             _CrtMemCheckpoint(&mem_state_after);
             if (_CrtMemDifference(&mem_state_diff, &mem_state_before, &mem_state_after))
             {
