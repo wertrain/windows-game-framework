@@ -37,7 +37,14 @@ namespace GameFrameworkTest
                 obj2.DoSomething();
 
                 Assert::IsTrue(obj->GetRef() == 2);
+
+                TestReferencedObject obj3 = *obj;
+                obj3.DoSomething();
+
+                Assert::IsTrue(obj->GetRef() == 3);
             }
+
+            Assert::IsTrue(obj->GetRef() == 1);
 
             {
                 TestReferencedObject* obj3 = obj;
