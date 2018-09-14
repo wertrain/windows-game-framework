@@ -8,6 +8,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace GameFrameworkTest
 {
+    ///
+    /// 循環配列のテスト
+    ///
     TEST_CLASS(CircularArrayTest)
     {
     public:        

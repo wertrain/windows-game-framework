@@ -11,6 +11,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace GameFrameworkTest
 {
+    ///
+    /// 参照オブジェクトのテスト
+    ///
     class TestReferencedObject : public fw::sys::ReferencedObject
     {
     public:

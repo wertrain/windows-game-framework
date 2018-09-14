@@ -10,6 +10,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace GameFrameworkTest
 {
+    ///
+    /// オブザーバクラスのテスト
+    ///
     TEST_CLASS(ObserverTest)
     {
     private:

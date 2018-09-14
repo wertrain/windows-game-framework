@@ -8,6 +8,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace GameFrameworkTest
 {
+    ///
+    /// アロケータのテスト
+    ///
     TEST_CLASS(DefaultAllocatorTest)
     {
     public:

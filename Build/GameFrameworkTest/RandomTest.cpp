@@ -9,6 +9,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace GameFrameworkTest
 {
+    ///
+    /// ランダム関数のテスト
+    ///
     TEST_CLASS(RandomTest)
     {
     public:
