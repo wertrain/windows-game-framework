@@ -9,6 +9,13 @@
 
 NS_FW_UTIL_BEGIN
 
+class Log
+{
+public:
+    Log();
+    ~Log();
+};
+
 NS_FW_UTIL_END
 
 #endif // UTILITY_LOG_H_
