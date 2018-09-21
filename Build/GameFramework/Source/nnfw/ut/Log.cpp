@@ -9,6 +9,7 @@
 NS_FW_UTIL_BEGIN
 
 Log::Log()
+    : mType(TYPE_ALL)
 {
 
 }

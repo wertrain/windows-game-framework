@@ -9,6 +9,9 @@
 
 NS_FW_UTIL_BEGIN
 
+/// <summary>
+/// ログ出力管理クラス
+/// </summary>
 class Log
 {
 public:
@@ -27,6 +30,9 @@ public:
 public:
     Log();
     ~Log();
+
+private:
+    Type mType;
 };
 
 NS_FW_UTIL_END
