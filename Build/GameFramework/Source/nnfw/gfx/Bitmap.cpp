@@ -40,7 +40,7 @@ bool Bitmap::CreateFromFile(wchar_t* filename)
         SelectObject(mHMemDC ,mHBitmap);
     }
     // デフォルトでは緑を透過
-    mTransparentColor = RGB(0,255,0);
+    mTransparentColor = RGB(0, 255, 0);
 
     return true;
 }
