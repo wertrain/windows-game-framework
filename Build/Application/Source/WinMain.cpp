@@ -179,12 +179,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
     // スレッドの作成と実行
     s_ThreadParam.exit = false;
     s_ThreadParam.handle = CreateThread(
-        NULL,                              // ハンドルを他のプロセスと共有する場合
-        0,                                 // スタックサイズ(デフォルト:0)
-        GameMainFunc,                      // スレッド関数名
+        NULL,                                     // ハンドルを他のプロセスと共有する場合
+        0,                                        // スタックサイズ(デフォルト:0)
+        GameMainFunc,                             // スレッド関数名
         reinterpret_cast<LPVOID>(&s_ThreadParam), // スレッドに渡す構造体
-        0,                                 // 0:作成と同時に実行
-        &s_ThreadParam.id);                // スレッドID
+        0,                                        // 0:作成と同時に実行
+        &s_ThreadParam.id);                       // スレッドID
 
     application.ShowWindow(nCmdShow); // ウィンドウ表示
 
