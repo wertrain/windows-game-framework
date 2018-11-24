@@ -183,7 +183,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         0,                                        // スタックサイズ(デフォルト:0)
         GameMainFunc,                             // スレッド関数名
         reinterpret_cast<LPVOID>(&s_ThreadParam), // スレッドに渡す構造体
-        0,                                        // 0:作成と同時に実行
+        0,                                        // 0: 作成と同時に実行
         &s_ThreadParam.id);                       // スレッドID
 
     application.ShowWindow(nCmdShow); // ウィンドウ表示
