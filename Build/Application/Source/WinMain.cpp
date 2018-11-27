@@ -188,6 +188,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
 
     application.ShowWindow(nCmdShow); // ウィンドウ表示
 
+    // メッセージ処理
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0) > 0)
     {
