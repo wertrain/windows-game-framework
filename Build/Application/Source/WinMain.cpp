@@ -195,6 +195,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         DispatchMessage(&msg);
     }
 
+    // ”jŠüˆ—‚ÌŠJn
     Destroy();
 
     fontMgr.Destroy();
