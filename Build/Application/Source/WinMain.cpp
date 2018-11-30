@@ -186,7 +186,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, PSTR /*lpCm
         0,                                        // 0: 作成と同時に実行
         &s_ThreadParam.id);                       // スレッドID
 
-    application.ShowWindow(nCmdShow); // ウィンドウ表示
+    // ウィンドウ表示
+    application.ShowWindow(nCmdShow);
 
     // メッセージ処理
     MSG msg;
