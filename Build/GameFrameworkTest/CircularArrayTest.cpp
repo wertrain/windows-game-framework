@@ -13,7 +13,7 @@ namespace GameFrameworkTest
     ///
     TEST_CLASS(CircularArrayTest)
     {
-    public:        
+    public:
         TEST_METHOD(FixedCircularArrayTestBasic)
         {
             const size_t N = 512;
