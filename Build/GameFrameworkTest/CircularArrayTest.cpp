@@ -14,6 +14,7 @@ namespace GameFrameworkTest
     TEST_CLASS(CircularArrayTest)
     {
     public:
+        /// 基本的なテスト
         TEST_METHOD(FixedCircularArrayTestBasic)
         {
             const size_t N = 512;
@@ -21,7 +22,7 @@ namespace GameFrameworkTest
 
             TestCircularArray<int>(&circularArray, N);
         }
-
+        /// コンストラクタでサイズを定義するテスト
         TEST_METHOD(CircularArrayTestBasic)
         {
             const size_t N = 512;
@@ -29,7 +30,6 @@ namespace GameFrameworkTest
 
             TestCircularArray<int>(&circularArray, N);
         }
-
         template <typename T>
         void TestCircularArray(NS_FW_UTIL::CircularArrayInterface<T>* circularArray, const size_t N)
         {
