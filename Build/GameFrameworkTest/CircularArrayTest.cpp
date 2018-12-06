@@ -30,6 +30,7 @@ namespace GameFrameworkTest
 
             TestCircularArray<int>(&circularArray, N);
         }
+        /// ‹¤’ÊƒeƒXƒg
         template <typename T>
         void TestCircularArray(NS_FW_UTIL::CircularArrayInterface<T>* circularArray, const size_t N)
         {
