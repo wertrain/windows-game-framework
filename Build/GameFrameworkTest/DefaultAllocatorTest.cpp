@@ -14,6 +14,7 @@ namespace GameFrameworkTest
     TEST_CLASS(DefaultAllocatorTest)
     {
     public:
+        /// 基本的なテスト
         TEST_METHOD(DefaultAllocatorTestBasic)
         {
             {
