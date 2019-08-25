@@ -24,7 +24,6 @@ public:
         TYPE_DANGER  = 1 << 3,
         TYPE_USER    = TYPE_INFO | TYPE_CAUTION | TYPE_DANGER,
         TYPE_ALL     = 0xFF,
-        TYPE_END
     };
 
 public:
